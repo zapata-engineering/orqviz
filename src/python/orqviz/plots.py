@@ -40,9 +40,7 @@ def plot_optimization_trajectory(
     plot_kwargs = {**default_plot_kwargs, **plot_kwargs}
 
     ax.plot(
-        projected_trajectory_x,
-        projected_trajectory_y,
-        **plot_kwargs,
+        projected_trajectory_x, projected_trajectory_y, **plot_kwargs,
     )
     ax.plot(
         projected_trajectory_x[0],
@@ -90,9 +88,7 @@ def plot_scatter_points(
     plot_kwargs = {**default_plot_kwargs, **plot_kwargs}
 
     ax.scatter(
-        projected_scatter_x,
-        projected_scatter_y,
-        **plot_kwargs,
+        projected_scatter_x, projected_scatter_y, **plot_kwargs,
     )
 
 
@@ -126,7 +122,5 @@ def plot_line_through_points(
     plot_kwargs = {**default_plot_kwargs, **plot_kwargs}
 
     ax.plot(
-        projected_scatter_x,
-        projected_scatter_y,
-        **plot_kwargs,
+        projected_scatter_x, projected_scatter_y, **plot_kwargs,
     )

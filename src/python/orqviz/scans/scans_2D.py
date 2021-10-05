@@ -1,9 +1,12 @@
 import numpy as np
 from typing import Callable, Optional, Tuple
-from zquantum.visualization.geometric import relative_periodic_wrap
 from .evals import eval_points_on_grid
 from .data_structures import Scan2DResult
-from ..geometric import get_random_orthonormal_vector, get_random_normal_vector
+from ..geometric import (
+    get_random_orthonormal_vector,
+    get_random_normal_vector,
+    relative_periodic_wrap,
+)
 from ..aliases import ParameterVector, GridOfParameterVectors
 
 
