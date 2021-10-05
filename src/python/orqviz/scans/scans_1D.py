@@ -25,10 +25,7 @@ def perform_1D_scan(
         verbose: Flag for printing progress. Defaults to False.
     """
     point_list: ListOfParameterVectors = direction_linspace(
-        origin=origin,
-        direction=direction,
-        n_points=n_steps,
-        endpoints=end_points,
+        origin=origin, direction=direction, n_points=n_steps, endpoints=end_points,
     )
 
     scan_values = eval_points_on_path(point_list, loss_function, verbose=verbose)
@@ -64,10 +61,7 @@ def perform_1D_interpolation(
     origin = point_1
     direction = point_2 - point_1
     point_list: ListOfParameterVectors = direction_linspace(
-        origin=origin,
-        direction=direction,
-        n_points=n_steps,
-        endpoints=end_points,
+        origin=origin, direction=direction, n_points=n_steps, endpoints=end_points,
     )
 
     loss_vector = eval_points_on_path(
@@ -75,8 +69,5 @@ def perform_1D_interpolation(
     )
 
     return Scan1DResult(
-        point_list,
-        direction=direction,
-        values=loss_vector,
-        origin=origin,
+        point_list, direction=direction, values=loss_vector, origin=origin,
     )
