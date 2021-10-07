@@ -19,10 +19,12 @@ def plot_optimization_trajectory(
     """Function to project and plot a parameter trajectory on a 2D plane.
 
     Args:
-        optimization_trajectory: Parameter trajectory to be projected and plotted on a 2D plane.
+        optimization_trajectory: Parameter trajectory to be projected
+            and plotted on a 2D plane.
         direction_x: x-direction of the 2D plane.
         direction_y: y-direction of the 2D plane.
-        ax: Matplotlib axis to perform plot on. If None, a new axis is created from the current figure. Defaults to None.
+        ax: Matplotlib axis to perform plot on. If None, a new axis
+            is created from the current figure. Defaults to None.
         shift: Origin to shift the trajectory to. Defaults to None.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.plot (plt.plot)
     """
@@ -79,7 +81,8 @@ def plot_scatter_points(
         scatter_points: Points to be to be projected and scattered on a 2D plane.
         direction_x: x-direction of the 2D plane.
         direction_y: y-direction of the 2D plane.
-        ax: Matplotlib axis to perform plot on. If None, a new axis is created from the current figure. Defaults to None.
+        ax: Matplotlib axis to perform plot on. If None, a new axis
+            is created from the current figure. Defaults to None.
         shift: Origin to shift the trajectory to. Defaults to None.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.scatter (plt.scatter)
     """
@@ -117,7 +120,8 @@ def plot_line_through_points(
         points: Points to be to be projected on a 2D plane and plot a line through.
         direction_x: x-direction of the 2D plane.
         direction_y: y-direction of the 2D plane.
-        ax: Matplotlib axis to perform plot on. If None, a new axis is created from the current figure. Defaults to None.
+        ax: Matplotlib axis to perform plot on. If None, a new axis is created
+            from the current figure. Defaults to None.
         shift: Origin to shift the trajectory to. Defaults to None.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.plot (plt.plot)
     """

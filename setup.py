@@ -14,7 +14,8 @@ setuptools.setup(
     version="0.0.1",
     author="Zapata Computing, Inc.",
     author_email="info@zapatacomputing.com",
-    description="Python package for visualizing loss landscapes of Parameterized Quantum Circuits",
+    description="""Python package for visualizing loss landscapes" \
+        " of Parameterized Quantum Circuits""",
     url="https://github.com/zapatacomputing/orqviz",
     packages=setuptools.find_namespace_packages(include=["orqviz.*"], where="src"),
     package_dir={"": "src"},
@@ -22,6 +23,10 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ),
-    install_requires=["numpy", "sklearn", "matplotlib",],
+    install_requires=[
+        "numpy",
+        "sklearn",
+        "matplotlib",
+    ],
     extras_require=extras_require,
 )

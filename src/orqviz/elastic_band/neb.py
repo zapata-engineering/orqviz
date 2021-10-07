@@ -19,20 +19,33 @@ def run_NEB(
     cummulative_weights: Optional[Weights] = None,
     verbose: bool = False,
 ) -> List[Chain]:
-    """Nudged Elastic Band (NEB) algorithm to train a piece-wise linear path optimized in the loss function landscape.
-    Reference paper: Essentially No Barriers in Neural Network Energy Landscape, arXiv:1803.00885.
-    NOTE: There is a discrepancy between name used in the original paper (elastic band) and the one we use to define our data structure (chain), but we decided to use the later as we feel it's more appropriate for this data structure.
+    """Nudged Elastic Band (NEB) algorithm to train a piece-wise linear path optimized
+        in the loss function landscape.
+    Reference paper:
+        Essentially No Barriers in Neural Network Energy Landscape, arXiv:1803.00885.
+    NOTE: There is a discrepancy between name used in the original paper (elastic band)
+        and the one we use to define our data structure (chain), but we decided to use
+        the later as we feel it's more appropriate for this data structure.
 
     Args:
         init_chain: Initial chain that is optimized with the algorithm.
         loss_function: Loss function that is used to optimize the chain.
-        full_gradient_function: Function to calculate the gradient w.r.t. the loss function for all parameters. Defaults to None.
+        full_gradient_function: Function to calculate the gradient w.r.t.
+            the loss function for all parameters. Defaults to None.
         n_iters: Number of optimization iterations. Defaults to 10.
-        eps: Stencil for finite difference gradient if full_gradient_function is not provided. Defaults to 0.1.
-        learning_rate: Learning rate/ step size for the gradient descent optimization. Defaults to 0.1.
-        stochastic: Flag to indicate whether to perform stochastic gradient descent if full_gradient_function is not provided. It is less stable but much faster. Defaults to False.
-        calibrate_tangential: Flag to indicate whether next neighbor for finding tangential direction is calibrated with an additional loss evaluation. Defaults to False.
-        cummulative_weights: Cummulative chain position weights to re-distributed pivots along chain. If None, pivots are re-distributed uniformly. Defaults to None.
+        eps: Stencil for finite difference gradient if full_gradient_function
+            is not provided. Defaults to 0.1.
+        learning_rate: Learning rate/ step size for the gradient descent optimization.
+            Defaults to 0.1.
+        stochastic: Flag to indicate whether to perform stochastic gradient descent
+            if full_gradient_function is not provided.
+            It is less stable but much faster. Defaults to False.
+        calibrate_tangential: Flag to indicate whether next neighbor for finding
+            tangential direction is calibrated with an additional loss evaluation.
+            Defaults to False.
+        cummulative_weights: Cummulative chain position weights to re-distributed
+            pivots along chain. If None, pivots are re-distributed uniformly.
+            Defaults to None.
         verbose: Flag for printing progress. Defaults to False.
 
     Returns:
@@ -75,16 +88,21 @@ def _get_gradients_on_pivots(
     full_gradient_function: Callable[[ParameterVector], np.ndarray],
     calibrate_tangential: bool = False,
 ) -> np.ndarray:
-    """Calculates gradient for every pivot on the chain w.r.t. the loss function using the gradient function.
+    """Calculates gradient for every pivot on the chain w.r.t. the loss function
+        using the gradient function.
 
     Args:
         chain: Chain to calculate the gradients on.
         loss_function: Loss function for which to calculate the gradient.
-        full_gradient_function: Function to calculate the gradient w.r.t. the loss function for all parameters.
-        calibrate_tangential: Flag to indicate whether next neighbor for finding tangential direction is calibrated with an additional loss evaluation.. Defaults to False.
+        full_gradient_function: Function to calculate the gradient w.r.t.
+            the loss function for all parameters.
+        calibrate_tangential: Flag to indicate whether next neighbor for finding
+            tangential direction is calibrated with an additional loss evaluation.
+            Defaults to False.
     """
 
-    # We initialize with zeros, as we always want first and last gradient to be equal to 0.
+    # We initialize with zeros, as we always want first and last gradient
+    # to be equal to 0.
     gradients_on_pivots = np.zeros(shape=(chain.n_pivots, chain.n_params))
 
     for ii in range(1, chain.n_pivots - 1):
@@ -109,7 +127,8 @@ def _redistribute_chain(
     chain: Chain,
     cummulative_weights: Optional[Weights] = None,
 ) -> Chain:
-    """Helper function to re-distribute pivots along a Chain according to their weights on the chain."""
+    """Helper function to re-distribute pivots along a Chain according
+    to their weights on the chain."""
     path = ChainPath(chain)
     if cummulative_weights is not None:
         return path._get_chain_from_weights(cummulative_weights)

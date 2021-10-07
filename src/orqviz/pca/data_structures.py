@@ -9,7 +9,8 @@ from ..aliases import ArrayOfParameterVectors
 
 @dataclass(init=True)
 class PCAobject:
-    """PCA datatype to combine PCA object with the corresponding higher-dimensional points and the components of interest"""
+    """PCA datatype to combine PCA object with the corresponding higher-dimensional
+    points and the components of interest"""
 
     def __init__(
         self,
@@ -36,11 +37,15 @@ class PCAobject:
         self,
         offset: Tuple[float] = (-1.0, 1.0),
     ) -> Tuple[Tuple[float, float], Tuple[float, float]]:
-        """Helper function to get the scan coordinate ranges of PCA-transformed coordinates in the specified components with a provided offset..
+        """Helper function to get the scan coordinate ranges of PCA-transformed
+            coordinates in the specified components with a provided offset.
 
         Args:
-            components_ids: Which components of the PCA object are used as scan directions. Defaults to (0, 1).
-            offset: Offset in x-y directions added to the scan range on top of the range that is necessary to display all_points. Defaults to (-1.0, 1.0).
+            components_ids: Which components of the PCA object are used as
+                scan directions. Defaults to (0, 1).
+            offset: Offset in x-y directions added to the scan range on top
+                of the range that is necessary to display all_points.
+                Defaults to (-1.0, 1.0).
 
         """
         pca_transformed_points = self.get_transformed_points()
@@ -64,6 +69,7 @@ def get_pca(
 
     Args:
         all_points: List/array of parameter vectors to perform PCA on
-        components_ids: Which components are of interest. PCA fits to max(components_ids)+1 components. Defaults to (0, 1).
+        components_ids: Which components are of interest. PCA fits to
+            max(components_ids)+1 components. Defaults to (0, 1).
     """
     return PCAobject(all_points, components_ids)

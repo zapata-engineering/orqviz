@@ -18,9 +18,12 @@ def plot_1D_hessian_eigenvector_scan_result(
 
     Args:
         list_of_scans: List of Scan1DResult that
-        ax: Matplotlib axis to perform the plot on. If None, a new axis is created from the current figure. Defaults to None.
-        n_points: Number of points to evaluate the loss along each direction. Defaults to 31.
-        endpoints: End points for scan along each direction. Defaults to (-np.pi, np.pi).
+        ax: Matplotlib axis to perform the plot on.
+            If None, a new axis is created from the current figure. Defaults to None.
+        n_points: Number of points to evaluate the loss along each direction.
+            Defaults to 31.
+        endpoints: End points for scan along each direction.
+            Defaults to (-np.pi, np.pi).
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.plot (plt.plot)
     """
     _, ax = _check_and_create_fig_ax(ax=ax)

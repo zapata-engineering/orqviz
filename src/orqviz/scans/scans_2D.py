@@ -30,13 +30,19 @@ def perform_2D_interpolation(
         point_1: First point of the interpolation.
         point_2: Second point of the interpolation.
         loss_function: Loss function to scan.
-        direction_y: Second scan direction for the 2D scan where first direction is the interpolation vector of the points. If None, it's chosen at random.
+        direction_y: Second scan direction for the 2D scan where first direction
+            is the interpolation vector of the points. If None, it's chosen at random.
         n_steps_x: Number of points evaluated along the x-direction. Defaults to 20.
-        n_steps_y: Number of points evaluated along the y-direction. If None, set value to n_steps_y. Defaults to None.
-        end_points_x: Range of scan along the x-direction in units of the interpolation vector. Defaults to (-0.5, 1.5).
-        end_points_y: Range of scan along the y-direction in units of the interpolation vector. Defaults to (-0.5, 0.5).
-        parameter_period (Optional[float], optional): Optional period of the parameters to scan the shortest interpolated path between the points.
-            If None, interpolation per parameter happens along the real number line. Defaults to None.
+        n_steps_y: Number of points evaluated along the y-direction.
+            If None, set value to n_steps_y. Defaults to None.
+        end_points_x: Range of scan along the x-direction in units
+            of the interpolation vector. Defaults to (-0.5, 1.5).
+        end_points_y: Range of scan along the y-direction in units
+            of the interpolation vector. Defaults to (-0.5, 0.5).
+        parameter_period (Optional[float], optional): Optional period of
+        the parameters to scan the shortest interpolated path between the points.
+            If None, interpolation per parameter happens along the real number line.
+            Defaults to None.
         verbose: Flag for printing progress. Defaults to False.
     """
     if n_steps_y is None:
@@ -84,9 +90,12 @@ def perform_2D_scan(
         direction_x: x-direction vector for scan. Has same shape as origin.
         direction_y: y-direction vector for scan. Has same shape as origin.
         n_steps_x: Number of points evaluated along the x-direction. Defaults to 20.
-        n_steps_y: Number of points evaluated along the y-direction. If None, set value to n_steps_y. Defaults to None.
-        end_points_x: Range of scan along the x-direction in units of direction_x. Defaults to (-1, 1).
-        end_points_y: Range of scan along the x-direction in units of direction_x. Defaults to (-1, 1).
+        n_steps_y: Number of points evaluated along the y-direction.
+            If None, set value to n_steps_y. Defaults to None.
+        end_points_x: Range of scan along the x-direction in units of direction_x.
+            Defaults to (-1, 1).
+        end_points_y: Range of scan along the x-direction in units of direction_x.
+            Defaults to (-1, 1).
         verbose: Flag for printing progress. Defaults to False.
     """
     if n_steps_y is None:
@@ -134,17 +143,23 @@ def get_2D_slice_around_point(
     end_points_y: tuple = (-1.0, 1.0),
     verbose: bool = False,
 ) -> Scan2DResult:
-    """Function to perform a 2D scan around a point on a loss function without having to specify scan directions.
+    """Function to perform a 2D scan around a point on a loss function
+        without having to specify scan directions.
 
     Args:
         origin: Origin point of the 2D scan.
         loss_function: Loss function to be scanned.
-        direction_x: x-direction vector for scan. Has same shape as origin. If None, a random unit vector is sampled. Defaults to None.
-        direction_y: y-direction vector for scan. Has same shape as origin. If None, a random unit vector is sampled. Defaults to None.
+        direction_x: x-direction vector for scan. Has same shape as origin.
+            If None, a random unit vector is sampled. Defaults to None.
+        direction_y: y-direction vector for scan. Has same shape as origin.
+            If None, a random unit vector is sampled. Defaults to None.
         n_steps_x: Number of points evaluated along the x-direction. Defaults to 20.
-        n_steps_y: Number of points evaluated along the y-direction. If None, set value to n_steps_y. Defaults to None.
-        end_points_x: Range of scan along the x-direction in units of direction_x. Defaults to (-1, 1).
-        end_points_y: Range of scan along the x-direction in units of direction_x. Defaults to (-1, 1).
+        n_steps_y: Number of points evaluated along the y-direction.
+            If None, set value to n_steps_y. Defaults to None.
+        end_points_x: Range of scan along the x-direction in units of direction_x.
+            Defaults to (-1, 1).
+        end_points_y: Range of scan along the x-direction in units of direction_x.
+            Defaults to (-1, 1).
         verbose: Flag for printing progress. Defaults to False.
     """
     if direction_x is None:

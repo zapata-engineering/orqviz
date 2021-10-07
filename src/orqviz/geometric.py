@@ -12,7 +12,8 @@ def get_random_normal_vector(dimension: int) -> ParameterVector:
 
 
 def get_random_orthonormal_vector(base_vector: ParameterVector) -> ParameterVector:
-    """Helper function to generate a random orthogonal vector with respect to a provided base vector."""
+    """Helper function to generate a random orthogonal vector with respect to
+    a provided base vector."""
     random_vector = np.random.normal(size=base_vector.shape)
     new_vector = (
         random_vector
@@ -28,12 +29,16 @@ def relative_periodic_wrap(
     point_to_be_wrapped: ParameterVector,
     period: float = 2 * np.pi,
 ) -> ParameterVector:
-    """Function that returns a wrapped 'copy' of a point to be wrapped such that the distance between it and the reference point is minimal inside the specified period.
+    """Function that returns a wrapped 'copy' of a point to be wrapped such that
+        the distance between it and the reference point is minimal inside
+        the specified period.
 
     Args:
         reference_point: Reference point for periodic wrapping of the second point.
-        point_to_be_wrapped: Point that is wrapped to a copy of itself such that its distance to the reference point is minimal inside the specified period.
-        period: Periodicity of each parameter of the the point that is to be wrapped. Defaults to 2*np.pi.
+        point_to_be_wrapped: Point that is wrapped to a copy of itself such that
+            its distance to the reference point is minimal inside the specified period.
+        period: Periodicity of each parameter of the the point that is to be wrapped.
+            Defaults to 2*np.pi.
     """
     option1 = (reference_point - point_to_be_wrapped) % period
     option2 = (point_to_be_wrapped - reference_point) % period
@@ -47,12 +52,17 @@ def relative_periodic_trajectory_wrap(
     trajectory: ArrayOfParameterVectors,
     period: float = 2 * np.pi,
 ) -> ArrayOfParameterVectors:
-    """Function that returns a wrapped 'copy' of a parameter trajectory such that the distance between it and the reference point is minimal inside the specified period.
+    """Function that returns a wrapped 'copy' of a parameter trajectory such that
+        the distance between it and the reference point is minimal inside
+        the specified period.
 
     Args:
         reference_point: Reference point for periodic wrapping of the trajectory.
-        trajectory: Trajectory that is wrapped to a copy of itself such that the distance between the final point in the trajectory and the reference point is minimal.
-        period: Periodicity of each parameter in each point of the trajectory.  Defaults to 2*np.pi.
+        trajectory: Trajectory that is wrapped to a copy of itself such that
+            the distance between the final point in the trajectory
+            and the reference point is minimal.
+        period: Periodicity of each parameter in each point of the trajectory.
+            Defaults to 2*np.pi.
     """
     wrapped_trajectory = np.copy(trajectory)
     wrapped_trajectory[-1] = relative_periodic_wrap(
@@ -72,13 +82,15 @@ def get_coordinates_on_direction(
     origin: Optional[ParameterVector] = None,
     in_units_of_direction: bool = False,
 ) -> np.ndarray:
-    """Helper function to calculate the projection of points onto a direction to extract the coordinates in that direction.
+    """Helper function to calculate the projection of points onto a direction
+        to extract the coordinates in that direction.
 
     Args:
         points: Points to be projected on the direction vector.
         direction: Direction vector to project the points on.
         origin: Origin for the projection. Defaults to None.
-        in_units_of_direction: Flag to indicate whether to return coordinates in units of the direction vector.
+        in_units_of_direction: Flag to indicate whether to return coordinates in units
+            of the direction vector.
             If False, returns coordinates in euclidean distances. Defaults to False.
     """
     if origin is not None:
@@ -95,7 +107,8 @@ def direction_linspace(
     n_points: int,
     endpoints: Tuple[float, float] = (-1, 1),
 ) -> ArrayOfParameterVectors:
-    """Helper function to wrap np.linspace in order to create points on a specified direction around an origin."""
+    """Helper function to wrap np.linspace in order to create points on a specified
+    direction around an origin."""
     return np.linspace(
         origin + endpoints[0] * direction,
         origin + endpoints[1] * direction,

@@ -12,20 +12,30 @@ def calculate_full_gradient(
     stochastic: bool = False,
     eps: float = 0.1,
 ) -> np.ndarray:
-    """Function to calculate a full gradient vector of partial derivatives of a loss function with respect to each entry of a parameter vector.
+    """Function to calculate a full gradient vector of partial derivatives
+        of a loss function with respect to each entry of a parameter vector.
 
     Args:
         params: Parameter vector at which to calculate the gradient.
-        loss_function: Loss function with respect to which the gradient is calculated. It is not required when a gradient_function is passed.
-        gradient_function: Gradient function to calculate the partial derivative of the loss function with respect to a direction.
-            If None, a numerical gradient is computed with the passed loss function. Defaults to None.
-        stochastic: Flag to indicate whether a stochastic gradient is computed in a randomly sampled direction.
-            If True, the specified gradient function must support this. Defaults to False.
+        loss_function: Loss function with respect to which the gradient is calculated.
+            It is not required when a gradient_function is passed.
+        gradient_function: Gradient function to calculate the partial derivative
+            of the loss function with respect to a direction.
+            If None, a numerical gradient is computed with the passed loss function.
+            Defaults to None.
+        stochastic: Flag to indicate whether a stochastic gradient is computed in
+            a randomly sampled direction.
+            If True, the specified gradient function must support this.
+            Defaults to False.
         eps: Stencil for numerical gradient calculation. Defaults to 0.1.
     """
 
     if loss_function is None and gradient_function is None:
-        raise Exception("'loss_function' and 'gradient_function' cannot both be 'None'")
+        raise Exception(
+            """
+            'loss_function' and 'gradient_function' cannot both be 'None'
+            """
+        )
 
     if gradient_function is None:
 
@@ -55,7 +65,8 @@ def numerical_gradient(
     loss_function: Callable[[ParameterVector], float],
     eps: float,
 ) -> float:
-    """Function to calculate a numerical gradient of a loss function at point x with respect to a specified direction."""
+    """Function to calculate a numerical gradient of a loss function at point x
+    with respect to a specified direction."""
     x_plus = x + eps * direction
     f_plus = loss_function(x_plus)
 

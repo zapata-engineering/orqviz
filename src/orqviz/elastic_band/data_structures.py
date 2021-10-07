@@ -12,10 +12,12 @@ Weights = np.ndarray  # Vector of floats from 0-1
 
 
 class Chain(NamedTuple):
-    """Data structure for Chain in the Nudged Elastic Band (NEB) algorithm. This is how we call the NEB with pivot points.
+    """Data structure for Chain in the Nudged Elastic Band (NEB) algorithm.
+        This is how we call the NEB with pivot points.
 
     Args:
-        pivots: Array of parameter vectors which form a piece-wise linearly connected chain
+        pivots: Array of parameter vectors which form
+            a piece-wise linearly connected chain
     """
 
     pivots: ArrayOfParameterVectors
