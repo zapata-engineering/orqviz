@@ -1,0 +1,31 @@
+# See https://pre-commit.com for more information
+# Minimal pre-commit to be compatible with current GitHub Actions style.yml
+
+default_language_version:
+  python: python3.7
+
+default_stages: [commit, push]
+
+repos:
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.8.0
+    hooks:
+      - id: isort
+        args: ["--profile", "black", "--filter-files", "--check"]
+
+  - repo: https://github.com/ambv/black
+    rev: 20.8b1
+    hooks:
+      - id: black
+        args: ["--check"]
+        language_version: python3.7
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.0
+    hooks:
+      - id: flake8
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.812
+    hooks:
+      - id: mypy
