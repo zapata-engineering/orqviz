@@ -130,7 +130,3 @@ dmypy.json
 
 .DS_Store
 .vscode
-.pre-commit-config.yaml
-.flake8
-pyproject.toml
-setup.cfg
