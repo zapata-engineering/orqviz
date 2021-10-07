@@ -1,21 +1,21 @@
 import pytest
 import numpy as np
-from zquantum.visualization.scans import (
+from orqviz.scans import (
     perform_1D_scan,
     perform_1D_interpolation,
     perform_2D_scan,
     perform_2D_interpolation,
     get_2D_slice_around_point,
 )
-from zquantum.visualization.scans.plots import (
+from orqviz.scans.plots import (
     plot_1D_scan_result,
     plot_2D_scan_result,
     plot_2D_interpolation_result,
 )
-from zquantum.visualization.scans.data_structures import Scan1DResult, Scan2DResult
+from orqviz.scans.data_structures import Scan1DResult, Scan2DResult
 import matplotlib.pyplot as plt
-from zquantum.visualization.scans import perform_1D_scan
-from zquantum.visualization.utils import save_viz_object, load_viz_object
+from orqviz.scans import perform_1D_scan
+from orqviz.utils import save_viz_object, load_viz_object
 
 
 def SUM_OF_SINS(params):

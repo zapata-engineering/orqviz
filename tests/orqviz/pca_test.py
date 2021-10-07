@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
-from zquantum.visualization.scans.data_structures import Scan2DResult
-from zquantum.visualization.pca import (
+from orqviz.scans.data_structures import Scan2DResult
+from orqviz.pca import (
     perform_2D_pca_scan,
     get_pca,
     PCAobject,

@@ -1,13 +1,13 @@
 import pytest
 import numpy as np
 import matplotlib.pyplot as plt
-from zquantum.visualization.elastic_band import (
+from orqviz.elastic_band import (
     Chain,
     run_NEB,
     run_AutoNEB,
     plot_all_chains_losses,
 )
-from zquantum.visualization.utils import save_viz_object, load_viz_object
+from orqviz.utils import save_viz_object, load_viz_object
 
 
 def SUM_OF_SINS(params):
