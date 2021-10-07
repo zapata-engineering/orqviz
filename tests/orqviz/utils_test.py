@@ -1,11 +1,11 @@
 import pytest
 import numpy as np
-from zquantum.visualization.scans import perform_2D_scan, perform_1D_scan
-from zquantum.visualization.hessians import get_Hessian
-from zquantum.visualization.utils import save_viz_object, load_viz_object, OrqVizObject
-from zquantum.visualization.scans.data_structures import Scan1DResult, Scan2DResult
-from zquantum.visualization.hessians.data_structures import HessianEigenobject
-from zquantum.visualization.elastic_band.data_structures import Chain
+from orqviz.scans import perform_2D_scan, perform_1D_scan
+from orqviz.hessians import get_Hessian
+from orqviz.utils import save_viz_object, load_viz_object, OrqVizObject
+from orqviz.scans.data_structures import Scan1DResult, Scan2DResult
+from orqviz.hessians.data_structures import HessianEigenobject
+from orqviz.elastic_band.data_structures import Chain
 
 
 def SUM_OF_SINS(params):
