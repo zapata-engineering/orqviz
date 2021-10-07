@@ -23,8 +23,8 @@ def SUM_OF_SINS(params):
 
 
 def test_1D_scan():
-    origin = np.array([0, 0])
-    direction_x = np.array([1, 0])
+    origin = np.array([0.0, 0.0])
+    direction_x = np.array([1.0, 0.0])
     end_points_x = (-np.pi, np.pi)
     n_steps_x = 100
 
@@ -59,8 +59,8 @@ def test_1D_scan():
 
 
 def test_1D_interpolation():
-    point1 = np.array([0, 0])
-    point2 = np.array([0, 0])
+    point1 = np.array([1, 0])
+    point2 = np.array([0, 1])
     direction_x = point2 - point1
     end_points_x = (0, 1)
     n_steps_x = 23
@@ -78,7 +78,7 @@ def test_1D_interpolation():
     for scan_results in [scan_1d, loaded_scan1d]:
         assert isinstance(scan_results, Scan1DResult)
         assert len(scan_results.values) == n_steps_x
-        np.testing.assert_equal(np.dot(scan_results.direction, direction_x), 0)
+        np.testing.assert_equal(scan_results.direction, direction_x)
         assert scan_results.params_list.shape == (n_steps_x, 2)
 
         np.testing.assert_equal(
@@ -177,7 +177,7 @@ def test_get_2D_slice_around_point_in_5D_space():
 
 
 def test_interpolation_2D_in_2D_space():
-    point_1 = np.array([0, 0])
+    point_1 = np.array([1, 0])
     point_2 = np.array([0, 2])
     end_points_x = (-0.5, 1.5)
     end_points_y = (-0.5, 0.5)
