@@ -2,7 +2,7 @@ from typing import List, Optional, Tuple
 from sklearn.decomposition import PCA
 import numpy as np
 from dataclasses import dataclass
-from ..aliases import ListOfParameterVectors
+from ..aliases import ArrayOfParameterVectors
 
 
 @dataclass(init=True)
@@ -11,7 +11,7 @@ class PCAobject:
 
     def __init__(
         self,
-        all_points: ListOfParameterVectors,
+        all_points: ArrayOfParameterVectors,
         components_ids: Tuple[int, int] = (0, 1),
     ):
         self.all_points = all_points
@@ -27,7 +27,7 @@ class PCAobject:
         self.pca = PCA(n_components=n_components)
         self.pca.fit(self.all_points)
 
-    def get_transformed_points(self, points: Optional[ListOfParameterVectors] = None):
+    def get_transformed_points(self, points: Optional[ArrayOfParameterVectors] = None):
         return self.pca.transform(self.all_points if points is None else points)
 
     def _get_endpoints_from_pca(
@@ -55,7 +55,7 @@ class PCAobject:
 
 
 def get_pca(
-    all_points: ListOfParameterVectors,
+    all_points: ArrayOfParameterVectors,
     components_ids: tuple = (0, 1),
 ) -> PCAobject:
     """Fits and returns a sklearn PCA instance to the provided parameters.

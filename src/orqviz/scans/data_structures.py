@@ -1,13 +1,13 @@
 import numpy as np
 from typing import NamedTuple, Optional
 from ..geometric import get_coordinates_on_direction
-from ..aliases import ParameterVector, ListOfParameterVectors, GridOfParameterVectors
+from ..aliases import ParameterVector, ArrayOfParameterVectors, GridOfParameterVectors
 
 
 class Scan1DResult(NamedTuple):
     """Datatype for 1D scans to combine the scan result and scan instruction."""
 
-    params_list: ListOfParameterVectors
+    params_list: ArrayOfParameterVectors
     direction: np.ndarray
     values: np.ndarray
     origin: Optional[ParameterVector] = None

@@ -10,11 +10,11 @@ from ..plots import (
 from ..scans import plot_2D_scan_result
 from ..scans.data_structures import Scan2DResult
 from ..plot_utils import _check_and_create_fig_ax
-from ..aliases import ListOfParameterVectors
+from ..aliases import ArrayOfParameterVectors
 
 
 def plot_optimization_trajectory_on_pca(
-    optimization_trajectory: ListOfParameterVectors,
+    optimization_trajectory: ArrayOfParameterVectors,
     pca_object: PCAobject,
     ax: matplotlib.axes.Axes,
     **plot_kwargs,
@@ -38,7 +38,7 @@ def plot_optimization_trajectory_on_pca(
 
 
 def plot_scatter_points_on_pca(
-    scatter_points: ListOfParameterVectors,
+    scatter_points: ArrayOfParameterVectors,
     pca_object: PCAobject,
     ax: matplotlib.axes.Axes,
     **plot_kwargs,
@@ -62,7 +62,7 @@ def plot_scatter_points_on_pca(
 
 
 def plot_line_through_points_on_pca(
-    points: ListOfParameterVectors,
+    points: ArrayOfParameterVectors,
     pca_object: PCAobject,
     ax: matplotlib.axes.Axes,
     **plot_kwargs,

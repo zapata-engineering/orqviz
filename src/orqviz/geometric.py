@@ -1,6 +1,6 @@
 import numpy as np
 from typing import Optional, Tuple
-from .aliases import ParameterVector, ListOfParameterVectors
+from .aliases import ParameterVector, ArrayOfParameterVectors
 
 
 def get_random_normal_vector(dimension: int) -> ParameterVector:
@@ -42,9 +42,9 @@ def relative_periodic_wrap(
 
 def relative_periodic_trajectory_wrap(
     reference_point: ParameterVector,
-    trajectory: ListOfParameterVectors,
+    trajectory: ArrayOfParameterVectors,
     period: float = 2 * np.pi,
-) -> ListOfParameterVectors:
+) -> ArrayOfParameterVectors:
     """Function that returns a wrapped 'copy' of a parameter trajectory such that the distance between it and the reference point is minimal inside the specified period.
 
     Args:
@@ -65,7 +65,7 @@ def relative_periodic_trajectory_wrap(
 
 
 def get_coordinates_on_direction(
-    points: ListOfParameterVectors,
+    points: ArrayOfParameterVectors,
     direction: np.ndarray,
     origin: Optional[ParameterVector] = None,
     in_units_of_direction: bool = False,
@@ -92,7 +92,7 @@ def direction_linspace(
     direction: np.ndarray,
     n_points: int,
     endpoints: Tuple[float, float] = (-1, 1),
-) -> ListOfParameterVectors:
+) -> ArrayOfParameterVectors:
     """Helper function to wrap np.linspace in order to create points on a specified direction around an origin."""
     return np.linspace(
         origin + endpoints[0] * direction,

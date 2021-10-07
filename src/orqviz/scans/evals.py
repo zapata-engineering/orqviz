@@ -1,10 +1,10 @@
 import numpy as np
 from typing import Callable
-from ..aliases import ParameterVector, ListOfParameterVectors, GridOfParameterVectors
+from ..aliases import ParameterVector, ArrayOfParameterVectors, GridOfParameterVectors
 
 
 def eval_points_on_path(
-    all_points: ListOfParameterVectors,
+    all_points: ArrayOfParameterVectors,
     loss_function: Callable[[ParameterVector], float],
     n_reps: int = 1,
     verbose: bool = False,

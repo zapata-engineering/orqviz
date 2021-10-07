@@ -3,7 +3,7 @@ import numpy as np
 from typing import Callable, NamedTuple
 from scipy.interpolate import interp1d
 from ..scans import eval_points_on_path
-from ..aliases import ListOfParameterVectors
+from ..aliases import ArrayOfParameterVectors
 
 Weights = np.ndarray  # Vector of floats from 0-1
 
@@ -15,7 +15,7 @@ class Chain(NamedTuple):
         pivots: Array of parameter vectors which form a piece-wise linearly connected chain
     """
 
-    pivots: ListOfParameterVectors
+    pivots: ArrayOfParameterVectors
 
     def get_weights(self) -> Weights:
         chain_weights = np.linalg.norm(np.diff(self.pivots, axis=0), axis=1)
