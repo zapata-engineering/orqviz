@@ -1,21 +1,21 @@
 import pytest
 import numpy as np
-from zquantum.visualization.scans import (
+from orqviz.scans import (
     perform_1D_scan,
     perform_1D_interpolation,
     perform_2D_scan,
     perform_2D_interpolation,
     get_2D_slice_around_point,
 )
-from zquantum.visualization.scans.plots import (
+from orqviz.scans.plots import (
     plot_1D_scan_result,
     plot_2D_scan_result,
     plot_2D_interpolation_result,
 )
-from zquantum.visualization.scans.data_structures import Scan1DResult, Scan2DResult
+from orqviz.scans.data_structures import Scan1DResult, Scan2DResult
 import matplotlib.pyplot as plt
-from zquantum.visualization.scans import perform_1D_scan
-from zquantum.visualization.utils import save_viz_object, load_viz_object
+from orqviz.scans import perform_1D_scan
+from orqviz.utils import save_viz_object, load_viz_object
 
 
 def SUM_OF_SINS(params):
@@ -23,8 +23,8 @@ def SUM_OF_SINS(params):
 
 
 def test_1D_scan():
-    origin = np.array([0, 0])
-    direction_x = np.array([1, 0])
+    origin = np.array([0.0, 0.0])
+    direction_x = np.array([1.0, 0.0])
     end_points_x = (-np.pi, np.pi)
     n_steps_x = 100
 
@@ -59,8 +59,8 @@ def test_1D_scan():
 
 
 def test_1D_interpolation():
-    point1 = np.array([0, 0])
-    point2 = np.array([0, 0])
+    point1 = np.array([1, 0])
+    point2 = np.array([0, 1])
     direction_x = point2 - point1
     end_points_x = (0, 1)
     n_steps_x = 23
@@ -78,7 +78,7 @@ def test_1D_interpolation():
     for scan_results in [scan_1d, loaded_scan1d]:
         assert isinstance(scan_results, Scan1DResult)
         assert len(scan_results.values) == n_steps_x
-        np.testing.assert_equal(np.dot(scan_results.direction, direction_x), 0)
+        np.testing.assert_equal(scan_results.direction, direction_x)
         assert scan_results.params_list.shape == (n_steps_x, 2)
 
         np.testing.assert_equal(
@@ -177,7 +177,7 @@ def test_get_2D_slice_around_point_in_5D_space():
 
 
 def test_interpolation_2D_in_2D_space():
-    point_1 = np.array([0, 0])
+    point_1 = np.array([1, 0])
     point_2 = np.array([0, 2])
     end_points_x = (-0.5, 1.5)
     end_points_y = (-0.5, 0.5)
