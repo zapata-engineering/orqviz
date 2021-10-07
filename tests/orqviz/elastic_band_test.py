@@ -1,13 +1,9 @@
-import pytest
-import numpy as np
 import matplotlib.pyplot as plt
-from orqviz.elastic_band import (
-    Chain,
-    run_NEB,
-    run_AutoNEB,
-    plot_all_chains_losses,
-)
-from orqviz.utils import save_viz_object, load_viz_object
+import numpy as np
+import pytest
+
+from orqviz.elastic_band import Chain, plot_all_chains_losses, run_AutoNEB, run_NEB
+from orqviz.utils import load_viz_object, save_viz_object
 
 
 def SUM_OF_SINS(params):

@@ -1,11 +1,12 @@
-import pytest
 import numpy as np
-from orqviz.scans import perform_2D_scan, perform_1D_scan
-from orqviz.hessians import get_Hessian
-from orqviz.utils import save_viz_object, load_viz_object, OrqVizObject
-from orqviz.scans.data_structures import Scan1DResult, Scan2DResult
-from orqviz.hessians.data_structures import HessianEigenobject
+import pytest
+
 from orqviz.elastic_band.data_structures import Chain
+from orqviz.hessians import get_Hessian
+from orqviz.hessians.data_structures import HessianEigenobject
+from orqviz.scans import perform_1D_scan, perform_2D_scan
+from orqviz.scans.data_structures import Scan1DResult, Scan2DResult
+from orqviz.utils import OrqVizObject, load_viz_object, save_viz_object
 
 
 def SUM_OF_SINS(params):

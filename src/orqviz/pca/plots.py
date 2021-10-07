@@ -1,16 +1,18 @@
-import numpy as np
 from typing import Optional
+
 import matplotlib
-from .data_structures import PCAobject
+import numpy as np
+
+from ..aliases import ArrayOfParameterVectors
+from ..plot_utils import _check_and_create_fig_ax
 from ..plots import (
+    plot_line_through_points,
     plot_optimization_trajectory,
     plot_scatter_points,
-    plot_line_through_points,
 )
 from ..scans import plot_2D_scan_result
 from ..scans.data_structures import Scan2DResult
-from ..plot_utils import _check_and_create_fig_ax
-from ..aliases import ArrayOfParameterVectors
+from .data_structures import PCAobject
 
 
 def plot_optimization_trajectory_on_pca(

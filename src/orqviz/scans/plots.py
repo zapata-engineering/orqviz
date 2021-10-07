@@ -1,11 +1,13 @@
-import numpy as np
 from typing import Optional
+
 import matplotlib
+import numpy as np
 from mpl_toolkits.mplot3d import (
-    Axes3D,
-)  # this import is unused but helps with older matplotlib versions and 3d plots
+    Axes3D,  # this import is unused but helps with older matplotlib versions and 3d plots
+)
+
+from ..plot_utils import _check_and_create_3D_ax, _check_and_create_fig_ax
 from .data_structures import Scan1DResult, Scan2DResult
-from ..plot_utils import _check_and_create_fig_ax, _check_and_create_3D_ax
 
 
 def plot_1D_scan_result(

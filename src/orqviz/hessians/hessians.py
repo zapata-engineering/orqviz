@@ -1,9 +1,11 @@
-import numpy as np
 from typing import Callable, List, Optional, Tuple
+
+import numpy as np
+
+from ..aliases import ParameterVector
 from ..gradients import numerical_gradient
 from ..scans.data_structures import Scan1DResult
 from ..scans.scans_1D import perform_1D_scan
-from ..aliases import ParameterVector
 from .data_structures import HessianEigenobject
 
 

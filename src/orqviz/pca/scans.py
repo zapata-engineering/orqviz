@@ -1,8 +1,10 @@
-import numpy as np
 from typing import Callable, List, Tuple, Union
-from ..scans import perform_2D_scan, Scan2DResult
-from .data_structures import PCAobject
+
+import numpy as np
+
 from ..aliases import ParameterVector
+from ..scans import Scan2DResult, perform_2D_scan
+from .data_structures import PCAobject
 
 
 def perform_2D_pca_scan(

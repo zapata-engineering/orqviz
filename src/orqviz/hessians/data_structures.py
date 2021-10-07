@@ -1,6 +1,8 @@
-import numpy as np
+from dataclasses import asdict, dataclass, field
 from typing import List
-from dataclasses import dataclass, field, asdict
+
+import numpy as np
+
 from ..aliases import ParameterVector
 
 

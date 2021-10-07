@@ -1,10 +1,12 @@
-import numpy as np
+from typing import Callable, List, Optional
+
 import matplotlib
-from typing import Callable, Optional, List
+import numpy as np
+
+from ..aliases import ParameterVector
+from ..plot_utils import _check_and_create_fig_ax
 from ..scans import eval_points_on_path
 from .neb import Chain
-from ..plot_utils import _check_and_create_fig_ax
-from ..aliases import ParameterVector
 
 
 def plot_all_chains_losses(

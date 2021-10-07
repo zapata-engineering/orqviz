@@ -1,7 +1,9 @@
-from typing import List, Optional, Tuple
-from sklearn.decomposition import PCA
-import numpy as np
 from dataclasses import dataclass
+from typing import List, Optional, Tuple
+
+import numpy as np
+from sklearn.decomposition import PCA
+
 from ..aliases import ArrayOfParameterVectors
 
 

@@ -1,8 +1,10 @@
-import numpy as np
 from typing import Optional
+
 import matplotlib
-from .geometric import get_coordinates_on_direction
+import numpy as np
+
 from .aliases import ArrayOfParameterVectors
+from .geometric import get_coordinates_on_direction
 from .plot_utils import _check_and_create_fig_ax
 
 

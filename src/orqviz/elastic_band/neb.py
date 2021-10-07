@@ -1,5 +1,7 @@
+from typing import Callable, List, Optional
+
 import numpy as np
-from typing import Callable, Optional, List
+
 from ..aliases import ParameterVector
 from ..gradients import calculate_full_gradient
 from .data_structures import Chain, ChainPath, Weights

@@ -1,9 +1,11 @@
-import numpy as np
+from typing import Callable, List, Optional, Tuple
+
 import matplotlib
-from typing import List, Callable, Tuple, Optional
-from ..scans import perform_1D_scan, Scan1DResult
-from ..scans.plots import plot_1D_scan_result
+import numpy as np
+
 from ..plot_utils import _check_and_create_fig_ax
+from ..scans import Scan1DResult, perform_1D_scan
+from ..scans.plots import plot_1D_scan_result
 
 
 def plot_1D_hessian_eigenvector_scan_result(

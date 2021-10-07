@@ -1,14 +1,15 @@
-import pytest
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import pytest
+
 from orqviz.hessians import (
+    HessianEigenobject,
     get_Hessian,
     get_Hessian_SPSA_approx,
-    HessianEigenobject,
     perform_1D_hessian_eigenvector_scan,
     plot_1D_hessian_eigenvector_scan_result,
 )
-from orqviz.utils import save_viz_object, load_viz_object
+from orqviz.utils import load_viz_object, save_viz_object
 
 
 def COST_FUNCTION(params):

@@ -1,6 +1,8 @@
-import numpy as np
 from typing import Callable
-from ..aliases import ParameterVector, ArrayOfParameterVectors, GridOfParameterVectors
+
+import numpy as np
+
+from ..aliases import ArrayOfParameterVectors, GridOfParameterVectors, ParameterVector
 
 
 def eval_points_on_path(

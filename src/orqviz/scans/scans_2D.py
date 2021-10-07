@@ -1,13 +1,15 @@
-import numpy as np
 from typing import Callable, Optional, Tuple
-from .evals import eval_points_on_grid
-from .data_structures import Scan2DResult
+
+import numpy as np
+
+from ..aliases import GridOfParameterVectors, ParameterVector
 from ..geometric import (
-    get_random_orthonormal_vector,
     get_random_normal_vector,
+    get_random_orthonormal_vector,
     relative_periodic_wrap,
 )
-from ..aliases import ParameterVector, GridOfParameterVectors
+from .data_structures import Scan2DResult
+from .evals import eval_points_on_grid
 
 
 def perform_2D_interpolation(

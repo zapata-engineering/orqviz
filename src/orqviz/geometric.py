@@ -1,6 +1,8 @@
-import numpy as np
 from typing import Optional, Tuple
-from .aliases import ParameterVector, ArrayOfParameterVectors
+
+import numpy as np
+
+from .aliases import ArrayOfParameterVectors, ParameterVector
 
 
 def get_random_normal_vector(dimension: int) -> ParameterVector:

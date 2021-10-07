@@ -1,9 +1,12 @@
+from typing import Callable, List, Optional
+
 import numpy as np
 from scipy.interpolate import interp1d
-from typing import Callable, List, Optional
+
 from ..aliases import ParameterVector
-from .neb import run_NEB
 from .data_structures import Chain
+from .neb import run_NEB
+
 
 # Nudged-Elastic-Band
 def run_AutoNEB(

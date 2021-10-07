@@ -1,5 +1,7 @@
-import numpy as np
 from typing import Callable, Optional, Tuple
+
+import numpy as np
+
 from orqviz.gradients import calculate_full_gradient
 
 

@@ -1,5 +1,7 @@
-import numpy as np
 from typing import Callable, Optional
+
+import numpy as np
+
 from .aliases import ParameterVector
 
 

@@ -1,9 +1,12 @@
 from __future__ import annotations
-import numpy as np
+
 from typing import Callable, NamedTuple
+
+import numpy as np
 from scipy.interpolate import interp1d
-from ..scans import eval_points_on_path
+
 from ..aliases import ArrayOfParameterVectors
+from ..scans import eval_points_on_path
 
 Weights = np.ndarray  # Vector of floats from 0-1
 

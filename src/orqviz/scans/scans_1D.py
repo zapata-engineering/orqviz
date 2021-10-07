@@ -1,9 +1,11 @@
-import numpy as np
 from typing import Callable, Optional, Tuple
-from .evals import eval_points_on_path
+
+import numpy as np
+
+from ..aliases import ArrayOfParameterVectors, ParameterVector
+from ..geometric import direction_linspace, relative_periodic_wrap
 from .data_structures import Scan1DResult
-from ..geometric import relative_periodic_wrap, direction_linspace
-from ..aliases import ParameterVector, ArrayOfParameterVectors
+from .evals import eval_points_on_path
 
 
 def perform_1D_scan(

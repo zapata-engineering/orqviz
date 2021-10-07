@@ -1,9 +1,10 @@
-import matplotlib
-import numpy as np
-import matplotlib.ticker as tck
-import matplotlib.pyplot as plt
 import warnings
 from typing import Optional, Tuple
+
+import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.ticker as tck
+import numpy as np
 
 
 def normalize_color_and_colorbar(
