@@ -2,6 +2,7 @@ import matplotlib
 import numpy as np
 import matplotlib.ticker as tck
 import matplotlib.pyplot as plt
+import warnings
 from typing import Optional, Tuple
 
 
@@ -109,8 +110,27 @@ def _check_and_create_fig_ax(
 ) -> Tuple[plt.Figure, plt.Axes]:
 
     if fig is None and ax is None:
-        fig, ax = plt.subplots()
+        fig = plt.gcf()
+        ax = fig.gca()
+
     elif fig is not None and ax is None:
         ax = fig.gca()
 
     return fig, ax
+
+
+def _check_and_create_3D_ax(
+    ax: Optional[plt.Axes] = None,
+) -> plt.Axes:
+    if ax is None:
+        fig = matplotlib.pyplot.figure()
+        ax = fig.add_subplot(projection="3d")
+    elif ax.name != "3d":
+        warnings.warn(
+            "The matplotlib axis you provided is not a 3d axis. Your axis is overridden with a new axis."
+        )
+        warnings.warn("You can create a 3d axis with fig.add_subplot(projection='3d').")
+        fig = matplotlib.pyplot.figure()
+        ax = fig.add_subplot(projection="3d")
+
+    return ax

@@ -18,7 +18,7 @@ def plot_all_chains_losses(
     Args:
         all_chains: List of Chains to evaluate the loss on.
         loss_function: Loss function to evaluate the Chains
-        ax: Matplotlib axis to plot on. If None, a new axis is created. Defaults to None.
+        ax: Matplotlib axis to plot on. If None, a new axis is created from the current figure. Defaults to None.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.plot (plt.plot)
     """
     _, ax = _check_and_create_fig_ax(ax=ax)
