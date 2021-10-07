@@ -10,7 +10,7 @@ def gradient_descent_optimizer(
     learning_rate: float = 0.1,
     full_gradient_function: Optional[Callable] = None,
     eval_loss_during_training: bool = True,
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray]:
     """Function perform gradient descent optimization on a loss function.
 
     Args:
