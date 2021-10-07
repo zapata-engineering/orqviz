@@ -43,7 +43,7 @@ scan2D_result = orqviz.scans.perform_2D_scan(params, loss_function,
                                 n_steps_x=60)
 orqviz.scans.plot_2D_scan_result(scan2D_result)
 ```
-This code results in the following plot:
+This code results in the following plot:\
 ![Image](docs/example_plot.png)
 
 ## Further
