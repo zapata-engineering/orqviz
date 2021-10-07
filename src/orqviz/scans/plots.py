@@ -5,7 +5,7 @@ from mpl_toolkits.mplot3d import (
     Axes3D,
 )  # this import is unused but helps with older matplotlib versions and 3d plots
 from .data_structures import Scan1DResult, Scan2DResult
-from ..plot_utils import _check_and_create_fig_ax
+from ..plot_utils import _check_and_create_fig_ax, _check_and_create_3D_ax
 
 
 def plot_1D_scan_result(
@@ -18,7 +18,7 @@ def plot_1D_scan_result(
 
     Args:
         scan1d_result: Scan result to be plotted.
-        ax: Matplotlib axis to perform plot on. If None, a new axis is created. Defaults to None.
+        ax: Matplotlib axis to perform plot on. If None, a new axis is created from the current figure. Defaults to None.
         in_units_of_direction: Flag to indicate axis ticks are in units of the direction. If False, ticks are in units of Euclidean distance. Defaults to False.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.plot (plt.plot)
     """
@@ -47,7 +47,7 @@ def plot_1D_interpolation_result(
 
     Args:
         interpolation_result: Interpolation scan result to be plotted.
-        ax: Matplotlib axis to perform plot on. If None, a new axis is created. Defaults to None.
+        ax: Matplotlib axis to perform plot on. If None, a new axis is created from the current figure. Defaults to None.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.plot (plt.plot)
     """
     _, ax = _check_and_create_fig_ax(ax=ax)
@@ -79,7 +79,7 @@ def plot_2D_scan_result(
     Args:
         scan2d_result: Scan result to be plotted.
         fig: Matplotlib figure to perfom a plot on. If None, a new figure and axis are created. Defaults to None.
-        ax: Matplotlib axis to perform plot on. If None, a new axis is created. Defaults to None.
+        ax: Matplotlib axis to perform plot on. If None, a new axis is created from the current figure. Defaults to None.
         in_units_of_direction: Flag to indicate axis ticks are in units of the direction. If False, ticks are in units of Euclidean distance. Defaults to False.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.pcolormesh (plt.pcolormesh)
     """
@@ -110,7 +110,7 @@ def plot_2D_interpolation_result(
 
     Args:
         scan2d_result: Scan result to be plotted.
-        fig: Matplotlib figure to perfom a plot on. If None, a new figure and axis are created. Defaults to None.
+        fig: Matplotlib figure to perfom a plot on. If None, a new figure and axis are created from the current figure. Defaults to None.
         ax: Matplotlib axis to perform plot on. If None, a new axis is created. Defaults to None.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.pcolormesh (plt.pcolormesh)
     """
@@ -143,9 +143,7 @@ def plot_2D_scan_result_as_3D(
         in_units_of_direction: Flag to indicate axis ticks are in units of the direction. If False, ticks are in units of Euclidean distance. Defaults to False.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.plot_surface (plt.plot_surface)
     """
-    if ax is None:
-        fig = matplotlib.pyplot.figure()
-        ax = fig.add_subplot(111, projection="3d")
+    ax = _check_and_create_3D_ax(ax=ax)
 
     x, y = scan2D_result._get_coordinates_on_directions(
         in_units_of_direction=in_units_of_direction
@@ -156,6 +154,8 @@ def plot_2D_scan_result_as_3D(
     plot_kwargs = {**plot_kwargs_defaults, **plot_kwargs}
 
     ax.plot_surface(XX, YY, scan2D_result.values, **plot_kwargs)
+
+    ax.view_init(elev=35, azim=-70)
 
     ax.set_xlabel("Scan Direction x")
     ax.set_ylabel("Scan Direction y")

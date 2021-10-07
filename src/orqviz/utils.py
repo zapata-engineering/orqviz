@@ -22,4 +22,3 @@ def load_viz_object(filename: str) -> OrqVizObject:
         loaded_object = pickle.load(f)
 
     return loaded_object
-
