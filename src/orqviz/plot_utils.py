@@ -1,9 +1,9 @@
-import matplotlib
-import numpy as np
-import matplotlib.ticker as tck
-import matplotlib.pyplot as plt
 import warnings
 from typing import Optional, Tuple
+
+import matplotlib.pyplot as plt
+import matplotlib.ticker as tck
+import numpy as np
 
 
 def normalize_color_and_colorbar(
@@ -22,7 +22,8 @@ def normalize_color_and_colorbar(
         min_val: Minimum values of the image and colorbar range. Defaults to 0.0.
         max_val: Maximum values of the image and colorbar range. Defaults to 1.0.
         cmap: Matplotlib colormap for the plot. Defaults to "viridis".
-        image_index: Position index for the image in the Matplotlib axis. Defaults to 0.
+        image_index: Position index for the image in the Matplotlib axis.
+            Defaults to 0.
 
     """
     try:
@@ -31,9 +32,9 @@ def normalize_color_and_colorbar(
         try:
             image = ax.images[image_index]
         except (AttributeError, IndexError) as e:
-            raise e(
+            raise ValueError(
                 "Provided ax does not contain an image in ax.images or ax.collections"
-            )
+            ) from e
 
     image.colorbar.remove()
     image.set_clim(vmin=min_val, vmax=max_val)
@@ -49,7 +50,8 @@ def get_colorbar_from_ax(
 
     Args:
         ax: Matplotlib axis in which the colorbar was created.
-        image_index: Position index for the image in the Matplotlib axis. If None, will return the first colorbar that is found. Defaults to None.
+        image_index: Position index for the image in the Matplotlib axis.
+            If None, will return the first colorbar that is found. Defaults to None.
 
     """
     if image_index is None:
@@ -70,35 +72,40 @@ def get_colorbar_from_ax(
                     return image.colorbar
 
         raise AttributeError(
-            "Provided ax does not contain an image with a colorbar in ax.images or ax.collections"
+            "Provided ax does not contain an image with a colorbar in ax.images"
+            " or ax.collections"
         )
 
     else:
         try:
             image = ax.collections[image_index]
-            return image.colorbar
         except (AttributeError, IndexError):
             try:
                 image = ax.images[image_index]
-                return image.colorbar
             except (AttributeError, IndexError) as e:
-                raise e(
-                    "Provided ax does not contain an image in ax.images or ax.collections"
-                )
+                raise ValueError(
+                    "Provided ax does not contain an image "
+                    "in ax.images or ax.collections"
+                ) from e
 
 
 def set_ticks_to_multiples_of_pi(ax: plt.Axes, base=np.pi / 2):
-    """Helper function to set the ticks of matplotlib axes to multiples of pi with pi symbols."""
+    """Helper function to set the ticks of matplotlib axes
+    to multiples of pi with pi symbols."""
     ax.xaxis.set_major_formatter(
         tck.FuncFormatter(
-            lambda val, pos: "{:.2f}$\pi$".format(val / np.pi) if val != 0 else "0"
+            lambda val, pos: "{:.2f}$\pi$".format(val / np.pi)  # noqa: W605
+            if val != 0
+            else "0"
         )
     )
     ax.xaxis.set_major_locator(tck.MultipleLocator(base=base))
 
     ax.yaxis.set_major_formatter(
         tck.FuncFormatter(
-            lambda val, pos: "{:.2f}$\pi$".format(val / np.pi) if val != 0 else "0"
+            lambda val, pos: "{:.2f}$\pi$".format(val / np.pi)  # noqa: W605
+            if val != 0
+            else "0"
         )
     )
     ax.yaxis.set_major_locator(tck.MultipleLocator(base=base))
@@ -123,14 +130,15 @@ def _check_and_create_3D_ax(
     ax: Optional[plt.Axes] = None,
 ) -> plt.Axes:
     if ax is None:
-        fig = matplotlib.pyplot.figure()
+        fig = plt.figure()
         ax = fig.add_subplot(projection="3d")
     elif ax.name != "3d":
         warnings.warn(
-            "The matplotlib axis you provided is not a 3d axis. Your axis is overridden with a new axis."
+            "The matplotlib axis you provided is not a 3d axis. "
+            "Your axis is overridden with a new axis."
         )
-        warnings.warn("You can create a 3d axis with fig.add_subplot(projection='3d').")
-        fig = matplotlib.pyplot.figure()
+        warnings.warn("You can create a 3d axis with fig.add_subplot(projection='3d')")
+        fig = plt.figure()
         ax = fig.add_subplot(projection="3d")
 
     return ax

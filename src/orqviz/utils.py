@@ -1,9 +1,9 @@
-from typing import Union
 import pickle
-from .scans.data_structures import Scan1DResult, Scan2DResult
-from .hessians.data_structures import HessianEigenobject
-from .elastic_band.data_structures import Chain
+from typing import Union
 
+from .elastic_band.data_structures import Chain
+from .hessians.data_structures import HessianEigenobject
+from .scans.data_structures import Scan1DResult, Scan2DResult
 
 OrqVizObject = Union[Scan1DResult, Scan2DResult, HessianEigenobject, Chain]
 

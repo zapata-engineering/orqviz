@@ -1,13 +1,10 @@
-import pytest
-import numpy as np
+import os
+
 import matplotlib.pyplot as plt
-from orqviz.elastic_band import (
-    Chain,
-    run_NEB,
-    run_AutoNEB,
-    plot_all_chains_losses,
-)
-from orqviz.utils import save_viz_object, load_viz_object
+import numpy as np
+
+from orqviz.elastic_band import Chain, plot_all_chains_losses, run_AutoNEB, run_NEB
+from orqviz.utils import load_viz_object, save_viz_object
 
 
 def SUM_OF_SINS(params):
@@ -58,6 +55,7 @@ def test_AutoNEB():
 
     save_viz_object(all_chains[-1], "test")
     loaded_chain = load_viz_object("test")
+    os.remove("test")
     np.testing.assert_array_almost_equal(loaded_chain.pivots[0], np.array([0, 1]))
     np.testing.assert_array_almost_equal(loaded_chain.pivots[-1], np.array([1, 0]))
     np.testing.assert_array_almost_equal(loaded_chain.pivots, all_chains[-1].pivots)

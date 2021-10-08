@@ -1,7 +1,9 @@
-import numpy as np
 from typing import NamedTuple, Optional
+
+import numpy as np
+
+from ..aliases import ArrayOfParameterVectors, GridOfParameterVectors, ParameterVector
 from ..geometric import get_coordinates_on_direction
-from ..aliases import ParameterVector, ArrayOfParameterVectors, GridOfParameterVectors
 
 
 class Scan1DResult(NamedTuple):

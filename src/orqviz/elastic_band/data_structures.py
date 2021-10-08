@@ -1,18 +1,21 @@
 from __future__ import annotations
-import numpy as np
-from typing import Callable, NamedTuple
-from scipy.interpolate import interp1d
-from ..scans import eval_points_on_path
-from ..aliases import ArrayOfParameterVectors
 
-Weights = np.ndarray  # Vector of floats from 0-1
+from typing import Callable, NamedTuple
+
+import numpy as np
+from scipy.interpolate import interp1d
+
+from ..aliases import ArrayOfParameterVectors, Weights
+from ..scans import eval_points_on_path
 
 
 class Chain(NamedTuple):
-    """Data structure for Chain in the Nudged Elastic Band (NEB) algorithm. This is how we call the NEB with pivot points.
+    """Data structure for Chain in the Nudged Elastic Band (NEB) algorithm.
+        This is how we call the NEB with pivot points.
 
     Args:
-        pivots: Array of parameter vectors which form a piece-wise linearly connected chain
+        pivots: Array of parameter vectors which form
+            a piece-wise linearly connected chain
     """
 
     pivots: ArrayOfParameterVectors

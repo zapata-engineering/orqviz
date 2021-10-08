@@ -1,0 +1,11 @@
+# .coveragerc to control coverage.py
+[run]
+branch = True
+omit = 
+    */plots.py
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover

@@ -1,5 +1,7 @@
-import numpy as np
 from typing import Callable, Optional, Tuple
+
+import numpy as np
+
 from orqviz.gradients import calculate_full_gradient
 
 
@@ -17,16 +19,22 @@ def gradient_descent_optimizer(
         init_params: Initial parameter vector from which to start the optimization.
         loss_function: Loss function with respect to which the gradient is calculated.
         n_iters: Number of iterations to optimize.
-        learning_rate: Learning rate for gradient descent. The calculated gradient is multiplied with this value and then updates the parameter vector.
-        full_gradient_function: Gradient function to calculate the partial derivatives of the loss function with respect to each parameter vector entry.
+        learning_rate: Learning rate for gradient descent. The calculated gradient
+            is multiplied with this value and then updates the parameter vector.
+        full_gradient_function: Gradient function to calculate the partial derivatives
+            of the loss function with respect to each parameter vector entry.
             If None, a simple numerical gradient is computed. Defaults to None.
-        eval_loss_during_training: Flag to indicate whether to evaluate the loss at every iteration during training. Doing so adds 'n_iters-1' loss function calls.
-            If False, only the initial and final losses are calculated and returned. Defaults to False.
+        eval_loss_during_training: Flag to indicate whether to evaluate the loss
+            at every iteration during training. Doing so adds 'n_iters-1'
+            loss function calls. If False, only the initial and final losses
+            are calculated and returned. Defaults to False.
     """
     if full_gradient_function is None:
-        full_gradient_function = lambda pars: calculate_full_gradient(
-            pars, loss_function=loss_function
-        )
+
+        def _full_gradient_function(params):
+            return calculate_full_gradient(params, loss_function=loss_function)
+
+        full_gradient_function = _full_gradient_function
 
     params = init_params
     all_costs = []

@@ -1,14 +1,15 @@
-import pytest
-import numpy as np
+import os
+
 import matplotlib.pyplot as plt
+import numpy as np
+
 from orqviz.hessians import (
     get_Hessian,
     get_Hessian_SPSA_approx,
-    HessianEigenobject,
     perform_1D_hessian_eigenvector_scan,
     plot_1D_hessian_eigenvector_scan_result,
 )
-from orqviz.utils import save_viz_object, load_viz_object
+from orqviz.utils import load_viz_object, save_viz_object
 
 
 def COST_FUNCTION(params):
@@ -36,6 +37,7 @@ def test_get_hessian():
 
     save_viz_object(hessian, "test")
     loaded_hessian = load_viz_object("test")
+    os.remove("test")
     np.testing.assert_array_almost_equal(
         loaded_hessian.eigenvalues, hessian.eigenvalues
     )
