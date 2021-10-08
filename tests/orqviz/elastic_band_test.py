@@ -1,6 +1,7 @@
+import os
+
 import matplotlib.pyplot as plt
 import numpy as np
-import pytest
 
 from orqviz.elastic_band import Chain, plot_all_chains_losses, run_AutoNEB, run_NEB
 from orqviz.utils import load_viz_object, save_viz_object
@@ -54,6 +55,7 @@ def test_AutoNEB():
 
     save_viz_object(all_chains[-1], "test")
     loaded_chain = load_viz_object("test")
+    os.remove("test")
     np.testing.assert_array_almost_equal(loaded_chain.pivots[0], np.array([0, 1]))
     np.testing.assert_array_almost_equal(loaded_chain.pivots[-1], np.array([1, 0]))
     np.testing.assert_array_almost_equal(loaded_chain.pivots, all_chains[-1].pivots)

@@ -1,9 +1,9 @@
+import os
+
 import matplotlib.pyplot as plt
 import numpy as np
-import pytest
 
 from orqviz.hessians import (
-    HessianEigenobject,
     get_Hessian,
     get_Hessian_SPSA_approx,
     perform_1D_hessian_eigenvector_scan,
@@ -37,6 +37,7 @@ def test_get_hessian():
 
     save_viz_object(hessian, "test")
     loaded_hessian = load_viz_object("test")
+    os.remove("test")
     np.testing.assert_array_almost_equal(
         loaded_hessian.eigenvalues, hessian.eigenvalues
     )

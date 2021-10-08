@@ -1,9 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import pytest
 
 from orqviz.pca import (
-    PCAobject,
     get_pca,
     perform_2D_pca_scan,
     plot_line_through_points_on_pca,

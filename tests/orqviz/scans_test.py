@@ -1,3 +1,5 @@
+import os
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
@@ -7,7 +9,6 @@ from orqviz.scans import (
     perform_1D_interpolation,
     perform_1D_scan,
     perform_2D_interpolation,
-    perform_2D_scan,
 )
 from orqviz.scans.data_structures import Scan1DResult, Scan2DResult
 from orqviz.scans.plots import (
@@ -74,6 +75,7 @@ def test_1D_interpolation():
     )
     save_viz_object(scan_1d, "test")
     loaded_scan1d = load_viz_object("test")
+    os.remove("test")
 
     for scan_results in [scan_1d, loaded_scan1d]:
         assert isinstance(scan_results, Scan1DResult)
