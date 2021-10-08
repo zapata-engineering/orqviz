@@ -35,7 +35,7 @@ class PCAobject:
 
     def _get_endpoints_from_pca(
         self,
-        offset: Tuple[float] = (-1.0, 1.0),
+        offset: Tuple[float, float] = (-1.0, 1.0),
     ) -> Tuple[Tuple[float, float], Tuple[float, float]]:
         """Helper function to get the scan coordinate ranges of PCA-transformed
             coordinates in the specified components with a provided offset.
@@ -50,20 +50,20 @@ class PCAobject:
         """
         pca_transformed_points = self.get_transformed_points()
 
-        end_points_x = [
-            min(pca_transformed_points[:, self.components_ids[0]]) + offset[0],
-            max(pca_transformed_points[:, self.components_ids[0]]) + offset[1],
-        ]
-        end_points_y = [
-            min(pca_transformed_points[:, self.components_ids[1]]) + offset[0],
-            max(pca_transformed_points[:, self.components_ids[1]]) + offset[1],
-        ]
+        end_points_x = (
+            float(min(pca_transformed_points[:, self.components_ids[0]]) + offset[0]),
+            float(max(pca_transformed_points[:, self.components_ids[0]]) + offset[1]),
+        )
+        end_points_y = (
+            float(min(pca_transformed_points[:, self.components_ids[1]]) + offset[0]),
+            float(max(pca_transformed_points[:, self.components_ids[1]]) + offset[1]),
+        )
         return end_points_x, end_points_y
 
 
 def get_pca(
     all_points: ArrayOfParameterVectors,
-    components_ids: tuple = (0, 1),
+    components_ids: Tuple[int, int] = (0, 1),
 ) -> PCAobject:
     """Fits and returns a sklearn PCA instance to the provided parameters.
 

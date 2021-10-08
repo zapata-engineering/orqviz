@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, List, Optional
 
 import numpy as np
 
@@ -22,15 +22,14 @@ def eval_points_on_path(
     """
     n_points = len(all_points)
 
-    values = [[None] * n_points] * n_reps
+    values: List[List[Optional[float]]] = [[None] * n_points] * n_reps
     for rep in range(n_reps):
         for idx, point in enumerate(all_points):
             if idx % 10 == 0 and verbose:
                 print("Progress: {:.1f}%".format(round(idx / n_points * 100)))
             values[rep][idx] = loss_function(point)
 
-    values = np.array(values)
-    return np.mean(values, axis=0)
+    return np.mean(np.asarray(values), axis=0)
 
 
 def eval_points_on_grid(

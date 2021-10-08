@@ -31,8 +31,10 @@ def gradient_descent_optimizer(
     """
     if full_gradient_function is None:
 
-        def full_gradient_function(params):
+        def _full_gradient_function(params):
             return calculate_full_gradient(params, loss_function=loss_function)
+
+        full_gradient_function = _full_gradient_function
 
     params = init_params
     all_costs = []

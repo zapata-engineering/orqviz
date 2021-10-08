@@ -39,7 +39,9 @@ def perform_1D_hessian_eigenvector_scan(
 def get_Hessian(
     params: ParameterVector,
     loss_function: Callable[[ParameterVector], float],
-    gradient_function: Optional[Callable[[ParameterVector], float]] = None,
+    gradient_function: Optional[
+        Callable[[ParameterVector, ParameterVector], float]
+    ] = None,
     n_reps: int = 1,
     eps: float = 0.1,
 ) -> HessianEigenobject:
@@ -68,8 +70,10 @@ def get_Hessian(
 
     if gradient_function is None:
 
-        def gradient_function(x: np.ndarray, d: np.ndarray) -> np.ndarray:
+        def _gradient_function(x: ParameterVector, d: ParameterVector) -> float:
             return numerical_gradient(x, d, loss_function, eps)
+
+        gradient_function = _gradient_function
 
     for _ in range(n_reps):
         for j in range(n_params):
@@ -93,7 +97,9 @@ def get_Hessian(
 def get_Hessian_SPSA_approx(
     params: ParameterVector,
     loss_function: Callable[[ParameterVector], float],
-    gradient_function: Optional[Callable[[ParameterVector], float]] = None,
+    gradient_function: Optional[
+        Callable[[ParameterVector, ParameterVector], float]
+    ] = None,
     n_reps: int = 20,
     eps: float = 0.1,
 ) -> HessianEigenobject:
@@ -122,8 +128,10 @@ def get_Hessian_SPSA_approx(
 
     if gradient_function is None:
 
-        def gradient_function(x: np.ndarray, d: np.ndarray) -> np.ndarray:
+        def _gradient_function(x: ParameterVector, d: ParameterVector) -> float:
             return numerical_gradient(x, d, loss_function, eps)
+
+        gradient_function = _gradient_function
 
     for _ in range(n_reps):
         dir1 = np.random.choice([-1.0, 1.0], size=n_params)

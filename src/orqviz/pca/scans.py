@@ -12,7 +12,7 @@ def perform_2D_pca_scan(
     loss_function: Callable[[ParameterVector], float],
     n_steps_x: int = 20,
     n_steps_y: int = None,
-    offset: Union[Tuple[float], float] = (-1.0, 1.0),
+    offset: Union[Tuple[float, float], float] = (-1.0, 1.0),
     verbose: bool = False,
 ) -> Scan2DResult:
     """Function to perform a 2D scan on a loss function landscape
@@ -35,7 +35,7 @@ def perform_2D_pca_scan(
         verbose: Flag for printing progress. Defaults to False.
     """
 
-    if not isinstance(offset, Tuple):
+    if not isinstance(offset, tuple):
         offset = (-np.abs(offset), np.abs(offset))
 
     if n_steps_y is None:
@@ -51,7 +51,7 @@ def perform_2D_pca_scan(
         return loss_function(probe_parameters)
 
     return perform_2D_scan(
-        origin=[0, 0],
+        origin=np.array([0, 0]),
         loss_function=pca_loss_function,
         direction_x=np.array([1, 0]),
         direction_y=np.array([0, 1]),

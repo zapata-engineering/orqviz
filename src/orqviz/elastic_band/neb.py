@@ -2,9 +2,9 @@ from typing import Callable, List, Optional
 
 import numpy as np
 
-from ..aliases import ParameterVector
+from ..aliases import ParameterVector, Weights
 from ..gradients import calculate_full_gradient
-from .data_structures import Chain, ChainPath, Weights
+from .data_structures import Chain, ChainPath
 
 
 def run_NEB(
@@ -53,10 +53,12 @@ def run_NEB(
     """
     if full_gradient_function is None:
         # Defines an automatic numerical gradient with eps, stochastic as args
-        def full_gradient_function(pars: ParameterVector) -> float:
+        def _full_gradient_function(pars: ParameterVector) -> ParameterVector:
             return calculate_full_gradient(
                 pars, loss_function=loss_function, stochastic=stochastic, eps=eps
             )
+
+        full_gradient_function = _full_gradient_function
 
     all_chains = [init_chain]
     chain = init_chain

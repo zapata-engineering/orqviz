@@ -11,3 +11,4 @@ indicate how many of them there are.
 ParameterVector = np.ndarray  # 1D array
 ArrayOfParameterVectors = np.ndarray  # 2D array
 GridOfParameterVectors = np.ndarray  # 3D array
+Weights = np.ndarray  # 1D vector of floats from 0-1

@@ -6,12 +6,12 @@ from .aliases import ParameterVector
 
 
 def calculate_full_gradient(
-    params: np.ndarray,
+    params: ParameterVector,
     loss_function: Callable[[ParameterVector], float],
     gradient_function: Optional[Callable[[ParameterVector, np.ndarray], float]] = None,
     stochastic: bool = False,
     eps: float = 0.1,
-) -> np.ndarray:
+) -> ParameterVector:
     """Function to calculate a full gradient vector of partial derivatives
         of a loss function with respect to each entry of a parameter vector.
 
@@ -39,10 +39,12 @@ def calculate_full_gradient(
 
     if gradient_function is None:
 
-        def gradient_function(pars: ParameterVector, direction: np.ndarray) -> float:
+        def _gradient_function(pars: ParameterVector, direction: np.ndarray) -> float:
             return numerical_gradient(
                 pars, direction, loss_function=loss_function, eps=eps
             )
+
+        gradient_function = _gradient_function
 
     grad = np.zeros_like(params)
 

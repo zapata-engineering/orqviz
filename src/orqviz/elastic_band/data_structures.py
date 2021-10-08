@@ -5,10 +5,8 @@ from typing import Callable, NamedTuple
 import numpy as np
 from scipy.interpolate import interp1d
 
-from ..aliases import ArrayOfParameterVectors
+from ..aliases import ArrayOfParameterVectors, Weights
 from ..scans import eval_points_on_path
-
-Weights = np.ndarray  # Vector of floats from 0-1
 
 
 class Chain(NamedTuple):

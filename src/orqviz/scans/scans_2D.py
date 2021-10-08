@@ -19,8 +19,8 @@ def perform_2D_interpolation(
     direction_y: Optional[np.ndarray] = None,
     n_steps_x: int = 20,
     n_steps_y: Optional[int] = None,
-    end_points_x: tuple = (-0.5, 1.5),
-    end_points_y: tuple = (-0.5, 0.5),
+    end_points_x: Tuple[float, float] = (-0.5, 1.5),
+    end_points_y: Tuple[float, float] = (-0.5, 0.5),
     parameter_period: Optional[float] = None,
     verbose: bool = False,
 ) -> Scan2DResult:
@@ -139,8 +139,8 @@ def get_2D_slice_around_point(
     direction_y: Optional[np.ndarray] = None,
     n_steps_x: int = 20,
     n_steps_y: Optional[int] = None,
-    end_points_x: tuple = (-1.0, 1.0),
-    end_points_y: tuple = (-1.0, 1.0),
+    end_points_x: Tuple[float, float] = (-1.0, 1.0),
+    end_points_y: Tuple[float, float] = (-1.0, 1.0),
     verbose: bool = False,
 ) -> Scan2DResult:
     """Function to perform a 2D scan around a point on a loss function

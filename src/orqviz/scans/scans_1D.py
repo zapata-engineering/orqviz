@@ -45,7 +45,7 @@ def perform_1D_interpolation(
     point_2: ParameterVector,
     loss_function: Callable[[ParameterVector], float],
     n_steps: int = 100,
-    end_points: tuple = (-0.5, 1.5),
+    end_points: Tuple[float, float] = (-0.5, 1.5),
     parameter_period: Optional[float] = None,
     verbose: bool = False,
 ) -> Scan1DResult:

@@ -1,7 +1,6 @@
 import warnings
 from typing import Optional, Tuple
 
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tck
 import numpy as np
@@ -33,9 +32,9 @@ def normalize_color_and_colorbar(
         try:
             image = ax.images[image_index]
         except (AttributeError, IndexError) as e:
-            raise e(
+            raise ValueError(
                 "Provided ax does not contain an image in ax.images or ax.collections"
-            )
+            ) from e
 
     image.colorbar.remove()
     image.set_clim(vmin=min_val, vmax=max_val)
@@ -80,16 +79,14 @@ def get_colorbar_from_ax(
     else:
         try:
             image = ax.collections[image_index]
-            return image.colorbar
         except (AttributeError, IndexError):
             try:
                 image = ax.images[image_index]
-                return image.colorbar
             except (AttributeError, IndexError) as e:
-                raise e(
-                    "Provided ax does not contain an image in ax.images"
-                    " or ax.collections"
-                )
+                raise ValueError(
+                    "Provided ax does not contain an image "
+                    "in ax.images or ax.collections"
+                ) from e
 
 
 def set_ticks_to_multiples_of_pi(ax: plt.Axes, base=np.pi / 2):
@@ -133,7 +130,7 @@ def _check_and_create_3D_ax(
     ax: Optional[plt.Axes] = None,
 ) -> plt.Axes:
     if ax is None:
-        fig = matplotlib.pyplot.figure()
+        fig = plt.figure()
         ax = fig.add_subplot(projection="3d")
     elif ax.name != "3d":
         warnings.warn(
@@ -141,7 +138,7 @@ def _check_and_create_3D_ax(
             "Your axis is overridden with a new axis."
         )
         warnings.warn("You can create a 3d axis with fig.add_subplot(projection='3d')")
-        fig = matplotlib.pyplot.figure()
+        fig = plt.figure()
         ax = fig.add_subplot(projection="3d")
 
     return ax
