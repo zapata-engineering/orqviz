@@ -15,7 +15,7 @@ setuptools.setup(
     description="""Python package for visualizing loss landscapes" \
         " of Parameterized Quantum Circuits""",
     url="https://github.com/zapatacomputing/orqviz",
-    packages=setuptools.find_packages(include=["orqviz.*"], where="src"),
+    packages=setuptools.find_packages(include=["orqviz", "orqviz.*"], where="src"),
     package_dir={"": "src"},
     classifiers=(
         "Programming Language :: Python :: 3",
