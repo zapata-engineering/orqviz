@@ -2,9 +2,7 @@ import os
 
 import setuptools
 
-dev_requires = [
-    "pytest>=3.7.1",
-]
+dev_requires = ["pytest>=3.7.1", "pytest-cov>=3.0.0"]
 
 extras_require = {
     "dev": dev_requires,
@@ -17,7 +15,7 @@ setuptools.setup(
     description="""Python package for visualizing loss landscapes" \
         " of Parameterized Quantum Circuits""",
     url="https://github.com/zapatacomputing/orqviz",
-    packages=setuptools.find_namespace_packages(include=["orqviz.*"], where="src"),
+    packages=setuptools.find_packages(include=["orqviz.*"], where="src"),
     package_dir={"": "src"},
     classifiers=(
         "Programming Language :: Python :: 3",
