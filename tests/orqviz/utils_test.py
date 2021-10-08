@@ -1,11 +1,11 @@
-import pytest
+import os
+
 import numpy as np
-from orqviz.scans import perform_2D_scan, perform_1D_scan
-from orqviz.hessians import get_Hessian
-from orqviz.utils import save_viz_object, load_viz_object, OrqVizObject
-from orqviz.scans.data_structures import Scan1DResult, Scan2DResult
-from orqviz.hessians.data_structures import HessianEigenobject
+
 from orqviz.elastic_band.data_structures import Chain
+from orqviz.hessians import get_Hessian
+from orqviz.scans import perform_1D_scan, perform_2D_scan
+from orqviz.utils import OrqVizObject, load_viz_object, save_viz_object
 
 
 def SUM_OF_SINS(params):
@@ -40,5 +40,6 @@ def test_saving_and_loading_datatypes():
     for data_object in [scan1d, scan2d, hessian, chain]:
         save_viz_object(data_object, "test")
         loaded_data_object = load_viz_object("test")
+        os.remove("test")
         assert isinstance(loaded_data_object, OrqVizObject.__args__)
         assert type(loaded_data_object) == type(data_object)

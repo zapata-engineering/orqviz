@@ -1,21 +1,22 @@
-import pytest
+import os
+
+import matplotlib.pyplot as plt
 import numpy as np
+import pytest
+
 from orqviz.scans import (
-    perform_1D_scan,
-    perform_1D_interpolation,
-    perform_2D_scan,
-    perform_2D_interpolation,
     get_2D_slice_around_point,
-)
-from orqviz.scans.plots import (
-    plot_1D_scan_result,
-    plot_2D_scan_result,
-    plot_2D_interpolation_result,
+    perform_1D_interpolation,
+    perform_1D_scan,
+    perform_2D_interpolation,
 )
 from orqviz.scans.data_structures import Scan1DResult, Scan2DResult
-import matplotlib.pyplot as plt
-from orqviz.scans import perform_1D_scan
-from orqviz.utils import save_viz_object, load_viz_object
+from orqviz.scans.plots import (
+    plot_1D_scan_result,
+    plot_2D_interpolation_result,
+    plot_2D_scan_result,
+)
+from orqviz.utils import load_viz_object, save_viz_object
 
 
 def SUM_OF_SINS(params):
@@ -74,6 +75,7 @@ def test_1D_interpolation():
     )
     save_viz_object(scan_1d, "test")
     loaded_scan1d = load_viz_object("test")
+    os.remove("test")
 
     for scan_results in [scan_1d, loaded_scan1d]:
         assert isinstance(scan_results, Scan1DResult)

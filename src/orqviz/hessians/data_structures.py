@@ -1,12 +1,15 @@
-import numpy as np
+from dataclasses import asdict, dataclass, field
 from typing import List
-from dataclasses import dataclass, field, asdict
+
+import numpy as np
+
 from ..aliases import ParameterVector
 
 
 @dataclass()
 class HessianEigenobject:
-    """Data structure for Hessian matrix. Eigenvalues and Eigenvectors are automatically calculated and sorted.
+    """Data structure for Hessian matrix.
+        Eigenvalues and Eigenvectors are automatically calculated and sorted.
 
     Args:
         params: Parameter vector at which the Hessian matrix was measured

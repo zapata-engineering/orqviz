@@ -1,16 +1,18 @@
-import numpy as np
 from typing import Optional
+
 import matplotlib
-from .data_structures import PCAobject
+import numpy as np
+
+from ..aliases import ArrayOfParameterVectors
+from ..plot_utils import _check_and_create_fig_ax
 from ..plots import (
+    plot_line_through_points,
     plot_optimization_trajectory,
     plot_scatter_points,
-    plot_line_through_points,
 )
 from ..scans import plot_2D_scan_result
 from ..scans.data_structures import Scan2DResult
-from ..plot_utils import _check_and_create_fig_ax
-from ..aliases import ArrayOfParameterVectors
+from .data_structures import PCAobject
 
 
 def plot_optimization_trajectory_on_pca(
@@ -19,12 +21,15 @@ def plot_optimization_trajectory_on_pca(
     ax: Optional[matplotlib.axes.Axes] = None,
     **plot_kwargs,
 ):
-    """Wrapper function around plot_optimization_trajectory to simplify plotting a on PCA scan.
+    """Wrapper function around plot_optimization_trajectory to simplify
+        plotting a on PCA scan.
 
     Args:
         optimization_trajectory: Parameter trajectory to be projected on a PCA scan.
-        pca_object: PCAobject the contains a fitted PCA object, corresponding points and the components of interest.
-        ax: Matplotlib axis to perform the plot on. If None, an axis is created from the current figure. Defaults to None.
+        pca_object: PCAobject the contains a fitted PCA object, corresponding points
+            and the components of interest.
+        ax: Matplotlib axis to perform the plot on. If None, an axis is created
+            from the current figure. Defaults to None.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.plot (plt.plot)
     """
 
@@ -50,8 +55,10 @@ def plot_scatter_points_on_pca(
 
     Args:
         scatter_points: Parameter points to be projected on a PCA scan.
-        pca_object: PCAobject the contains a fitted PCA object, corresponding points and the components of interest.
-        ax: Matplotlib axis to perform the plot on. If None, an axis is created from the current figure. Defaults to None.
+        pca_object: PCAobject the contains a fitted PCA object, corresponding points
+            and the components of interest.
+        ax: Matplotlib axis to perform the plot on. If None, an axis is created
+            from the current figure. Defaults to None.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.scatter (plt.scatter)
     """
 
@@ -77,8 +84,10 @@ def plot_line_through_points_on_pca(
 
     Args:
         points: Parameter points to be projected on a PCA scan and plotted with a line.
-        pca_object: PCAobject the contains a fitted PCA object, corresponding points and the components of interest.
-        ax: Matplotlib axis to perform the plot on. If None, an axis is created from the current figure. Defaults to None.
+        pca_object: PCAobject the contains a fitted PCA object, corresponding points
+            and the components of interest.
+        ax: Matplotlib axis to perform the plot on. If None, an axis is created
+            from the current figure. Defaults to None.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.plot (plt.plot)
     """
 
@@ -106,9 +115,12 @@ def plot_pca_landscape(
     Args:
         scan_result: Scan2DResult object from a performed 2D scan.
         pca: sklearn PCA object fitted on the optimization trajectory.
-        fig: Matplotlib figure to perform the plot on. If None, a new figure and axis are created. Defaults to None.
-        ax: Matplotlib axis to perform the plot on. If None, a new axis is created from the current figure. Defaults to None.
-        plot_kwargs: kwargs for plotting with matplotlib.pyplot.pcolormesh (plt.pcolormesh)
+        fig: Matplotlib figure to perform the plot on. If None, a new figure
+            and axis are created. Defaults to None.
+        ax: Matplotlib axis to perform the plot on. If None, a new axis is created
+            from the current figure. Defaults to None.
+        plot_kwargs: kwargs for plotting with matplotlib.pyplot.pcolormesh
+            (plt.pcolormesh)
     """
     fig, ax = _check_and_create_fig_ax(fig=fig, ax=ax)
 
