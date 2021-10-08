@@ -3,9 +3,9 @@ name: style
 # Controls when the action will run.
 on:
   push:
-    branches: [main, master, dev]
+    branches: [main, dev]
   pull_request:
-    branches: [main, master, dev]
+    branches: [main, dev]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -16,8 +16,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    container:
-      image: zapatacomputing/z-quantum-default:latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -35,7 +33,7 @@ jobs:
         uses: ricardochaves/python-lint@v1.4.0
         with:
           # A list of all paths to test
-          python-root-list: "src/python/zquantum/core steps tests/zquantum/core tests/acceptance_tests"
+          python-root-list: "src/orqviz steps tests/orqviz"
 
           use-pylint: false
           use-pycodestyle: false
