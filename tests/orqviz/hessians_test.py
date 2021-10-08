@@ -2,7 +2,6 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
-
 from orqviz.hessians import (
     get_Hessian,
     get_Hessian_SPSA_approx,
