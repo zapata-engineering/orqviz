@@ -28,7 +28,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run test coverage
         run: |
-          python3 -m pip install .
+          python3 -m pip install '.[dev]'
           python3 -m pytest --cov=orqviz tests/
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
