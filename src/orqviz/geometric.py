@@ -1,7 +1,6 @@
 from typing import Optional, Tuple
-
 import numpy as np
-
+from scipy.interpolate import interp1d
 from .aliases import ArrayOfParameterVectors, ParameterVector
 
 
@@ -114,3 +113,27 @@ def direction_linspace(
         origin + endpoints[1] * direction,
         num=n_points,
     )
+
+
+def uniformly_distribute_trajectory(
+    parameter_trajectory: ArrayOfParameterVectors,
+    n_points: int,
+) -> ArrayOfParameterVectors:
+    """Function to distribute points uniformly (in euclidean distance) along a path that is given
+    by a parameter trajectory, i.e. an array of parameter vectors. Returns an array of parameter
+    vectors where the first and last entries match those of the passed parameter trajectory and
+    all entries are equally distant in euclidean distance.
+    """
+    trajectory_weights = np.linalg.norm(np.diff(parameter_trajectory, axis=0), axis=1)
+    trajectory_weights /= np.sum(trajectory_weights)
+    cum_weights = np.cumsum(trajectory_weights)
+    cum_weights = np.insert(cum_weights, 0, 0)
+    cum_weights[-1] = 1  # for stability insert an integer 1
+
+    weight_interpolator = interp1d(
+        cum_weights,
+        parameter_trajectory,
+        axis=0,
+    )
+    eval_points = np.linspace(0, 1, num=n_points)
+    return weight_interpolator(eval_points)
