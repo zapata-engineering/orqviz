@@ -119,10 +119,11 @@ def uniformly_distribute_trajectory(
     parameter_trajectory: ArrayOfParameterVectors,
     n_points: int,
 ) -> ArrayOfParameterVectors:
-    """Function to distribute points uniformly (in euclidean distance) along a path that is given
-    by a parameter trajectory, i.e. an array of parameter vectors. Returns an array of parameter
-    vectors where the first and last entries match those of the passed parameter trajectory and
-    all entries are equally distant in euclidean distance.
+    """Function to distribute points uniformly (in euclidean distance) along a path
+    that is given by a parameter trajectory, i.e. an array of parameter vectors.
+    Returns an array of parameter vectors where the first and last entries match
+    those of the passed parameter trajectory and all entries are equally distant
+    in euclidean distance.
     """
     trajectory_weights = np.linalg.norm(np.diff(parameter_trajectory, axis=0), axis=1)
     trajectory_weights /= np.sum(trajectory_weights)
