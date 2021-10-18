@@ -1,5 +1,4 @@
 # See https://pre-commit.com for more information
-# Minimal pre-commit to be compatible with current GitHub Actions style.yml
 
 default_language_version:
   python: python3.7
