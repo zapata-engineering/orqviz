@@ -1,6 +1,8 @@
 from typing import Optional, Tuple
+
 import numpy as np
 from scipy.interpolate import interp1d
+
 from .aliases import ArrayOfParameterVectors, ParameterVector
 
 
