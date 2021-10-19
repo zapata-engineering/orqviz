@@ -23,8 +23,6 @@ Keep in mind that we have automatic checks configured for this project. We won't
 - passes all the style checks
 - doesn't decrease the test coverage
 
-### Pre-commit hooks
-
 To make development and contribution easier, we've added pre-commit hooks. This mechanisms prevents you from commiting any code that doesn't comply with our style guides.
 You can find more details on ["pre-commit" project's website](https://pre-commit.com).
 
