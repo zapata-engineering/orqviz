@@ -12,7 +12,7 @@ In [this Github](https://github.com/zapatacomputing/visualization-tutorials) rep
 We have recently published a paper on arXiv where we review the tools available with `orqviz`. TODO: Link to arXiv.
 
 ## Installation
-You can install our package like
+You can install our package using the following command:
 ```bash
 pip install orqviz
 ```
@@ -51,21 +51,21 @@ This code results in the following plot:
 
 ## Authors
 The leading developer of this package is Manuel Rudolph at Zapata Computing.\
-For questions related to the visualization techniques, contact Manuel via Manuel.Rudolph@zapatacomputing.com
+For questions related to the visualization techniques, contact Manuel via manuel.rudolph@zapatacomputing.com .
 
-The leading software developer of this package is Michal Stechly at Zapata Computing.\
-For questions related to technicalities of the package, contact Michal via Michal.Stechly@zapatacomputing.com
+The leading software developer of this package is Michał Stęchły at Zapata Computing.\
+For questions related to technicalities of the package, contact Michał via michal.stechly@zapatacomputing.com .
 
-For general questions, problems, bug fixes, etc. please open a [GitHub issue](https://github.com/zapatacomputing/orqviz/issues) in the `orqviz` repository.
+You can also contact us or ask general questions using [GitHub Discussions](https://github.com/zapatacomputing/orqviz/discussions). 
 
-Thank you to Sukin Sim and Luis Serrano from Zapata Computing for their contribution to the tutorials.
+For more specific code issues, bug fixes, etc. please open a [GitHub issue](https://github.com/zapatacomputing/orqviz/issues) in the `orqviz` repository.
 
-## Further
-TODO:
-Troubleshooting\
-API documentation ( that is normally required by public repositories)\
-How to contribute guide\
-How to get involved (slack,gitter etc.)\
-Proper OSS license \
-GitHub Issue templates\
-Code of Conduct
+If you are doing research using `orqviz`, please cite our paper:
+
+TODO
+
+Thank you to Sukin Sim and Luis Serrano from Zapata Computing for their contributions to the tutorials!
+
+## How to contribute
+
+Please see our [Contribution Guidelines](docs/CONTRIBUTING.md).
