@@ -54,8 +54,12 @@ def relative_periodic_trajectory_wrap(
     period: float = 2 * np.pi,
 ) -> ArrayOfParameterVectors:
     """Function that returns a wrapped 'copy' of a parameter trajectory such that
-        the distance between it and the reference point is minimal inside
-        the specified period.
+        the distance between the final point of the trajectory and the reference point
+        is minimal inside the specified period.
+        The rest of the trajectory is being transformed in the same manner.
+        NOTE:
+            It only works as intended if the period is larger than the distance
+            between the consecutive points in the trajectory.
 
     Args:
         reference_point: Reference point for periodic wrapping of the trajectory.
@@ -65,13 +69,17 @@ def relative_periodic_trajectory_wrap(
         period: Periodicity of each parameter in each point of the trajectory.
             Defaults to 2*np.pi.
     """
-    wrapped_trajectory = np.copy(trajectory)
+    if not np.all(np.linalg.norm(np.diff(trajectory, axis=0), axis=1) < period):
+        raise ValueError(
+            "Distances between consecutive points must be smaller than period."
+        )
+    wrapped_trajectory = np.copy(trajectory).astype(float)
     wrapped_trajectory[-1] = relative_periodic_wrap(
         reference_point, trajectory[-1], period=period
     )
     for ii in range(2, len(wrapped_trajectory) + 1):
         wrapped_trajectory[-ii] = relative_periodic_wrap(
-            wrapped_trajectory[-1], trajectory[-ii], period=period
+            wrapped_trajectory[-ii + 1], trajectory[-ii], period=period
         )
 
     return wrapped_trajectory
