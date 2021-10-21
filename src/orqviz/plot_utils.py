@@ -18,7 +18,7 @@ def normalize_color_and_colorbar(
 
     Args:
         fig: Matplotlib figure in which the plot is performed. If None, gets current figure. Defaults to None.
-        ax: Matplotlib axis in which the plot is performed. If None, gets current figure. Defaults to None.
+        ax: Matplotlib axis in which the plot is performed. If None, gets current axis. Defaults to None.
         min_val: Minimum values of the image and colorbar range. Defaults to 0.0.
         max_val: Maximum values of the image and colorbar range. Defaults to 1.0.
         cmap: Matplotlib colormap for the plot. Defaults to "viridis".
