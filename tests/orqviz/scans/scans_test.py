@@ -19,7 +19,7 @@ from orqviz.scans.plots import (
 from orqviz.utils import load_viz_object, save_viz_object
 
 
-def SUM_OF_SINS(params):
+def SUM_OF_SINES(params):
     return np.sum(np.sin(params))
 
 
@@ -31,13 +31,14 @@ def test_1D_scan():
 
     scan_1d = perform_1D_scan(
         origin=origin,
-        loss_function=SUM_OF_SINS,
+        loss_function=SUM_OF_SINES,
         direction=direction_x,
         n_steps=n_steps_x,
         end_points=end_points_x,
     )
     save_viz_object(scan_1d, "test")
     loaded_scan1d = load_viz_object("test")
+    os.remove("test")
 
     for scan_results in [scan_1d, loaded_scan1d]:
         assert isinstance(scan_results, Scan1DResult)
@@ -54,10 +55,6 @@ def test_1D_scan():
             origin + direction_x * end_points_x[1],
         )
 
-    plot_1D_scan_result(scan_results)
-    fig, ax = plt.subplots()
-    plot_1D_scan_result(scan_results, ax)
-
 
 def test_1D_interpolation():
     point1 = np.array([1, 0])
@@ -69,7 +66,7 @@ def test_1D_interpolation():
     scan_1d = perform_1D_interpolation(
         point_1=point1,
         point_2=point2,
-        loss_function=SUM_OF_SINS,
+        loss_function=SUM_OF_SINES,
         n_steps=n_steps_x,
         end_points=end_points_x,
     )
@@ -92,10 +89,6 @@ def test_1D_interpolation():
             point2,
         )
 
-    plot_1D_scan_result(scan_results)
-    fig, ax = plt.subplots()
-    plot_1D_scan_result(scan_results, ax)
-
 
 def test_get_2D_slice_around_point_in_2D_space():
     origin = np.array([0, 0])
@@ -108,7 +101,7 @@ def test_get_2D_slice_around_point_in_2D_space():
 
     scan_2d = get_2D_slice_around_point(
         origin=origin,
-        loss_function=SUM_OF_SINS,
+        loss_function=SUM_OF_SINES,
         direction_x=direction_x,
         direction_y=direction_y,
         n_steps_x=n_steps_x,
@@ -118,6 +111,7 @@ def test_get_2D_slice_around_point_in_2D_space():
     )
     save_viz_object(scan_2d, "test")
     loaded_scan2d = load_viz_object("test")
+    os.remove("test")
 
     for scan_results in [scan_2d, loaded_scan2d]:
         assert isinstance(scan_results, Scan2DResult)
@@ -132,10 +126,6 @@ def test_get_2D_slice_around_point_in_2D_space():
                 origin + end_points_x[j] * direction_x + end_points_y[i] * direction_y,
             )
 
-    plot_2D_scan_result(scan_results)
-    fig, ax = plt.subplots()
-    plot_2D_scan_result(scan_results, fig, ax)
-
 
 def test_get_2D_slice_around_point_in_5D_space():
     origin = np.zeros(5)
@@ -148,7 +138,7 @@ def test_get_2D_slice_around_point_in_5D_space():
 
     scan_2d = get_2D_slice_around_point(
         origin=origin,
-        loss_function=SUM_OF_SINS,
+        loss_function=SUM_OF_SINES,
         direction_x=direction_x,
         direction_y=direction_y,
         n_steps_x=n_steps_x,
@@ -159,6 +149,7 @@ def test_get_2D_slice_around_point_in_5D_space():
 
     save_viz_object(scan_2d, "test")
     loaded_scan2d = load_viz_object("test")
+    os.remove("test")
 
     for scan_results in [scan_2d, loaded_scan2d]:
         assert isinstance(scan_results, Scan2DResult)
@@ -173,10 +164,6 @@ def test_get_2D_slice_around_point_in_5D_space():
                 origin + end_points_x[j] * direction_x + end_points_y[i] * direction_y,
             )
 
-    plot_2D_scan_result(scan_results)
-    fig, ax = plt.subplots()
-    plot_2D_scan_result(scan_results, fig, ax)
-
 
 def test_interpolation_2D_in_2D_space():
     point_1 = np.array([1, 0])
@@ -189,7 +176,7 @@ def test_interpolation_2D_in_2D_space():
     scan_2d = perform_2D_interpolation(
         point_1=point_1,
         point_2=point_2,
-        loss_function=SUM_OF_SINS,
+        loss_function=SUM_OF_SINES,
         n_steps_x=n_steps_x,
         n_steps_y=n_steps_y,
         end_points_x=end_points_x,
@@ -198,6 +185,7 @@ def test_interpolation_2D_in_2D_space():
 
     save_viz_object(scan_2d, "test")
     loaded_scan2d = load_viz_object("test")
+    os.remove("test")
 
     for scan_results in [scan_2d, loaded_scan2d]:
         assert isinstance(scan_results, Scan2DResult)
@@ -207,7 +195,3 @@ def test_interpolation_2D_in_2D_space():
             scan_results.direction_x, scan_results.direction_y
         ) == pytest.approx(0)
         assert scan_results.params_grid.shape == (n_steps_y, n_steps_x, 2)
-
-    plot_2D_interpolation_result(scan_results)
-    fig, ax = plt.subplots()
-    plot_2D_interpolation_result(scan_results, fig, ax)
