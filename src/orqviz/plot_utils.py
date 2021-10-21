@@ -7,8 +7,8 @@ import numpy as np
 
 
 def normalize_color_and_colorbar(
-    fig: plt.Figure,
-    ax: plt.Axes,
+    fig: Optional[plt.Figure] = None,
+    ax: Optional[plt.Axes] = None,
     min_val: float = 0.0,
     max_val: float = 1.0,
     cmap: str = "viridis",
@@ -17,8 +17,8 @@ def normalize_color_and_colorbar(
     """Function to adjust the color and colorbar of a matplotlib plot.
 
     Args:
-        fig: Matplotlib figure in which the plot is performed.
-        ax: Matplotlib axis in which the plot is performed.
+        fig: Matplotlib figure in which the plot is performed. If None, gets current figure. Defaults to None.
+        ax: Matplotlib axis in which the plot is performed. If None, gets current figure. Defaults to None.
         min_val: Minimum values of the image and colorbar range. Defaults to 0.0.
         max_val: Maximum values of the image and colorbar range. Defaults to 1.0.
         cmap: Matplotlib colormap for the plot. Defaults to "viridis".
@@ -26,6 +26,8 @@ def normalize_color_and_colorbar(
             Defaults to 0.
 
     """
+    fig, ax = _check_and_create_fig_ax(fig, ax)
+
     try:
         image = ax.collections[image_index]
     except (AttributeError, IndexError):
@@ -116,11 +118,10 @@ def _check_and_create_fig_ax(
     ax: Optional[plt.Axes] = None,
 ) -> Tuple[plt.Figure, plt.Axes]:
 
-    if fig is None and ax is None:
+    if fig is None:
         fig = plt.gcf()
-        ax = fig.gca()
 
-    elif fig is not None and ax is None:
+    if ax is None:
         ax = fig.gca()
 
     return fig, ax
