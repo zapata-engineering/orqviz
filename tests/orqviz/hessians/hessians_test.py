@@ -2,6 +2,7 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
+
 from orqviz.hessians import (
     get_Hessian,
     get_Hessian_SPSA_approx,
@@ -28,11 +29,6 @@ def test_get_hessian():
         == len(hessian.eigenvectors.T)
         == len(params)
     )
-
-    list_of_scans = perform_1D_hessian_eigenvector_scan(hessian, COST_FUNCTION)
-    plot_1D_hessian_eigenvector_scan_result(list_of_scans, hessian.eigenvalues)
-    fig, ax = plt.subplots()
-    plot_1D_hessian_eigenvector_scan_result(list_of_scans, hessian.eigenvalues, ax=ax)
 
     save_viz_object(hessian, "test")
     loaded_hessian = load_viz_object("test")
@@ -61,13 +57,9 @@ def test_get_hessian_SPSA_approx():
         == len(params)
     )
 
-    list_of_scans = perform_1D_hessian_eigenvector_scan(hessian, COST_FUNCTION)
-    plot_1D_hessian_eigenvector_scan_result(list_of_scans, hessian.eigenvalues)
-    fig, ax = plt.subplots()
-    plot_1D_hessian_eigenvector_scan_result(list_of_scans, hessian.eigenvalues, ax=ax)
-
     save_viz_object(hessian, "test")
     loaded_hessian = load_viz_object("test")
+    os.remove("test")
     np.testing.assert_array_almost_equal(
         loaded_hessian.eigenvalues, hessian.eigenvalues
     )

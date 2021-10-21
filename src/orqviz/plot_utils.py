@@ -7,8 +7,8 @@ import numpy as np
 
 
 def normalize_color_and_colorbar(
-    fig: plt.Figure,
-    ax: plt.Axes,
+    fig: Optional[plt.Figure] = None,
+    ax: Optional[plt.Axes] = None,
     min_val: float = 0.0,
     max_val: float = 1.0,
     cmap: str = "viridis",
@@ -18,7 +18,9 @@ def normalize_color_and_colorbar(
 
     Args:
         fig: Matplotlib figure in which the plot is performed.
+            If None, gets current figure. Defaults to None.
         ax: Matplotlib axis in which the plot is performed.
+            If None, gets current axis. Defaults to None.
         min_val: Minimum values of the image and colorbar range. Defaults to 0.0.
         max_val: Maximum values of the image and colorbar range. Defaults to 1.0.
         cmap: Matplotlib colormap for the plot. Defaults to "viridis".
@@ -26,6 +28,8 @@ def normalize_color_and_colorbar(
             Defaults to 0.
 
     """
+    fig, ax = _check_and_create_fig_ax(fig, ax)
+
     try:
         image = ax.collections[image_index]
     except (AttributeError, IndexError):
@@ -43,17 +47,20 @@ def normalize_color_and_colorbar(
 
 
 def get_colorbar_from_ax(
-    ax: plt.Axes,
+    ax: Optional[plt.Axes] = None,
     image_index: Optional[int] = None,
 ):
     """Helper function to extract the colorbar of a previously created plot.
 
     Args:
         ax: Matplotlib axis in which the colorbar was created.
+            If None, gets current axis. Defaults to None.
         image_index: Position index for the image in the Matplotlib axis.
             If None, will return the first colorbar that is found. Defaults to None.
 
     """
+    _, ax = _check_and_create_fig_ax(ax=ax)
+
     if image_index is None:
 
         len_collections = len(ax.collections)
@@ -89,9 +96,14 @@ def get_colorbar_from_ax(
                 ) from e
 
 
-def set_ticks_to_multiples_of_pi(ax: plt.Axes, base=np.pi / 2):
+def set_ticks_to_multiples_of_pi(
+    ax: Optional[plt.Axes] = None,
+    base: float = np.pi / 2,
+):
     """Helper function to set the ticks of matplotlib axes
     to multiples of pi with pi symbols."""
+    _, ax = _check_and_create_fig_ax(ax=ax)
+
     ax.xaxis.set_major_formatter(
         tck.FuncFormatter(
             lambda val, pos: "{:.2f}$\pi$".format(val / np.pi)  # noqa: W605
@@ -116,11 +128,10 @@ def _check_and_create_fig_ax(
     ax: Optional[plt.Axes] = None,
 ) -> Tuple[plt.Figure, plt.Axes]:
 
-    if fig is None and ax is None:
+    if fig is None:
         fig = plt.gcf()
-        ax = fig.gca()
 
-    elif fig is not None and ax is None:
+    if ax is None:
         ax = fig.gca()
 
     return fig, ax
