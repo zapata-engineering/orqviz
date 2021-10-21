@@ -1,8 +1,6 @@
 # .coveragerc to control coverage.py
 [run]
 branch = True
-omit = 
-    */plots.py
 
 [report]
 # Regexes for lines to exclude from consideration

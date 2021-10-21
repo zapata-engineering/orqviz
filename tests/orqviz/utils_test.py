@@ -8,7 +8,7 @@ from orqviz.scans import perform_1D_scan, perform_2D_scan
 from orqviz.utils import OrqVizObject, load_viz_object, save_viz_object
 
 
-def SUM_OF_SINS(params):
+def SUM_OF_SINES(params):
     return np.sum(np.sin(params))
 
 
@@ -19,7 +19,7 @@ def test_saving_and_loading_datatypes():
     n_steps_x = 2
 
     scan1d = perform_1D_scan(
-        loss_function=SUM_OF_SINS,
+        loss_function=SUM_OF_SINES,
         origin=origin,
         direction=direction_x,
         n_steps=n_steps_x,
@@ -27,13 +27,13 @@ def test_saving_and_loading_datatypes():
 
     scan2d = perform_2D_scan(
         origin=origin,
-        loss_function=SUM_OF_SINS,
+        loss_function=SUM_OF_SINES,
         direction_x=direction_x,
         direction_y=direction_y,
         n_steps_x=n_steps_x,
     )
 
-    hessian = get_Hessian(params=origin, loss_function=SUM_OF_SINS)
+    hessian = get_Hessian(params=origin, loss_function=SUM_OF_SINES)
 
     chain = Chain(np.linspace(origin, origin + direction_x, num=5))
 
