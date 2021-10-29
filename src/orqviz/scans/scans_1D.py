@@ -3,7 +3,11 @@ from typing import Callable, Optional, Tuple
 import numpy as np
 
 from ..aliases import ArrayOfParameterVectors, ParameterVector
-from ..geometric import direction_linspace, relative_periodic_wrap
+from ..geometric import (
+    direction_linspace,
+    get_random_normal_vector,
+    relative_periodic_wrap,
+)
 from .data_structures import Scan1DResult
 from .evals import eval_points_on_path
 
@@ -11,7 +15,7 @@ from .evals import eval_points_on_path
 def perform_1D_scan(
     origin: ParameterVector,
     loss_function: Callable[[ParameterVector], float],
-    direction: np.ndarray,
+    direction: Optional[np.ndarray] = None,
     n_steps: int = 31,
     end_points: Tuple[float, float] = (-np.pi, np.pi),
     verbose: bool = False,
@@ -23,10 +27,12 @@ def perform_1D_scan(
         loss_function: Loss function to perform the scan on.
         direction: Direction in which loss function is scanned around the origin.
         n_points: Number of points to evaluate along the scan. Defaults to 31.
-        end_points: Range of scan along the direction in units of the direction vector.
-            Defaults to (-np.pi, np.pi).
+        end_points: Range of scan along the direction in units of the direction vector. Defaults to (-np.pi, np.pi).
         verbose: Flag for printing progress. Defaults to False.
     """
+    if direction is None:
+        direction = get_random_normal_vector(len(origin))
+
     point_list: ArrayOfParameterVectors = direction_linspace(
         origin=origin,
         direction=direction,
@@ -56,12 +62,9 @@ def perform_1D_interpolation(
         point_2: Second point of the interpolation.
         loss_function: Loss function to scan.
         n_steps: Number of points evaluated along the scan. Defaults to 100.
-        end_points: Range of scan along the direction in units
-            of the interpolation vector. Defaults to (-0.5, 1.5).
-        parameter_period: Optional period of the parameters to scan the shortest
-            interpolated path between the points.
-            If None, interpolation per parameter happens along the real number line.
-            Defaults to None.
+        end_points: Range of scan along the direction in units of the interpolation vector. Defaults to (-0.5, 1.5).
+        parameter_period: Optional period of the parameters to scan the shortest interpolated path between the points.
+            If None, interpolation per parameter happens along the real number line. Defaults to None.
         verbose: Flag for printing progress. Defaults to False.
     """
     if parameter_period:
