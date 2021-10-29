@@ -26,6 +26,7 @@ def perform_1D_scan(
         origin: Parameter vector that is the origin on the 1D scan.
         loss_function: Loss function to perform the scan on.
         direction: Direction in which loss function is scanned around the origin.
+            If None, a random unit vector is sampled. Defaults to None
         n_points: Number of points to evaluate along the scan. Defaults to 31.
         end_points: Range of scan along the direction in units of the direction vector. Defaults to (-np.pi, np.pi).
         verbose: Flag for printing progress. Defaults to False.
