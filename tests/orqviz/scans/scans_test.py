@@ -59,7 +59,10 @@ def test_1D_scan_works_with_default_direction():
     origin = np.array([0.0, 0.0])
     n_steps_x = 31
 
-    scan_1d = perform_1D_scan(origin=origin, loss_function=SUM_OF_SINES)
+    scan_1d = perform_1D_scan(
+        origin=origin,
+        loss_function=SUM_OF_SINES,
+    )
 
     assert isinstance(scan_1d, Scan1DResult)
     assert len(scan_1d.values) == n_steps_x
