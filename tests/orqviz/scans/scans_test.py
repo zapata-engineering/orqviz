@@ -28,8 +28,6 @@ def test_1D_scan():
     end_points_x = (-np.pi, np.pi)
     n_steps_x = 100
 
-    _ = perform_1D_scan(origin=origin, loss_function=SUM_OF_SINES)
-
     scan_1d = perform_1D_scan(
         origin=origin,
         loss_function=SUM_OF_SINES,
@@ -55,6 +53,18 @@ def test_1D_scan():
             scan_results.params_list[-1],
             origin + direction_x * end_points_x[1],
         )
+
+
+def test_1D_scan_works_with_default_direction():
+    origin = np.array([0.0, 0.0])
+    n_steps_x = 31
+
+    scan_1d = perform_1D_scan(origin=origin, loss_function=SUM_OF_SINES)
+
+    assert isinstance(scan_1d, Scan1DResult)
+    assert len(scan_1d.values) == n_steps_x
+    assert len(scan_1d.direction) == len(origin)
+    assert scan_1d.params_list.shape == (n_steps_x, 2)
 
 
 def test_1D_interpolation():
@@ -100,8 +110,6 @@ def test_perform_2D_scan_in_2D_space():
     n_steps_x = 100
     n_steps_y = 10
 
-    _ = perform_2D_scan(origin=origin, loss_function=SUM_OF_SINES)
-
     scan_2d = perform_2D_scan(
         origin=origin,
         loss_function=SUM_OF_SINES,
@@ -128,6 +136,22 @@ def test_perform_2D_scan_in_2D_space():
                 scan_results.params_grid[-i][-j],
                 origin + end_points_x[j] * direction_x + end_points_y[i] * direction_y,
             )
+
+
+def test_2D_scan_works_with_default_direction():
+    origin = np.array([0.0, 0.0])
+    n_steps_x = 20
+    n_steps_y = 20
+
+    scan_2d = perform_2D_scan(
+        origin=origin,
+        loss_function=SUM_OF_SINES,
+    )
+
+    assert isinstance(scan_2d, Scan2DResult)
+    assert len(scan_2d.values) == n_steps_x
+    assert len(scan_2d.direction_x) == len(scan_2d.direction_y) == len(origin)
+    assert scan_2d.params_grid.shape == (n_steps_y, n_steps_x, 2)
 
 
 def test_perform_2D_scan_in_5D_space():
