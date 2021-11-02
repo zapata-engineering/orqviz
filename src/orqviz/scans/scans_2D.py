@@ -74,9 +74,9 @@ def perform_2D_interpolation(
 def perform_2D_scan(
     origin: ParameterVector,
     loss_function: Callable[[ParameterVector], float],
-    direction_x: np.ndarray,
-    direction_y: np.ndarray,
-    n_steps_x: int,
+    direction_x: Optional[np.ndarray] = None,
+    direction_y: Optional[np.ndarray] = None,
+    n_steps_x: int = 20,
     n_steps_y: Optional[int] = None,
     end_points_x: Tuple[float, float] = (-1, 1),
     end_points_y: Optional[Tuple[float, float]] = None,
@@ -88,7 +88,9 @@ def perform_2D_scan(
         origin: Origin point of the 2D scan.
         loss_function: Loss function to be scanned.
         direction_x: x-direction vector for scan. Has same shape as origin.
+            If None, a random unit vector is sampled. Defaults to None.
         direction_y: y-direction vector for scan. Has same shape as origin.
+            If None, a random unit vector is sampled. Defaults to None.
         n_steps_x: Number of points evaluated along the x-direction. Defaults to 20.
         n_steps_y: Number of points evaluated along the y-direction.
             If None, set value to n_steps_y. Defaults to None.
@@ -98,6 +100,12 @@ def perform_2D_scan(
             Defaults to (-1, 1).
         verbose: Flag for printing progress. Defaults to False.
     """
+    if direction_x is None:
+        direction_x = get_random_normal_vector(len(origin))
+    if direction_y is None:
+        direction_y = get_random_orthonormal_vector(direction_x) * np.linalg.norm(
+            direction_x
+        )
     if n_steps_y is None:
         n_steps_y = n_steps_x
 
@@ -129,57 +137,4 @@ def perform_2D_scan(
         direction_y=direction_y,
         values=loss_grid,
         origin=origin,
-    )
-
-
-def get_2D_slice_around_point(
-    origin: ParameterVector,
-    loss_function: Callable[[ParameterVector], float],
-    direction_x: Optional[np.ndarray] = None,
-    direction_y: Optional[np.ndarray] = None,
-    n_steps_x: int = 20,
-    n_steps_y: Optional[int] = None,
-    end_points_x: Tuple[float, float] = (-1.0, 1.0),
-    end_points_y: Tuple[float, float] = (-1.0, 1.0),
-    verbose: bool = False,
-) -> Scan2DResult:
-    """Function to perform a 2D scan around a point on a loss function
-        without having to specify scan directions.
-
-    Args:
-        origin: Origin point of the 2D scan.
-        loss_function: Loss function to be scanned.
-        direction_x: x-direction vector for scan. Has same shape as origin.
-            If None, a random unit vector is sampled. Defaults to None.
-        direction_y: y-direction vector for scan. Has same shape as origin.
-            If None, a random unit vector is sampled. Defaults to None.
-        n_steps_x: Number of points evaluated along the x-direction. Defaults to 20.
-        n_steps_y: Number of points evaluated along the y-direction.
-            If None, set value to n_steps_y. Defaults to None.
-        end_points_x: Range of scan along the x-direction in units of direction_x.
-            Defaults to (-1, 1).
-        end_points_y: Range of scan along the x-direction in units of direction_x.
-            Defaults to (-1, 1).
-        verbose: Flag for printing progress. Defaults to False.
-    """
-    if direction_x is None:
-        direction_x = get_random_normal_vector(len(origin))
-    if direction_y is None:
-        direction_y = get_random_orthonormal_vector(direction_x) * np.linalg.norm(
-            direction_x
-        )
-
-    if n_steps_y is None:
-        n_steps_y = n_steps_x
-
-    return perform_2D_scan(
-        origin=origin,
-        loss_function=loss_function,
-        direction_x=direction_x,
-        direction_y=direction_y,
-        n_steps_x=n_steps_x,
-        n_steps_y=n_steps_y,
-        end_points_x=end_points_x,
-        end_points_y=end_points_y,
-        verbose=verbose,
     )
