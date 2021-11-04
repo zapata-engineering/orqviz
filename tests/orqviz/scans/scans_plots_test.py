@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
+
 from orqviz.scans import perform_1D_scan, perform_2D_interpolation
 from orqviz.scans.data_structures import Scan1DResult, Scan2DResult
 from orqviz.scans.plots import (
