@@ -3,12 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
-
-from orqviz.scans import (
-    get_2D_slice_around_point,
-    perform_1D_scan,
-    perform_2D_interpolation,
-)
+from orqviz.scans import perform_1D_scan, perform_2D_interpolation
 from orqviz.scans.data_structures import Scan1DResult, Scan2DResult
 from orqviz.scans.plots import (
     plot_1D_scan_result,
@@ -39,31 +34,6 @@ def test_plot_1D_scan_result():
     plot_1D_scan_result(scan_1d)
     fig, ax = plt.subplots()
     plot_1D_scan_result(scan_1d, ax)
-
-
-def test_plot_2D_scan_result():
-    origin = np.zeros(5)
-    direction_x = np.array([0, 0, 0, 1, 0])
-    direction_y = np.array([0, 0, 0, 0, 1])
-    end_points_x = (-np.pi, np.pi)
-    end_points_y = (-np.pi / 2, np.pi / 2)
-    n_steps_x = 100
-    n_steps_y = 20
-
-    scan_2d = get_2D_slice_around_point(
-        origin=origin,
-        loss_function=SUM_OF_SINES,
-        direction_x=direction_x,
-        direction_y=direction_y,
-        n_steps_x=n_steps_x,
-        n_steps_y=n_steps_y,
-        end_points_x=end_points_x,
-        end_points_y=end_points_y,
-    )
-
-    plot_2D_scan_result(scan_2d)
-    fig, ax = plt.subplots()
-    plot_2D_scan_result(scan_2d, fig, ax)
 
 
 def test_plot_2D_interpolation_result():

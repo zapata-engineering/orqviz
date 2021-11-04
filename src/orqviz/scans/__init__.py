@@ -13,8 +13,4 @@ from .plots import (
     plot_2D_scan_result_as_3D,
 )
 from .scans_1D import perform_1D_interpolation, perform_1D_scan
-from .scans_2D import (
-    get_2D_slice_around_point,
-    perform_2D_interpolation,
-    perform_2D_scan,
-)
+from .scans_2D import perform_2D_interpolation, perform_2D_scan
