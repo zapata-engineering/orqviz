@@ -10,7 +10,7 @@ In [doc/examples/](https://github.com/zapatacomputing/orqviz/tree/main/docs/exam
 
 In [this notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/sombrero.ipynb) we have the _Sombrero_ example that we showcase in our paper. We also have an [advanced example notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/example_notebook.ipynb) which provides a thorough demonstration of the flexibility of the `orqviz` package.
 
-We have recently published a paper on arXiv where we review the tools available with `orqviz`. TODO: Link to arXiv.
+We have recently published a paper on arXiv where we review the tools available with `orqviz`: [ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms](https://arxiv.org/abs/2111.04695)
 
 ## Installation
 
@@ -68,7 +68,7 @@ For more specific code issues, bug fixes, etc. please open a [GitHub issue](http
 
 If you are doing research using `orqviz`, please cite our paper:
 
-TODO
+[ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms](https://arxiv.org/abs/2111.04695)
 
 Thank you to Sukin Sim and Luis Serrano from Zapata Computing for their contributions to the tutorials.
 
