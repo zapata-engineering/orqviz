@@ -15,6 +15,8 @@ In [this notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/exam
 We recently published a paper on arXiv where we review the tools available with `orqviz`:\
 [ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms](https://arxiv.org/abs/2111.04695)
 
+Find a brief overview of the visualization techniques on [YouTube](https://www.youtube.com/watch?v=_3x4NI6PcH4)!
+
 ## Installation
 
 You can install our package using the following command:
@@ -71,9 +73,9 @@ You can also contact us or ask general questions using [GitHub Discussions](http
 
 For more specific code issues, bug fixes, etc. please open a [GitHub issue](https://github.com/zapatacomputing/orqviz/issues) in the `orqviz` repository.
 
-If you are doing research using `orqviz`, please cite our paper:
+If you are doing research using `orqviz`, please cite [our `orqviz` paper](https://arxiv.org/abs/2111.04695):
 
-[ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms](https://arxiv.org/abs/2111.04695)
+> Manuel S. Rudolph, Sukin Sim, Asad Raza, Michał Stęchły, Jarrod R. McClean, Eric R. Anschuetz, Luis Serrano, and Alejandro Perdomo-Ortiz. ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms. 2021. arXiv:2111.04695
 
 ## How to contribute
 
