@@ -4,7 +4,7 @@
 
 A Python package for easily **visualizing the loss landscape** of Variational Quantum Algorithms by [Zapata Computing Inc](https://www.zapatacomputing.com/).
 
-`orqviz` provides a collection of tools which quantum researchs and enthusiasts alike can use for their simulations. It works with any framework for running quantum circuits, for example `qiskit`, `cirq`, `pennylane`, and `Orquestra`. The package contains functions to generate data, as well as a range of flexible plotting and helper functions. `orqviz` is light-weight and has very few dependencies.
+`orqviz` provides a collection of tools which quantum researchers and enthusiasts alike can use for their simulations. It works with any framework for running quantum circuits, for example `qiskit`, `cirq`, `pennylane`, and `Orquestra`. The package contains functions to generate data, as well as a range of flexible plotting and helper functions. `orqviz` is light-weight and has very few dependencies.
 
 ## Getting started
 
@@ -12,8 +12,10 @@ In [doc/examples/](https://github.com/zapatacomputing/orqviz/tree/main/docs/exam
 
 In [this notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/sombrero.ipynb) we have the _Sombrero_ example that we showcase in our paper. We also have an [advanced example notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/advanced_example_notebook.ipynb) which provides a thorough demonstration of the flexibility of the `orqviz` package.
 
-We have recently published a paper on arXiv where we review the tools available with `orqviz`:\
+We recently published a paper on arXiv where we review the tools available with `orqviz`:\
 [ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms](https://arxiv.org/abs/2111.04695)
+
+Find a brief overview of the visualization techniques on [YouTube](https://www.youtube.com/watch?v=_3x4NI6PcH4)!
 
 ## Installation
 
