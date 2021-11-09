@@ -8,7 +8,7 @@ A Python package for easily **visualizing the loss landscape** of Variational Qu
 
 In [doc/examples/](https://github.com/zapatacomputing/orqviz/tree/main/docs/examples) we provide a range of `Jupyter notebook` examples for `orqviz`. We have four Jupyter notebooks with tutorials for how to get started with any quantum circuit simulation framework you might use. You will find examples with `qiskit`, `cirq`, `pennylane` and Zapata's `Orquestra` library. The tutorials are not exhaustive, but they do provide a full story that you can follow along.
 
-In [this notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/sombrero.ipynb) we have the _Sombrero_ example that we showcase in our paper. We also have an [advanced example notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/example_notebook.ipynb) which provides a thorough demonstration of the flexibility of the `orqviz` package.
+In [this notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/sombrero.ipynb) we have the _Sombrero_ example that we showcase in our paper. We also have an [advanced example notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/advanced_example_notebook.ipynb) which provides a thorough demonstration of the flexibility of the `orqviz` package.
 
 We have recently published a paper on arXiv where we review the tools available with `orqviz`. TODO: Link to arXiv.
 
