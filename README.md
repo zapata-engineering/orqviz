@@ -1,3 +1,5 @@
+![Image](docs/orqviz_logo.png)
+
 # orqviz
 
 A Python package for easily **visualizing the loss landscape** of Variational Quantum Algorithms by [Zapata Computing Inc](https://www.zapatacomputing.com/).
@@ -10,7 +12,8 @@ In [doc/examples/](https://github.com/zapatacomputing/orqviz/tree/main/docs/exam
 
 In [this notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/sombrero.ipynb) we have the _Sombrero_ example that we showcase in our paper. We also have an [advanced example notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/example_notebook.ipynb) which provides a thorough demonstration of the flexibility of the `orqviz` package.
 
-We have recently published a paper on arXiv where we review the tools available with `orqviz`: [ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms](https://arxiv.org/abs/2111.04695)
+We have recently published a paper on arXiv where we review the tools available with `orqviz`:\
+[ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms](https://arxiv.org/abs/2111.04695)
 
 ## Installation
 
@@ -62,6 +65,8 @@ For questions related to the visualization techniques, contact Manuel via manuel
 The leading software developer of this package is Michał Stęchły at Zapata Computing.\
 For questions related to technicalities of the package, contact Michał via michal.stechly@zapatacomputing.com .
 
+Thank you to Sukin Sim and Luis Serrano from Zapata Computing for their contributions to the tutorials.
+
 You can also contact us or ask general questions using [GitHub Discussions](https://github.com/zapatacomputing/orqviz/discussions).
 
 For more specific code issues, bug fixes, etc. please open a [GitHub issue](https://github.com/zapatacomputing/orqviz/issues) in the `orqviz` repository.
@@ -69,8 +74,6 @@ For more specific code issues, bug fixes, etc. please open a [GitHub issue](http
 If you are doing research using `orqviz`, please cite our paper:
 
 [ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms](https://arxiv.org/abs/2111.04695)
-
-Thank you to Sukin Sim and Luis Serrano from Zapata Computing for their contributions to the tutorials.
 
 ## How to contribute
 
