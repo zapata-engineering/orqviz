@@ -49,7 +49,7 @@ def calculate_full_gradient(
     grad = np.zeros_like(params)
 
     if stochastic:
-        direction = np.random.choice([0.0, 1.0], size=np.shape(params))
+        direction = np.random.choice([-1.0, 1.0], size=np.shape(params))
         grad_value = gradient_function(params, direction)
         grad += grad_value * direction
     else:
