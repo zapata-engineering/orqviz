@@ -18,6 +18,7 @@ class PCAobject:
         components_ids: Tuple[int, int] = (0, 1),
     ):
         self.all_points = all_points
+        self._params_shape = np.shape(self.all_points)[1:]
         self.components_ids = components_ids
         self.fit_pca(max(self.components_ids) + 1)
 
@@ -28,10 +29,27 @@ class PCAobject:
 
     def fit_pca(self, n_components: int):
         self.pca = PCA(n_components=n_components)
-        self.pca.fit(self.all_points)
+        params = self.all_points.reshape(-1, np.prod(self._params_shape))
+        self.pca.fit(params)
 
     def get_transformed_points(self, points: Optional[ArrayOfParameterVectors] = None):
-        return self.pca.transform(self.all_points if points is None else points)
+        high_dim_points = self.all_points if points is None else points
+        return self.pca.transform(
+            high_dim_points.reshape(-1, np.prod(self._params_shape))
+        )
+
+    def get_inverse_transformed_point(self, pca_params: np.ndarray):
+        return self.pca.inverse_transform(pca_params).reshape(*self._params_shape)
+
+    @property
+    def components(self) -> np.ndarray:
+        """Returns a numpy array of component vectors in the shape of the parameters"""
+        return self.pca.components_.reshape(-1, *self._params_shape)
+
+    @property
+    def mean(self) -> np.ndarray:
+        """Returns the fitted mean of the high-dimensional parameter vectors"""
+        return self.pca.mean_.reshape(*self._params_shape)
 
     def _get_endpoints_from_pca(
         self,

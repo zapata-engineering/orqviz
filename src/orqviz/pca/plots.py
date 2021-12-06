@@ -37,9 +37,9 @@ def plot_optimization_trajectory_on_pca(
 
     plot_optimization_trajectory(
         optimization_trajectory=optimization_trajectory,
-        direction_x=pca_object.pca.components_[pca_object.components_ids[0]],
-        direction_y=pca_object.pca.components_[pca_object.components_ids[1]],
-        shift=pca_object.pca.mean_,
+        direction_x=pca_object.components[pca_object.components_ids[0]],
+        direction_y=pca_object.components[pca_object.components_ids[1]],
+        shift=pca_object.mean,
         ax=ax,
         **plot_kwargs,
     )
@@ -66,9 +66,9 @@ def plot_scatter_points_on_pca(
 
     plot_scatter_points(
         scatter_points=scatter_points,
-        direction_x=pca_object.pca.components_[pca_object.components_ids[0]],
-        direction_y=pca_object.pca.components_[pca_object.components_ids[1]],
-        shift=pca_object.pca.mean_,
+        direction_x=pca_object.components[pca_object.components_ids[0]],
+        direction_y=pca_object.components[pca_object.components_ids[1]],
+        shift=pca_object.mean,
         ax=ax,
         **plot_kwargs,
     )
@@ -95,9 +95,9 @@ def plot_line_through_points_on_pca(
 
     plot_line_through_points(
         points=points,
-        direction_x=pca_object.pca.components_[pca_object.components_ids[0]],
-        direction_y=pca_object.pca.components_[pca_object.components_ids[1]],
-        shift=pca_object.pca.mean_,
+        direction_x=pca_object.components[pca_object.components_ids[0]],
+        direction_y=pca_object.components[pca_object.components_ids[1]],
+        shift=pca_object.mean,
         ax=ax,
         **plot_kwargs,
     )

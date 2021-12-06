@@ -12,20 +12,26 @@ from orqviz.geometric import (
 )
 
 
-@pytest.mark.parametrize("dimension", [2, 5, 100, 1000])
+@pytest.mark.parametrize("dimension", [2, 5, 100, 1000, (2, 3), (11, 4)])
 def test_get_random_normal_vector(dimension):
     vector = get_random_normal_vector(dimension=dimension)
-    assert len(vector) == dimension
+    if isinstance(dimension, int):
+        assert len(vector) == dimension
+    elif isinstance(dimension, tuple):
+        assert vector.shape == dimension
     assert np.isclose(np.linalg.norm(vector), 1.0)
 
 
-@pytest.mark.parametrize("dimension", [2, 5, 100, 1000])
+@pytest.mark.parametrize("dimension", [2, 5, 100, 1000, (2, 3), (11, 4)])
 def test_get_random_orthonormal_vector(dimension):
     vector_1 = get_random_normal_vector(dimension=dimension)
     vector_2 = get_random_orthonormal_vector(vector_1)
-    assert len(vector_2) == dimension
+    if isinstance(dimension, int):
+        assert len(vector_1) == len(vector_2) == dimension
+    elif isinstance(dimension, tuple):
+        assert vector_1.shape == vector_2.shape == dimension
     assert np.isclose(np.linalg.norm(vector_2), 1.0)
-    assert np.isclose(np.dot(vector_1, vector_2), 0.0)
+    assert np.isclose(np.dot(vector_1.flatten(), vector_2.flatten()), 0.0)
 
 
 @pytest.mark.parametrize(
@@ -44,6 +50,18 @@ def test_get_random_orthonormal_vector(dimension):
         ],
         [np.array([0, 0]), np.array([3, 4]), 2.5, np.array([0.5, -1])],
         [np.array([1, 1]), np.array([4, 5]), 5, np.array([-1, 0])],
+        [
+            np.array([[1, 1], [2, 2]]),
+            np.array([[4, 5], [6, 7]]),
+            3,
+            np.array([[1, 2], [3, 1]]),
+        ],
+        [
+            np.array([[1, 1], [2, 2]]),
+            np.array([[1.2, -3], [0, 7.1]]),
+            1.4,
+            np.array([[1.2, 1.2], [1.4, 1.5]]),
+        ],
     ],
 )
 def test_relative_periodic_wrap(

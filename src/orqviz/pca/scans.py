@@ -47,7 +47,7 @@ def perform_2D_pca_scan(
         pca_params = np.zeros(pca_object.pca.n_components)
         pca_params[pca_object.components_ids[0]] = xy_params[0]
         pca_params[pca_object.components_ids[1]] = xy_params[1]
-        probe_parameters = pca_object.pca.inverse_transform(pca_params)
+        probe_parameters = pca_object.get_inverse_transformed_point(pca_params)
         return loss_function(probe_parameters)
 
     return perform_2D_scan(

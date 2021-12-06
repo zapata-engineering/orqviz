@@ -42,8 +42,8 @@ def perform_2D_interpolation(
             of the interpolation vector. Defaults to (-0.5, 1.5).
         end_points_y: Range of scan along the y-direction in units
             of the interpolation vector. Defaults to (-0.5, 0.5).
-        parameter_period (Optional[float], optional): Optional period of
-        the parameters to scan the shortest interpolated path between the points.
+        parameter_period: Optional period of the parameters to scan the shortest
+            interpolated path between the points.
             If None, interpolation per parameter happens along the real number line.
             Defaults to None.
         verbose: Flag for printing progress. Defaults to False.
