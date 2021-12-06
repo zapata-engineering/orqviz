@@ -12,7 +12,7 @@ def run_NEB(
     loss_function: Callable[[ParameterVector], float],
     full_gradient_function: Optional[Callable[[ParameterVector], np.ndarray]] = None,
     n_iters: int = 10,
-    eps: float = 0.1,
+    eps: float = 1e-3,
     learning_rate: float = 0.1,
     stochastic: bool = False,
     calibrate_tangential: bool = False,
@@ -34,7 +34,8 @@ def run_NEB(
             the loss function for all parameters. Defaults to None.
         n_iters: Number of optimization iterations. Defaults to 10.
         eps: Stencil for finite difference gradient if full_gradient_function
-            is not provided. Defaults to 0.1.
+            is not provided. For noisy loss functions,
+            we recommend increasing this value. Defaults to 1e-3.
         learning_rate: Learning rate/ step size for the gradient descent optimization.
             Defaults to 0.1.
         stochastic: Flag to indicate whether to perform stochastic gradient descent
@@ -105,7 +106,7 @@ def _get_gradients_on_pivots(
 
     # We initialize with zeros, as we always want first and last gradient
     # to be equal to 0.
-    gradients_on_pivots = np.zeros(shape=(chain.n_pivots, chain.n_params))
+    gradients_on_pivots = np.zeros(shape=(chain.n_pivots, *chain.param_shape))
 
     for ii in range(1, chain.n_pivots - 1):
         before = chain.pivots[ii - 1]
@@ -118,7 +119,9 @@ def _get_gradients_on_pivots(
         if calibrate_tangential and loss_function(after) > loss_function(before):
             tan = after - this
         tan /= np.linalg.norm(tan)
-        tangential_grad = np.dot(full_grad, tan) * tan
+        tangential_grad = (
+            np.tensordot(np.atleast_2d(full_grad), np.atleast_2d(tan)) * tan
+        )
         # save update
         gradients_on_pivots[ii] = full_grad - tangential_grad
 
