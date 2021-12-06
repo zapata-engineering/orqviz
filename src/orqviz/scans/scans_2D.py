@@ -93,7 +93,7 @@ def perform_2D_scan(
             If None, a random unit vector is sampled. Defaults to None.
         n_steps_x: Number of points evaluated along the x-direction. Defaults to 20.
         n_steps_y: Number of points evaluated along the y-direction.
-            If None, set value to n_steps_y. Defaults to None.
+            If None, set value to n_steps_x. Defaults to None.
         end_points_x: Range of scan along the x-direction in units of direction_x.
             Defaults to (-1, 1).
         end_points_y: Range of scan along the x-direction in units of direction_x.
