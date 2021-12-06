@@ -29,9 +29,10 @@ def perform_2D_interpolation(
     Args:
         point_1: First point of the interpolation.
         point_2: Second point of the interpolation.
-        loss_function: Function to perform the scan on. It must receive only a numpy array of parameters,
-            and return a real number. If your function requires more arguments,
-            consider using the 'partial' method from the 'functools' library.
+        loss_function: Function to perform the scan on. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'partial'
+            method from the 'functools' library.
         direction_y: Second scan direction for the 2D scan where first direction
             is the interpolation vector of the points. If None, it's chosen at random.
         n_steps_x: Number of points evaluated along the x-direction. Defaults to 20.
@@ -88,9 +89,10 @@ def perform_2D_scan(
 
     Args:
         origin: Origin point of the 2D scan.
-        loss_function: Function to perform the scan on. It must receive only a numpy array of parameters,
-            and return a real number. If your function requires more arguments,
-            consider using the 'partial' method from the 'functools' library.
+        loss_function: Function to perform the scan on. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'partial'
+            method from the 'functools' library.
         direction_x: x-direction vector for scan. Has same shape as origin.
             If None, a random unit vector is sampled. Defaults to None.
         direction_y: y-direction vector for scan. Has same shape as origin.
@@ -126,7 +128,7 @@ def perform_2D_scan(
 
     # We acknowledge the fact that this method is not the most intuitive one,
     # but it does the job, so we decided to leave it here.
-    params_grid = (
+    params_grid: GridOfParameterVectors = (
         origin
         + np.tensordot(x_values, direction_x, axes=-1)
         + np.tensordot(y_values, direction_y, axes=-1)
