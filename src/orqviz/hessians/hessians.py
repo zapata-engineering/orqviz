@@ -70,7 +70,7 @@ def get_Hessian(
         raise ValueError(
             """
         Calculation of the Hessian is currently not supported for ND parameter vectors.
-        Please adapt the your loss function to accept a 1D array of parameters. 
+        Please adapt the your loss function to accept a 1D array of parameters.
             """
         )
     n_params = len(params)
@@ -137,7 +137,7 @@ def get_Hessian_SPSA_approx(
         raise ValueError(
             """
         Calculation of the Hessian is currently not supported for ND parameter vectors.
-        Please adapt the your loss function to accept a 1D array of parameters. 
+        Please adapt the your loss function to accept a 1D array of parameters.
             """
         )
     n_params = len(params)
