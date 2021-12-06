@@ -14,8 +14,6 @@ def COST_FUNCTION(params):
     [[np.random.rand(98, 9), (0, 1)], [np.random.rand(27, 10, 4), (1, 5)]],
 )
 def test_pca(all_points, components_ids):
-    params_shape = np.shape(all_points)
-
     pca = get_pca(all_points, components_ids=components_ids)
 
     n_steps_x = 100

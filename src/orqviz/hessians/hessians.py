@@ -53,7 +53,10 @@ def get_Hessian(
 
     Args:
         params: Parameter vector at which the Hessian matrix is computed.
-        loss_function: Loss function for which to calculate the Hessian matrix.
+        loss_function: Function for which to calculate the Hessian matrix.
+            It must receive a 1D numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'partial'
+            method from the 'functools' library.
         gradient_function: Gradient function which can be used to calculate
             the partial derivative of the loss function for individial parameters.
             It can be used to avoid some numerical gradients and improve
@@ -63,7 +66,13 @@ def get_Hessian(
         eps: Finite difference stencil used for numerical gradient in calculation.
             It is always used, even if gradient function is provided. Defaults to 0.1.
     """
-
+    if len(np.shape(params)) > 1:
+        raise ValueError(
+            """
+        Calculation of the Hessian is currently not supported for ND parameter vectors.
+        Please adapt the your loss function to accept a 1D array of parameters. 
+            """
+        )
     n_params = len(params)
     hessian_shape = (n_params, n_params)
     Hessian_Matr = np.zeros(shape=hessian_shape)
@@ -85,8 +94,8 @@ def get_Hessian(
                 dir2[k] = 1
                 dir2_gradient = gradient_function(params + dir2 * eps, dir1)
 
-                op = np.outer(dir1, dir2)
-                outer_prod_matrix = (op + op.T) / 2
+                op = np.multiply.outer(dir1, dir2)
+                outer_prod_matrix = op + op.T
 
                 hessian_result = (dir2_gradient - dir1_gradient) / eps
                 Hessian_Matr += hessian_result * outer_prod_matrix
@@ -111,7 +120,10 @@ def get_Hessian_SPSA_approx(
 
     Args:
         params: Parameter vector at which the Hessian matrix is computed.
-        loss_function: Loss function for which to calculate the Hessian matrix.
+        loss_function: Function for which to calculate the Hessian matrix.
+            It must receive a 1D numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'partial'
+            method from the 'functools' library.
         gradient_function: Gradient function which can be used to calculate
             the derivative of the loss function in random stochastic directions.
             It can be used to avoid some numerical gradients and improve accuracy
@@ -121,7 +133,13 @@ def get_Hessian_SPSA_approx(
         eps: Finite difference stencil used for numerical gradient in calculation.
             It is always used, even if gradient function is provided. Defaults to 0.1.
     """
-
+    if len(np.shape(params)) > 1:
+        raise ValueError(
+            """
+        Calculation of the Hessian is currently not supported for ND parameter vectors.
+        Please adapt the your loss function to accept a 1D array of parameters. 
+            """
+        )
     n_params = len(params)
     hessian_shape = (n_params, n_params)
     Hessian_Matr = np.zeros(shape=hessian_shape)

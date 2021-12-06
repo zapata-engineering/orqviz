@@ -2,7 +2,7 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
-
+import pytest
 from orqviz.hessians import (
     get_Hessian,
     get_Hessian_SPSA_approx,
@@ -13,11 +13,15 @@ from orqviz.utils import load_viz_object, save_viz_object
 
 
 def COST_FUNCTION(params):
-    return np.sum(np.sin(params)) + np.sum(params ** 2) + 3 * params[1] - 10 * params[2]
+    return np.sum(np.sin(params)) + np.sum(params ** 2)
 
 
-def test_get_hessian():
-    params = np.random.rand(8)
+@pytest.mark.parametrize(
+    "params",
+    [np.random.rand(8)],
+)
+def test_get_hessian(params):
+    param_shape = params.shape
 
     hessian = get_Hessian(params, COST_FUNCTION, gradient_function=None, eps=1e-3)
 
