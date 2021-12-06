@@ -48,9 +48,10 @@ def eval_points_on_grid(
 
     """
 
-    size_x, size_y, n_params = np.array(all_parameters).shape
+    shape = np.shape(all_parameters)
+    (size_x, size_y), params_shape = shape[:2], shape[2:]
 
-    vector_of_parameters = all_parameters.reshape((size_x * size_y, n_params))
+    vector_of_parameters = all_parameters.reshape((size_x * size_y, *params_shape))
     vector_of_values = eval_points_on_path(
         all_points=vector_of_parameters,
         loss_function=loss_function,
