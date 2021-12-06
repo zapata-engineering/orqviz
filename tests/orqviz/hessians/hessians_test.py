@@ -21,8 +21,6 @@ def COST_FUNCTION(params):
     [np.random.rand(8)],
 )
 def test_get_hessian(params):
-    param_shape = params.shape
-
     hessian = get_Hessian(params, COST_FUNCTION, gradient_function=None, eps=1e-3)
 
     assert hasattr(hessian, "eigenvectors")
