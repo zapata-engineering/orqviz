@@ -24,9 +24,9 @@ def perform_1D_scan(
 
     Args:
         origin: Parameter vector that is the origin on the 1D scan.
-        loss_function: Function to perform the scan on. It must receive only a 
-            numpy.ndarray of parameters, and return a real number. 
-            If your function requires more arguments, consider using the 'partial' 
+        loss_function: Function to perform the scan on. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'partial'
             method from the 'functools' library.
         direction: Direction in which loss function is scanned around the origin.
             If None, a random unit vector is sampled. Defaults to None
@@ -65,9 +65,9 @@ def perform_1D_interpolation(
     Args:
         point_1: First point of the interpolation.
         point_2: Second point of the interpolation.
-        loss_function: Function to perform the scan on. It must receive only a 
-            numpy.ndarray of parameters, and return a real number. 
-            If your function requires more arguments, consider using the 'partial' 
+        loss_function: Function to perform the scan on. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'partial'
             method from the 'functools' library.
         n_steps: Number of points evaluated along the scan. Defaults to 100.
         end_points: Range of scan along the direction in units of the
