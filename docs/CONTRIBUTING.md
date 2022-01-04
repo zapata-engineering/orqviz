@@ -16,6 +16,11 @@ Pull requests are a great way to get your ideas into this repository.
 
 When deciding if we merge in a pull request we look at the following things:
 
+### Base branch
+
+For development we use `dev` branch. When we decide to make a release, we merge `dev` branch into `main`. 
+Therefore, if you want to contribute please branch off the `dev` branch and create your PR with `dev` as the base branch.
+
 ### Automatic checks
 
 Keep in mind that we have automatic checks configured for this project. We won't merge your PR unless it:
