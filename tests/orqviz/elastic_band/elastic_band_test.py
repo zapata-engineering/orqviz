@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from orqviz.elastic_band import Chain, plot_all_chains_losses, run_AutoNEB, run_NEB
-from orqviz.utils import load_viz_object, save_viz_object
+from orqviz.io import load_viz_object, save_viz_object
 
 
 def SUM_OF_SINES(params):

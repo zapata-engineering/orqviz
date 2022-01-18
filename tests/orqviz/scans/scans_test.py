@@ -16,7 +16,7 @@ from orqviz.scans.plots import (
     plot_2D_scan_result,
 )
 from orqviz.scans.scans_2D import perform_2D_scan
-from orqviz.utils import load_viz_object, save_viz_object
+from orqviz.io import load_viz_object, save_viz_object
 
 
 def SUM_OF_SINES(params):
