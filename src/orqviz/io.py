@@ -8,7 +8,7 @@ from .scans.data_structures import Scan1DResult, Scan2DResult
 OrqVizObject = Union[Scan1DResult, Scan2DResult, HessianEigenobject, Chain]
 
 
-def save_viz_object(viz_object: OrqVizObject, filename: str):
+def save_viz_object(viz_object: OrqVizObject, filename: str) -> None:
     """Save datatype to a with pickle"""
 
     with open(filename, "wb") as f:
