@@ -10,7 +10,7 @@ def calculate_full_gradient(
     loss_function: Callable[[ParameterVector], float],
     gradient_function: Optional[Callable[[ParameterVector, np.ndarray], float]] = None,
     stochastic: bool = False,
-    eps: float = 0.1,
+    eps: float = 1e-3,
 ) -> ParameterVector:
     """Function to calculate a full gradient vector of partial derivatives
         of a loss function with respect to each entry of a parameter vector.
@@ -27,7 +27,8 @@ def calculate_full_gradient(
             a randomly sampled direction.
             If True, the specified gradient function must support this.
             Defaults to False.
-        eps: Stencil for numerical gradient calculation. Defaults to 0.1.
+        eps: Stencil for numerical gradient calculation. If the loss function is noisy,
+            this value needs to be increase, e.g to 0.1. Defaults to 1e-3.
     """
 
     if loss_function is None and gradient_function is None:
@@ -49,15 +50,15 @@ def calculate_full_gradient(
     grad = np.zeros_like(params)
 
     if stochastic:
-        direction = np.random.choice([0.0, 1.0], size=np.shape(params))
+        direction = np.random.choice([-1.0, 1.0], size=np.shape(params))
         grad_value = gradient_function(params, direction)
-        grad += grad_value * direction
+        grad = grad + grad_value * direction
     else:
         for i in range(len(params)):
             direction = np.zeros_like(params)
             direction[i] = 1.0
             grad_value = gradient_function(params, direction)
-            grad += grad_value * direction
+            grad = grad + grad_value * direction
     return grad
 
 
