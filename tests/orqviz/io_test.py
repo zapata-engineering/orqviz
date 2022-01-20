@@ -39,10 +39,8 @@ def test_saving_and_loading_datatypes():
     chain = Chain(np.linspace(origin, origin + direction_x, num=5))
 
     for data_object in [scan1d, scan2d, hessian, chain]:
-        with pytest.warns(DeprecationWarning):
-            save_viz_object(data_object, "test")
-        with pytest.warns(DeprecationWarning):
-            loaded_data_object = load_viz_object("test")
+        save_viz_object(data_object, "test")
+        loaded_data_object = load_viz_object("test")
         os.remove("test")
         assert isinstance(loaded_data_object, OrqVizObject.__args__)
         assert type(loaded_data_object) == type(data_object)
