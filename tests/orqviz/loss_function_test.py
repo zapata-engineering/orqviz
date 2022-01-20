@@ -1,5 +1,6 @@
-from orqviz.loss_function import LossFunctionWrapper
 import numpy as np
+
+from orqviz.loss_function import LossFunctionWrapper
 
 
 def mock_function(params, b, c):

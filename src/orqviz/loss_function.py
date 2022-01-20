@@ -1,6 +1,7 @@
-from typing import Callable, Optional
-import numpy as np
 import time
+from typing import Callable, Optional
+
+import numpy as np
 
 
 def _calculate_new_average(
