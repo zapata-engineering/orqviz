@@ -54,9 +54,11 @@ def calculate_full_gradient(
         grad_value = gradient_function(params, direction)
         grad = grad + grad_value * direction
     else:
-        for i in range(len(params)):
-            direction = np.zeros_like(params)
+        flat_params = params.flatten()
+        for i in range(len(flat_params)):
+            direction = np.zeros_like(flat_params)
             direction[i] = 1.0
+            direction = direction.reshape(params.shape)
             grad_value = gradient_function(params, direction)
             grad = grad + grad_value * direction
     return grad
