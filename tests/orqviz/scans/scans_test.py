@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
+from orqviz.io import load_viz_object, save_viz_object
 from orqviz.scans import (
     perform_1D_interpolation,
     perform_1D_scan,
@@ -16,7 +17,6 @@ from orqviz.scans.plots import (
     plot_2D_scan_result,
 )
 from orqviz.scans.scans_2D import perform_2D_scan
-from orqviz.utils import load_viz_object, save_viz_object
 
 
 def SUM_OF_SINES(params):
