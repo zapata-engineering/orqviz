@@ -1,11 +1,12 @@
 import pickle
+import warnings
 from typing import Union
 
 from .elastic_band.data_structures import Chain
 from .hessians.data_structures import HessianEigenobject
+from .io import load_viz_object as _load_viz_object
+from .io import save_viz_object as _save_viz_object
 from .scans.data_structures import Scan1DResult, Scan2DResult
-from .io import save_viz_object as _save_viz_object, load_viz_object as _load_viz_object
-import warnings
 
 OrqVizObject = Union[Scan1DResult, Scan2DResult, HessianEigenobject, Chain]
 

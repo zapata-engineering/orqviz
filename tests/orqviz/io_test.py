@@ -4,8 +4,8 @@ import numpy as np
 
 from orqviz.elastic_band.data_structures import Chain
 from orqviz.hessians import get_Hessian
-from orqviz.scans import perform_1D_scan, perform_2D_scan
 from orqviz.io import OrqVizObject, load_viz_object, save_viz_object
+from orqviz.scans import perform_1D_scan, perform_2D_scan
 
 
 def SUM_OF_SINES(params):
