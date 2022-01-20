@@ -15,13 +15,13 @@ def _calculate_new_average(
 
 class LossFunctionWrapper:
     def __init__(self, loss_function: Callable, *args, **kwargs):
-        def wrapped_loss_function(params):
+        def wrapped_loss_function(params: np.ndarray) -> float:
             return loss_function(params, *args, **kwargs)
 
         self.loss_function = wrapped_loss_function
         self.call_count = 0
-        self.average_call_time = None
-        self.min_value = None
+        self.average_call_time: Optional[float] = None
+        self.min_value: Optional[float] = None
 
     def __call__(self, params: np.ndarray) -> float:
         start_time = time.perf_counter()
