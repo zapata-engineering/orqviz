@@ -14,7 +14,7 @@ OrqVizObject = Union[Scan1DResult, Scan2DResult, HessianEigenobject, Chain]
 def save_viz_object(viz_object: OrqVizObject, filename: str) -> None:
     """Save datatype to a with pickle"""
     warnings.warn(
-        """orqviz.utils.save_viz_object is deprecated, 
+        """orqviz.utils.save_viz_object is deprecated,
         please use orqviz.io.save_viz_object""",
         DeprecationWarning,
     )
@@ -24,7 +24,7 @@ def save_viz_object(viz_object: OrqVizObject, filename: str) -> None:
 def load_viz_object(filename: str) -> OrqVizObject:
     """Load datatype from a file with pickle"""
     warnings.warn(
-        """orqviz.utils.load_viz_object is deprecated, 
+        """orqviz.utils.load_viz_object is deprecated,
         please use orqviz.io.load_viz_object""",
         DeprecationWarning,
     )
