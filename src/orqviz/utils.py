@@ -1,4 +1,3 @@
-import pickle
 import warnings
 from typing import Union
 

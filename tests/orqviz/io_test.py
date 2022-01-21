@@ -1,6 +1,7 @@
 import os
 
 import numpy as np
+import pytest
 
 from orqviz.elastic_band.data_structures import Chain
 from orqviz.hessians import get_Hessian

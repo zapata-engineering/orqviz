@@ -9,5 +9,4 @@ from . import (
     plot_utils,
     plots,
     scans,
-    utils,
 )

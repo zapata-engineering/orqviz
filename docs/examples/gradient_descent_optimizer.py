@@ -7,7 +7,7 @@ from orqviz.gradients import calculate_full_gradient
 
 def gradient_descent_optimizer(
     init_params: np.ndarray,
-    loss_function: Callable,
+    loss_function: Callable[[np.ndarray], float],
     n_iters: int,
     learning_rate: float = 0.1,
     full_gradient_function: Optional[Callable] = None,
