@@ -1,5 +1,5 @@
 from dataclasses import asdict, dataclass, field
-from typing import List
+from typing import List, Optional, Tuple
 
 import numpy as np
 
@@ -26,4 +26,4 @@ class HessianEigenobject:
         eigenvectors = eigenvectors.T
         sorted_ind = np.argsort(eigenvalues)
         self.eigenvalues = eigenvalues[sorted_ind]
-        self.eigenvectors = eigenvectors[sorted_ind]
+        self.eigenvectors = eigenvectors[sorted_ind].reshape((-1, *self.params.shape))

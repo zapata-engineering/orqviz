@@ -66,14 +66,16 @@ def get_Hessian(
         eps: Finite difference stencil used for numerical gradient in calculation.
             It is always used, even if gradient function is provided. Defaults to 0.1.
     """
-    if len(np.shape(params)) > 1:
-        raise ValueError(
-            """
-        Calculation of the Hessian is currently not supported for ND parameter vectors.
-        Please adapt the your loss function to accept a 1D array of parameters.
-            """
-        )
-    n_params = len(params)
+    # if len(np.shape(params)) > 1:
+    #     raise ValueError(
+    #         """
+    #     Calculation of the Hessian is currently not supported for ND parameter vectors.
+    #     Please adapt the your loss function to accept a 1D array of parameters.
+    #         """
+    #     )
+    flat_params = params.flatten()
+
+    n_params = len(flat_params)
     hessian_shape = (n_params, n_params)
     Hessian_Matr = np.zeros(shape=hessian_shape)
 
@@ -86,15 +88,17 @@ def get_Hessian(
 
     for _ in range(n_reps):
         for j in range(n_params):
-            dir1 = np.zeros_like(params)
+            dir1 = np.zeros_like(flat_params)
             dir1[j] = 1
+            dir1 = dir1.reshape(params.shape)
             dir1_gradient = gradient_function(params, dir1)
             for k in range(0, j + 1):
-                dir2 = np.zeros_like(params)
+                dir2 = np.zeros_like(flat_params)
                 dir2[k] = 1
+                dir2 = dir2.reshape(params.shape)
                 dir2_gradient = gradient_function(params + dir2 * eps, dir1)
 
-                op = np.multiply.outer(dir1, dir2)
+                op = np.outer(dir1.flatten(), dir2.flatten())
                 outer_prod_matrix = op + op.T
 
                 hessian_result = (dir2_gradient - dir1_gradient) / eps
@@ -133,14 +137,17 @@ def get_Hessian_SPSA_approx(
         eps: Finite difference stencil used for numerical gradient in calculation.
             It is always used, even if gradient function is provided. Defaults to 0.1.
     """
-    if len(np.shape(params)) > 1:
-        raise ValueError(
-            """
-        Calculation of the Hessian is currently not supported for ND parameter vectors.
-        Please adapt the your loss function to accept a 1D array of parameters.
-            """
-        )
-    n_params = len(params)
+    # if len(np.shape(params)) > 1:
+    #     raise ValueError(
+    #         """
+    #     Calculation of the Hessian is currently not supported for ND parameter vectors.
+    #     Please adapt the your loss function to accept a 1D array of parameters.
+    #         """
+    #     )
+
+    flat_params = params.flatten()
+
+    n_params = len(flat_params)
     hessian_shape = (n_params, n_params)
     Hessian_Matr = np.zeros(shape=hessian_shape)
 
@@ -152,13 +159,13 @@ def get_Hessian_SPSA_approx(
         gradient_function = _gradient_function
 
     for _ in range(n_reps):
-        dir1 = np.random.choice([-1.0, 1.0], size=n_params)
-        dir1_gradient = gradient_function(params.copy(), dir1)
+        dir1 = np.random.choice([-1.0, 1.0], size=params.shape)
+        dir1_gradient = gradient_function(params, dir1)
 
-        dir2 = np.random.choice([-1.0, 1.0], size=n_params)
-        dir2_gradient = gradient_function(params.copy() + dir2 * eps, dir1)
+        dir2 = np.random.choice([-1.0, 1.0], size=params.shape)
+        dir2_gradient = gradient_function(params + dir2 * eps, dir1)
 
-        op = np.outer(dir1, dir2)
+        op = np.outer(dir1.flatten(), dir2.flatten())
         outer_prod_matrix = (op + op.T) / 2
 
         hessian_result = (dir2_gradient - dir1_gradient) / eps
