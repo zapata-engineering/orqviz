@@ -22,23 +22,27 @@ class PCAobject:
         self.components_ids = components_ids
         self.fit_pca(max(self.components_ids) + 1)
 
-    def set_component_ids(self, new_component_ids: Tuple[int, int]):
+    def set_component_ids(self, new_component_ids: Tuple[int, int]) -> None:
         new_n_components = max(new_component_ids) + 1
         self.fit_pca(new_n_components)
         self.components_ids = new_component_ids
 
-    def fit_pca(self, n_components: int):
+    def fit_pca(self, n_components: int) -> None:
         self.pca = PCA(n_components=n_components)
         params = self.all_points.reshape(-1, np.prod(self._params_shape))
         self.pca.fit(params)
 
-    def get_transformed_points(self, points: Optional[ArrayOfParameterVectors] = None):
+    def get_transformed_points(
+        self, points: Optional[ArrayOfParameterVectors] = None
+    ) -> np.ndarray:
         high_dim_points = self.all_points if points is None else points
         return self.pca.transform(
             high_dim_points.reshape(-1, np.prod(self._params_shape))
         )
 
-    def get_inverse_transformed_point(self, pca_params: np.ndarray):
+    def get_inverse_transformed_point(
+        self, pca_params: np.ndarray
+    ) -> ArrayOfParameterVectors:
         return self.pca.inverse_transform(pca_params).reshape(*self._params_shape)
 
     @property
