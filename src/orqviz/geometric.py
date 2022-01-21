@@ -155,3 +155,12 @@ def uniformly_distribute_trajectory(
     )
     eval_points = np.linspace(0, 1, num=n_points)
     return weight_interpolator(eval_points)
+
+
+def _norm_of_arrayofparametervectors(param_array: ArrayOfParameterVectors):
+    ax_indices = tuple(range(len(param_array.shape)))
+    t_dot = np.tensordot(
+        param_array, param_array, axes=(ax_indices[1:], ax_indices[1:])
+    )
+    # print(t_dot)
+    return np.array(np.sqrt(np.diag(t_dot)))

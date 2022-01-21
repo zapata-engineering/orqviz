@@ -5,7 +5,8 @@ from typing import Callable, NamedTuple, Tuple
 import numpy as np
 from scipy.interpolate import interp1d
 
-from ..aliases import ArrayOfParameterVectors, Weights
+from ..aliases import ArrayOfParameterVectors, ParameterVector, Weights
+from ..geometric import _norm_of_arrayofparametervectors
 from ..scans import eval_points_on_path
 
 
@@ -21,10 +22,7 @@ class Chain(NamedTuple):
     pivots: ArrayOfParameterVectors
 
     def get_weights(self) -> Weights:
-        chain_weights = np.linalg.norm(
-            np.diff(self.pivots, axis=0),
-            axis=tuple(range(1, len(self.param_shape) + 1)),
-        )
+        chain_weights = _norm_of_arrayofparametervectors(np.diff(self.pivots, axis=0))
         chain_weights /= np.sum(chain_weights)
         cum_weights = np.cumsum(chain_weights)
         matching_cum_weights = np.insert(cum_weights, 0, 0)
@@ -82,11 +80,9 @@ class ChainPath(NamedTuple):
 
     def _get_chain_from_weights(self, weights: Weights) -> Chain:
         distance_between_pivots = np.diff(self.primary_chain.pivots, axis=0)
+
         chain_diff = np.cumsum(
-            np.linalg.norm(
-                distance_between_pivots,
-                axis=tuple(range(1, len(self.primary_chain.param_shape) + 1)),
-            )
+            _norm_of_arrayofparametervectors(distance_between_pivots)
         )
         chain_diff /= max(chain_diff)
         chain_diff = np.insert(chain_diff, 0, 0)

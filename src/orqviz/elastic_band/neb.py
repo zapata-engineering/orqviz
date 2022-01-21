@@ -119,8 +119,9 @@ def _get_gradients_on_pivots(
         if calibrate_tangential and loss_function(after) > loss_function(before):
             tan = after - this
         tan /= np.linalg.norm(tan)
+        ax_indices = tuple(range(len(full_grad.shape)))
         tangential_grad = (
-            np.tensordot(np.atleast_2d(full_grad), np.atleast_2d(tan)) * tan
+            np.tensordot(full_grad, tan, axes=(ax_indices, ax_indices)) * tan
         )
         # save update
         gradients_on_pivots[ii] = full_grad - tangential_grad
