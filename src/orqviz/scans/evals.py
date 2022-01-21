@@ -4,7 +4,7 @@ import numpy as np
 
 from ..aliases import (
     ArrayOfParameterVectors,
-    EvalFunction,
+    LossFunction,
     GridOfParameterVectors,
     ParameterVector,
 )
@@ -12,7 +12,7 @@ from ..aliases import (
 
 def eval_points_on_path(
     all_points: ArrayOfParameterVectors,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     n_reps: int = 1,
     verbose: bool = False,
 ) -> np.ndarray:
@@ -39,7 +39,7 @@ def eval_points_on_path(
 
 def eval_points_on_grid(
     all_parameters: GridOfParameterVectors,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     n_reps: int = 1,
     verbose: bool = False,
 ) -> np.ndarray:

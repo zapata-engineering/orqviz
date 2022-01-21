@@ -2,14 +2,14 @@ from typing import Callable, List, Tuple, Union
 
 import numpy as np
 
-from ..aliases import EvalFunction, ParameterVector
+from ..aliases import LossFunction, ParameterVector
 from ..scans import Scan2DResult, perform_2D_scan
 from .data_structures import PCAobject
 
 
 def perform_2D_pca_scan(
     pca_object: PCAobject,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     n_steps_x: int = 20,
     n_steps_y: int = None,
     offset: Union[Tuple[float, float], float] = (-1.0, 1.0),

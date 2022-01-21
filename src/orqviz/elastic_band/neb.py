@@ -4,7 +4,7 @@ import numpy as np
 
 from ..aliases import (
     DirectionVector,
-    EvalFunction,
+    LossFunction,
     FullGradientFunction,
     ParameterVector,
     Weights,
@@ -15,7 +15,7 @@ from .data_structures import Chain, ChainPath
 
 def run_NEB(
     init_chain: Chain,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     full_gradient_function: FullGradientFunction = None,
     n_iters: int = 10,
     eps: float = 1e-3,
@@ -93,7 +93,7 @@ def run_NEB(
 
 def _get_gradients_on_pivots(
     chain: Chain,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     full_gradient_function: FullGradientFunction,
     calibrate_tangential: bool = False,
 ) -> np.ndarray:

@@ -5,7 +5,7 @@ from typing import Callable, NamedTuple, Tuple
 import numpy as np
 from scipy.interpolate import interp1d
 
-from ..aliases import ArrayOfParameterVectors, EvalFunction, ParameterVector, Weights
+from ..aliases import ArrayOfParameterVectors, LossFunction, ParameterVector, Weights
 from ..geometric import _norm_of_arrayofparametervectors
 from ..scans import eval_points_on_path
 
@@ -29,7 +29,7 @@ class Chain(NamedTuple):
         matching_cum_weights[-1] = 1
         return matching_cum_weights
 
-    def evaluate_on_pivots(self, loss_function: EvalFunction) -> np.ndarray:
+    def evaluate_on_pivots(self, loss_function: LossFunction) -> np.ndarray:
         return eval_points_on_path(self.pivots, loss_function)
 
     @property
@@ -70,7 +70,7 @@ class ChainPath(NamedTuple):
         return self._get_chain_from_weights(weights)
 
     def evaluate_points_on_path(
-        self, n_points: int, loss_function: EvalFunction, weighted: bool = False
+        self, n_points: int, loss_function: LossFunction, weighted: bool = False
     ) -> np.ndarray:
         if weighted:
             chain = self.generate_chain(n_points)

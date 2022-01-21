@@ -4,7 +4,7 @@ import numpy as np
 
 from ..aliases import (
     DirectionVector,
-    EvalFunction,
+    LossFunction,
     GridOfParameterVectors,
     ParameterVector,
 )
@@ -20,7 +20,7 @@ from .evals import eval_points_on_grid
 def perform_2D_interpolation(
     point_1: ParameterVector,
     point_2: ParameterVector,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     direction_y: Optional[DirectionVector] = None,
     n_steps_x: int = 20,
     n_steps_y: Optional[int] = None,
@@ -81,7 +81,7 @@ def perform_2D_interpolation(
 
 def perform_2D_scan(
     origin: ParameterVector,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     direction_x: Optional[DirectionVector] = None,
     direction_y: Optional[DirectionVector] = None,
     n_steps_x: int = 20,

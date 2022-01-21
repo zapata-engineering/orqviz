@@ -5,7 +5,7 @@ import numpy as np
 from ..aliases import (
     ArrayOfParameterVectors,
     DirectionVector,
-    EvalFunction,
+    LossFunction,
     ParameterVector,
 )
 from ..geometric import (
@@ -19,7 +19,7 @@ from .evals import eval_points_on_path
 
 def perform_1D_scan(
     origin: ParameterVector,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     direction: DirectionVector,
     n_steps: int = 31,
     end_points: Tuple[float, float] = (-np.pi, np.pi),
@@ -59,7 +59,7 @@ def perform_1D_scan(
 def perform_1D_interpolation(
     point_1: ParameterVector,
     point_2: ParameterVector,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     n_steps: int = 100,
     end_points: Tuple[float, float] = (-0.5, 1.5),
     parameter_period: Optional[float] = None,

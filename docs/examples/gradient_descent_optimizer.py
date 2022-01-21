@@ -3,7 +3,7 @@ from typing import Callable, Optional, Tuple
 import numpy as np
 from orqviz.aliases import (
     ArrayOfParameterVectors,
-    EvalFunction,
+    LossFunction,
     FullGradientFunction,
     ParameterVector,
 )
@@ -12,7 +12,7 @@ from orqviz.gradients import calculate_full_gradient
 
 def gradient_descent_optimizer(
     init_params: ParameterVector,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     n_iters: int,
     learning_rate: float = 0.1,
     full_gradient_function: FullGradientFunction = None,

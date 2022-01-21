@@ -2,12 +2,12 @@ from typing import Callable, Optional
 
 import numpy as np
 
-from .aliases import DirectionVector, EvalFunction, GradientFunction, ParameterVector
+from .aliases import DirectionVector, LossFunction, GradientFunction, ParameterVector
 
 
 def calculate_full_gradient(
     params: ParameterVector,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     gradient_function: GradientFunction = None,
     stochastic: bool = False,
     eps: float = 1e-3,
@@ -67,7 +67,7 @@ def calculate_full_gradient(
 def numerical_gradient(
     x: ParameterVector,
     direction: DirectionVector,
-    loss_function: EvalFunction,
+    loss_function: LossFunction,
     eps: float,
 ) -> float:
     """Function to calculate a numerical gradient of a loss function at point x
