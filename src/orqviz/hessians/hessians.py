@@ -2,7 +2,7 @@ from typing import Callable, List, Optional, Tuple
 
 import numpy as np
 
-from ..aliases import ParameterVector
+from ..aliases import EvalFunction, GradientFunction, ParameterVector
 from ..gradients import numerical_gradient
 from ..scans.data_structures import Scan1DResult
 from ..scans.scans_1D import perform_1D_scan
@@ -11,7 +11,7 @@ from .data_structures import HessianEigenobject
 
 def perform_1D_hessian_eigenvector_scan(
     hessian_object: HessianEigenobject,
-    loss_function: Callable[[ParameterVector], float],
+    loss_function: EvalFunction,
     n_points: int = 31,
     endpoints: Tuple[float, float] = (-np.pi, np.pi),
 ) -> List[Scan1DResult]:
@@ -38,10 +38,8 @@ def perform_1D_hessian_eigenvector_scan(
 
 def get_Hessian(
     params: ParameterVector,
-    loss_function: Callable[[ParameterVector], float],
-    gradient_function: Optional[
-        Callable[[ParameterVector, ParameterVector], float]
-    ] = None,
+    loss_function: EvalFunction,
+    gradient_function: Optional[GradientFunction] = None,
     n_reps: int = 1,
     eps: float = 0.1,
 ) -> HessianEigenobject:
@@ -109,10 +107,8 @@ def get_Hessian(
 
 def get_Hessian_SPSA_approx(
     params: ParameterVector,
-    loss_function: Callable[[ParameterVector], float],
-    gradient_function: Optional[
-        Callable[[ParameterVector, ParameterVector], float]
-    ] = None,
+    loss_function: EvalFunction,
+    gradient_function: Optional[GradientFunction] = None,
     n_reps: int = 20,
     eps: float = 0.1,
 ) -> HessianEigenobject:

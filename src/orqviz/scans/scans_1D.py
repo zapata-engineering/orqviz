@@ -2,7 +2,12 @@ from typing import Callable, Optional, Tuple
 
 import numpy as np
 
-from ..aliases import ArrayOfParameterVectors, ParameterVector
+from ..aliases import (
+    ArrayOfParameterVectors,
+    DirectionVector,
+    EvalFunction,
+    ParameterVector,
+)
 from ..geometric import (
     direction_linspace,
     get_random_normal_vector,
@@ -14,8 +19,8 @@ from .evals import eval_points_on_path
 
 def perform_1D_scan(
     origin: ParameterVector,
-    loss_function: Callable[[ParameterVector], float],
-    direction: Optional[np.ndarray] = None,
+    loss_function: EvalFunction,
+    direction: DirectionVector,
     n_steps: int = 31,
     end_points: Tuple[float, float] = (-np.pi, np.pi),
     verbose: bool = False,
@@ -54,7 +59,7 @@ def perform_1D_scan(
 def perform_1D_interpolation(
     point_1: ParameterVector,
     point_2: ParameterVector,
-    loss_function: Callable[[ParameterVector], float],
+    loss_function: EvalFunction,
     n_steps: int = 100,
     end_points: Tuple[float, float] = (-0.5, 1.5),
     parameter_period: Optional[float] = None,

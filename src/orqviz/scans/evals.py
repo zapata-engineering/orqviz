@@ -2,12 +2,17 @@ from typing import Callable, List, Optional
 
 import numpy as np
 
-from ..aliases import ArrayOfParameterVectors, GridOfParameterVectors, ParameterVector
+from ..aliases import (
+    ArrayOfParameterVectors,
+    EvalFunction,
+    GridOfParameterVectors,
+    ParameterVector,
+)
 
 
 def eval_points_on_path(
     all_points: ArrayOfParameterVectors,
-    loss_function: Callable[[ParameterVector], float],
+    loss_function: EvalFunction,
     n_reps: int = 1,
     verbose: bool = False,
 ) -> np.ndarray:
@@ -34,7 +39,7 @@ def eval_points_on_path(
 
 def eval_points_on_grid(
     all_parameters: GridOfParameterVectors,
-    loss_function: Callable[[ParameterVector], float],
+    loss_function: EvalFunction,
     n_reps: int = 1,
     verbose: bool = False,
 ) -> np.ndarray:

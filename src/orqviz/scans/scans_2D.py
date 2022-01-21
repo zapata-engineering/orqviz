@@ -2,7 +2,12 @@ from typing import Callable, Optional, Tuple
 
 import numpy as np
 
-from ..aliases import GridOfParameterVectors, ParameterVector
+from ..aliases import (
+    DirectionVector,
+    EvalFunction,
+    GridOfParameterVectors,
+    ParameterVector,
+)
 from ..geometric import (
     get_random_normal_vector,
     get_random_orthonormal_vector,
@@ -15,8 +20,8 @@ from .evals import eval_points_on_grid
 def perform_2D_interpolation(
     point_1: ParameterVector,
     point_2: ParameterVector,
-    loss_function: Callable[[ParameterVector], float],
-    direction_y: Optional[np.ndarray] = None,
+    loss_function: EvalFunction,
+    direction_y: Optional[DirectionVector] = None,
     n_steps_x: int = 20,
     n_steps_y: Optional[int] = None,
     end_points_x: Tuple[float, float] = (-0.5, 1.5),
@@ -76,9 +81,9 @@ def perform_2D_interpolation(
 
 def perform_2D_scan(
     origin: ParameterVector,
-    loss_function: Callable[[ParameterVector], float],
-    direction_x: Optional[np.ndarray] = None,
-    direction_y: Optional[np.ndarray] = None,
+    loss_function: EvalFunction,
+    direction_x: Optional[DirectionVector] = None,
+    direction_y: Optional[DirectionVector] = None,
     n_steps_x: int = 20,
     n_steps_y: Optional[int] = None,
     end_points_x: Tuple[float, float] = (-1, 1),

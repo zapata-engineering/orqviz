@@ -3,16 +3,16 @@ from typing import Optional, Tuple, Union
 import numpy as np
 from scipy.interpolate import interp1d
 
-from .aliases import ArrayOfParameterVectors, ParameterVector
+from .aliases import ArrayOfParameterVectors, DirectionVector, ParameterVector
 
 
-def get_random_normal_vector(dimension: Union[int, Tuple]) -> ParameterVector:
+def get_random_normal_vector(dimension: Union[int, Tuple]) -> DirectionVector:
     """Helper function to generate a vector with a specified dimension and norm=1."""
     random_vector = np.random.normal(0, 1, size=dimension)
     return random_vector / np.linalg.norm(random_vector)
 
 
-def get_random_orthonormal_vector(base_vector: ParameterVector) -> ParameterVector:
+def get_random_orthonormal_vector(base_vector: DirectionVector) -> DirectionVector:
     """Helper function to generate a random orthogonal vector with respect to
     a provided base vector."""
     random_vector = np.random.normal(size=np.shape(base_vector))
@@ -87,7 +87,7 @@ def relative_periodic_trajectory_wrap(
 
 def get_coordinates_on_direction(
     points: ArrayOfParameterVectors,
-    direction: np.ndarray,
+    direction: DirectionVector,
     origin: Optional[ParameterVector] = None,
     in_units_of_direction: bool = False,
 ) -> np.ndarray:
@@ -119,7 +119,7 @@ def get_coordinates_on_direction(
 
 def direction_linspace(
     origin: ParameterVector,
-    direction: np.ndarray,
+    direction: DirectionVector,
     n_points: int,
     endpoints: Tuple[float, float] = (-1, 1),
 ) -> ArrayOfParameterVectors:
@@ -162,5 +162,4 @@ def _norm_of_arrayofparametervectors(param_array: ArrayOfParameterVectors):
     t_dot = np.tensordot(
         param_array, param_array, axes=(ax_indices[1:], ax_indices[1:])
     )
-    # print(t_dot)
     return np.array(np.sqrt(np.diag(t_dot)))

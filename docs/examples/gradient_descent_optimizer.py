@@ -1,18 +1,23 @@
 from typing import Callable, Optional, Tuple
 
 import numpy as np
-
+from orqviz.aliases import (
+    ArrayOfParameterVectors,
+    EvalFunction,
+    FullGradientFunction,
+    ParameterVector,
+)
 from orqviz.gradients import calculate_full_gradient
 
 
 def gradient_descent_optimizer(
-    init_params: np.ndarray,
-    loss_function: Callable,
+    init_params: ParameterVector,
+    loss_function: EvalFunction,
     n_iters: int,
     learning_rate: float = 0.1,
-    full_gradient_function: Optional[Callable] = None,
+    full_gradient_function: FullGradientFunction = None,
     eval_loss_during_training: bool = True,
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> Tuple[ArrayOfParameterVectors, np.ndarray]:
     """Function perform gradient descent optimization on a loss function.
 
     Args:

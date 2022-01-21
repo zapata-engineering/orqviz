@@ -3,7 +3,7 @@ from typing import Callable, List, Optional
 import matplotlib
 import numpy as np
 
-from ..aliases import ParameterVector
+from ..aliases import EvalFunction, ParameterVector
 from ..plot_utils import _check_and_create_fig_ax
 from ..scans import eval_points_on_path
 from .neb import Chain
@@ -11,7 +11,7 @@ from .neb import Chain
 
 def plot_all_chains_losses(
     all_chains: List[Chain],
-    loss_function: Callable[[ParameterVector], float],
+    loss_function: EvalFunction,
     ax: Optional[matplotlib.axes.Axes] = None,
     **plot_kwargs,
 ) -> None:

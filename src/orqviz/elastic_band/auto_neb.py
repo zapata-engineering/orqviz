@@ -3,7 +3,7 @@ from typing import Callable, List, Optional
 import numpy as np
 from scipy.interpolate import interp1d
 
-from ..aliases import ParameterVector
+from ..aliases import EvalFunction, FullGradientFunction, ParameterVector
 from .data_structures import Chain
 from .neb import run_NEB
 
@@ -11,8 +11,8 @@ from .neb import run_NEB
 # Nudged-Elastic-Band
 def run_AutoNEB(
     init_chain: Chain,
-    loss_function: Callable[[ParameterVector], float],
-    full_gradient_function: Optional[Callable[[ParameterVector], np.ndarray]] = None,
+    loss_function: EvalFunction,
+    full_gradient_function: FullGradientFunction = None,
     n_cycles: int = 4,
     n_iters_per_cycle: int = 10,
     max_new_pivots: int = 1,
@@ -118,7 +118,7 @@ def run_AutoNEB(
 
 def _insert_pivots_to_improve_approximation(
     chain: Chain,
-    loss_function: Callable[[ParameterVector], float],
+    loss_function: EvalFunction,
     max_new_pivots: int = 1,
     percentage_tol: float = 0.2,
     absolute_tol: float = 0.0,

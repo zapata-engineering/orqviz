@@ -2,15 +2,21 @@ from typing import Callable, List, Optional
 
 import numpy as np
 
-from ..aliases import ParameterVector, Weights
+from ..aliases import (
+    DirectionVector,
+    EvalFunction,
+    FullGradientFunction,
+    ParameterVector,
+    Weights,
+)
 from ..gradients import calculate_full_gradient
 from .data_structures import Chain, ChainPath
 
 
 def run_NEB(
     init_chain: Chain,
-    loss_function: Callable[[ParameterVector], float],
-    full_gradient_function: Optional[Callable[[ParameterVector], np.ndarray]] = None,
+    loss_function: EvalFunction,
+    full_gradient_function: FullGradientFunction = None,
     n_iters: int = 10,
     eps: float = 1e-3,
     learning_rate: float = 0.1,
@@ -87,8 +93,8 @@ def run_NEB(
 
 def _get_gradients_on_pivots(
     chain: Chain,
-    loss_function: Callable[[ParameterVector], float],
-    full_gradient_function: Callable[[ParameterVector], np.ndarray],
+    loss_function: EvalFunction,
+    full_gradient_function: FullGradientFunction,
     calibrate_tangential: bool = False,
 ) -> np.ndarray:
     """Calculates gradient for every pivot on the chain w.r.t. the loss function
