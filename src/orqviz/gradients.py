@@ -2,7 +2,7 @@ from typing import Callable, Optional
 
 import numpy as np
 
-from .aliases import DirectionVector, LossFunction, GradientFunction, ParameterVector
+from .aliases import DirectionVector, GradientFunction, LossFunction, ParameterVector
 
 
 def calculate_full_gradient(
@@ -17,8 +17,11 @@ def calculate_full_gradient(
 
     Args:
         params: Parameter vector at which to calculate the gradient.
-        loss_function: Loss function with respect to which the gradient is calculated.
-            It is not required when a gradient_function is passed.
+        loss_function: Function with respect to which the gradient is calculated.
+            It is not required when a gradient_function is passed. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'LossFunctionWrapper'
+            class from 'orqviz.loss_function'.
         gradient_function: Gradient function to calculate the partial derivative
             of the loss function with respect to a direction.
             If None, a numerical gradient is computed with the passed loss function.

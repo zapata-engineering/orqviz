@@ -22,7 +22,10 @@ def gradient_descent_optimizer(
 
     Args:
         init_params: Initial parameter vector from which to start the optimization.
-        loss_function: Loss function with respect to which the gradient is calculated.
+        loss_function: Function with respect to which the gradient is calculated. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'LossFunctionWrapper'
+            class from 'orqviz.loss_function'.
         n_iters: Number of iterations to optimize.
         learning_rate: Learning rate for gradient descent. The calculated gradient
             is multiplied with this value and then updates the parameter vector.

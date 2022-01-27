@@ -19,7 +19,10 @@ def plot_all_chains_losses(
 
     Args:
         all_chains: List of Chains to evaluate the loss on.
-        loss_function: Loss function to evaluate the Chains
+        loss_function: Function to evaluate the chain pivots on. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'LossFunctionWrapper'
+            class from 'orqviz.loss_function'.
         ax: Matplotlib axis to plot on. If None, a new axis is created
             from the current figure. Defaults to None.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.plot (plt.plot)

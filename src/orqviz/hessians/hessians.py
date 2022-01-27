@@ -20,7 +20,10 @@ def perform_1D_hessian_eigenvector_scan(
 
     Args:
         hessian_object: HessianEigenobject Datatype containing a Hessian matrix.
-        loss_function: Loss function that the scan is performed on.
+        loss_function: Function to perform the scan on. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'LossFunctionWrapper'
+            class from 'orqviz.loss_function'.
         n_points: Number of points to evaluate the loss along each direction.
             Defaults to 31.
         endpoints: End points for scan along each direction.
@@ -51,10 +54,10 @@ def get_Hessian(
 
     Args:
         params: Parameter vector at which the Hessian matrix is computed.
-        loss_function: Function for which to calculate the Hessian matrix.
-            It must receive a 1D numpy.ndarray of parameters, and return a real number.
-            If your function requires more arguments, consider using the 'partial'
-            method from the 'functools' library.
+        loss_function: Function to calculate the Hessian of. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'LossFunctionWrapper'
+            class from 'orqviz.loss_function'.
         gradient_function: Gradient function which can be used to calculate
             the partial derivative of the loss function for individial parameters.
             It can be used to avoid some numerical gradients and improve
@@ -114,10 +117,10 @@ def get_Hessian_SPSA_approx(
 
     Args:
         params: Parameter vector at which the Hessian matrix is computed.
-        loss_function: Function for which to calculate the Hessian matrix.
-            It must receive a 1D numpy.ndarray of parameters, and return a real number.
-            If your function requires more arguments, consider using the 'partial'
-            method from the 'functools' library.
+        loss_function: Function to calculate the Hessian of. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the 'LossFunctionWrapper'
+            class from 'orqviz.loss_function'.
         gradient_function: Gradient function which can be used to calculate
             the derivative of the loss function in random stochastic directions.
             It can be used to avoid some numerical gradients and improve accuracy
