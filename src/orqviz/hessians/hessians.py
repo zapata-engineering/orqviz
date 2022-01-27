@@ -2,7 +2,7 @@ from typing import Callable, List, Optional, Tuple
 
 import numpy as np
 
-from ..aliases import LossFunction, GradientFunction, ParameterVector
+from ..aliases import GradientFunction, LossFunction, ParameterVector
 from ..gradients import numerical_gradient
 from ..scans.data_structures import Scan1DResult
 from ..scans.scans_1D import perform_1D_scan
@@ -64,13 +64,7 @@ def get_Hessian(
         eps: Finite difference stencil used for numerical gradient in calculation.
             It is always used, even if gradient function is provided. Defaults to 0.1.
     """
-    # if len(np.shape(params)) > 1:
-    #     raise ValueError(
-    #         """
-    #     Calculation of the Hessian is currently not supported for ND parameter vectors.
-    #     Please adapt the your loss function to accept a 1D array of parameters.
-    #         """
-    #     )
+
     flat_params = params.flatten()
 
     n_params = len(flat_params)
@@ -133,13 +127,6 @@ def get_Hessian_SPSA_approx(
         eps: Finite difference stencil used for numerical gradient in calculation.
             It is always used, even if gradient function is provided. Defaults to 0.1.
     """
-    # if len(np.shape(params)) > 1:
-    #     raise ValueError(
-    #         """
-    #     Calculation of the Hessian is currently not supported for ND parameter vectors.
-    #     Please adapt the your loss function to accept a 1D array of parameters.
-    #         """
-    #     )
 
     flat_params = params.flatten()
 
