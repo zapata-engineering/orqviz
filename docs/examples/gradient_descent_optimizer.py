@@ -3,8 +3,8 @@ from typing import Callable, Optional, Tuple
 import numpy as np
 from orqviz.aliases import (
     ArrayOfParameterVectors,
-    LossFunction,
     FullGradientFunction,
+    LossFunction,
     ParameterVector,
 )
 from orqviz.gradients import calculate_full_gradient
