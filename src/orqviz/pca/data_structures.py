@@ -29,7 +29,7 @@ class PCAobject:
 
     def fit_pca(self, n_components: int) -> None:
         self.pca = PCA(n_components=n_components)
-        params = self.all_points.reshape(-1, np.prod(self._params_shape))
+        params = self.all_points.reshape(-1, int(np.prod(self._params_shape)))
         self.pca.fit(params)
 
     def get_transformed_points(
@@ -37,7 +37,7 @@ class PCAobject:
     ) -> np.ndarray:
         high_dim_points = self.all_points if points is None else points
         return self.pca.transform(
-            high_dim_points.reshape(-1, np.prod(self._params_shape))
+            high_dim_points.reshape(-1, int(np.prod(self._params_shape)))
         )
 
     def get_inverse_transformed_point(

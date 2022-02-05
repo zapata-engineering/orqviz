@@ -38,7 +38,7 @@ class Chain(NamedTuple):
 
     @property
     def n_params(self) -> int:
-        return np.prod(self.param_shape)
+        return int(np.prod(self.param_shape))
 
     @property
     def param_shape(self) -> Tuple[int, ...]:

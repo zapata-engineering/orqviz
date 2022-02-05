@@ -37,7 +37,7 @@ def eval_points_on_path(
                 print("Progress: {:.1f}%".format(round(idx / n_points * 100)))
             values[rep][idx] = loss_function(point)
 
-    return np.mean(np.asarray(values), axis=0)
+    return np.array(np.mean(np.asarray(values), axis=0))
 
 
 def eval_points_on_grid(
