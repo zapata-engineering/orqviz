@@ -23,8 +23,8 @@ def perform_2D_pca_scan(
             is performed.
         loss_function: Function to perform the scan on. It must receive only a
             numpy.ndarray of parameters, and return a real number.
-            If your function requires more arguments, consider using the 'LossFunctionWrapper'
-            class from 'orqviz.loss_function'.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         pca: PCA object that was fitted on all_points.
             Its components are used to decide scan directions.
         components_ids: Which components of the PCA object are used as scan directions.

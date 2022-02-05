@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
+
 from orqviz.pca import get_pca, perform_2D_pca_scan
 from orqviz.scans.data_structures import Scan2DResult
 

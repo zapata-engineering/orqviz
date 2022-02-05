@@ -22,8 +22,8 @@ def eval_points_on_path(
         all_parameters: Array of parameters with shape (len, *(parameters.shape))
         loss_function: Function to evaluate the parameters on. It must receive only a
             numpy.ndarray of parameters, and return a real number.
-            If your function requires more arguments, consider using the 'LossFunctionWrapper'
-            class from 'orqviz.loss_function'.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         n_reps: Repetitions to average the output in noisy cases. Defaults to 1.
         verbose: Flag for verbosity of progress. Defaults to False.
 
@@ -49,11 +49,12 @@ def eval_points_on_grid(
     """Function to evaluate loss function on a 2D grid of parameters.
 
     Args:
-        all_parameters: Grid of parameters with shape (len_y, len_x, *(parameters.shape))
+        all_parameters:
+            Grid of parameters with shape (len_y, len_x, *(parameters.shape))
         loss_function: Function toevaluate the parameters on. It must receive only a
             numpy.ndarray of parameters, and return a real number.
-            If your function requires more arguments, consider using the 'LossFunctionWrapper'
-            class from 'orqviz.loss_function'.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         n_reps: Repetitions to average the output in noisy cases. Defaults to 1.
         verbose: Flag for verbosity of progress. Defaults to False.
 

@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
+
 from orqviz.geometric import get_random_normal_vector, get_random_orthonormal_vector
 from orqviz.io import load_viz_object, save_viz_object
 from orqviz.scans import (

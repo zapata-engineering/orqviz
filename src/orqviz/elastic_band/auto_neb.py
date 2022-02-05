@@ -39,10 +39,10 @@ def run_AutoNEB(
 
     Args:
         init_chain: Initial chain that is optimized with the algorithm.
-        loss_function: Function that is used to optimize the chain. It must receive only a
-            numpy.ndarray of parameters, and return a real number.
-            If your function requires more arguments, consider using the 'LossFunctionWrapper'
-            class from 'orqviz.loss_function'.
+        loss_function: Function that is used to optimize the chain. It must receive
+            only a numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         full_gradient_function: Function to calculate the gradient w.r.t.
             the loss function for all parameters. Defaults to None.
         n_cycles: Number of cycles between which new pivots can be inserted.
@@ -134,8 +134,8 @@ def _insert_pivots_to_improve_approximation(
         chain: Current Chain
         loss_function: Function for NEB training. It must receive only a
             numpy.ndarray of parameters, and return a real number.
-            If your function requires more arguments, consider using the 'LossFunctionWrapper'
-            class from 'orqviz.loss_function'.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         max_new_pivots: Maximum number of pivots inserted to Chain. Defaults to 1.
         percentage_tol: Percentage error threshold to insert new pivots.
             Be mindful of the magnitude and sign of typical loss values.

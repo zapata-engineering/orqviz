@@ -35,10 +35,10 @@ def run_NEB(
 
     Args:
         init_chain: Initial chain that is optimized with the algorithm.
-        loss_function: Function that is used to optimize the chain. It must receive only a
-            numpy.ndarray of parameters, and return a real number.
-            If your function requires more arguments, consider using the 'LossFunctionWrapper'
-            class from 'orqviz.loss_function'.
+        loss_function: Function that is used to optimize the chain. It must
+            receive only a numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         full_gradient_function: Function to calculate the gradient w.r.t.
             the loss function for all parameters. Defaults to None.
         n_iters: Number of optimization iterations. Defaults to 10.
@@ -105,10 +105,10 @@ def _get_gradients_on_pivots(
 
     Args:
         chain: Chain to calculate the gradients on.
-        loss_function: Function that is used to optimize the chain. It must receive only a
-            numpy.ndarray of parameters, and return a real number.
-            If your function requires more arguments, consider using the 'LossFunctionWrapper'
-            class from 'orqviz.loss_function'.
+        loss_function: Function that is used to optimize the chain. It must receive
+            only a numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         full_gradient_function: Function to calculate the gradient w.r.t.
             the loss function for all parameters.
         calibrate_tangential: Flag to indicate whether next neighbor for finding
