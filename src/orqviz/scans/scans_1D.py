@@ -20,7 +20,7 @@ from .evals import eval_points_on_path
 def perform_1D_scan(
     origin: ParameterVector,
     loss_function: LossFunction,
-    direction: DirectionVector,
+    direction: Optional[DirectionVector] = None,
     n_steps: int = 31,
     end_points: Tuple[float, float] = (-np.pi, np.pi),
     verbose: bool = False,
