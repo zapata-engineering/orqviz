@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 
-from ..aliases import ParameterVector
+from ..aliases import DirectionVector, ParameterVector
 
 
 @dataclass()
@@ -18,7 +18,7 @@ class HessianEigenobject:
 
     params: ParameterVector
     hessian_matrix: np.ndarray
-    eigenvectors: List[np.ndarray] = field(init=False)
+    eigenvectors: List[DirectionVector] = field(init=False)
     eigenvalues: np.ndarray = field(init=False)
 
     def __post_init__(self):
