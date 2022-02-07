@@ -17,7 +17,7 @@ class PCAobject:
         all_points: ArrayOfParameterVectors,
         components_ids: Tuple[int, int] = (0, 1),
     ):
-        self.all_points = all_points
+        self.all_points = np.array(all_points)
         self._params_shape = np.shape(self.all_points)[1:]
         self.components_ids = components_ids
         self.fit_pca(max(self.components_ids) + 1)
