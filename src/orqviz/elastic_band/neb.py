@@ -2,17 +2,23 @@ from typing import Callable, List, Optional
 
 import numpy as np
 
-from ..aliases import ParameterVector, Weights
+from ..aliases import (
+    DirectionVector,
+    FullGradientFunction,
+    LossFunction,
+    ParameterVector,
+    Weights,
+)
 from ..gradients import calculate_full_gradient
 from .data_structures import Chain, ChainPath
 
 
 def run_NEB(
     init_chain: Chain,
-    loss_function: Callable[[ParameterVector], float],
-    full_gradient_function: Optional[Callable[[ParameterVector], np.ndarray]] = None,
+    loss_function: LossFunction,
+    full_gradient_function: FullGradientFunction = None,
     n_iters: int = 10,
-    eps: float = 0.1,
+    eps: float = 1e-3,
     learning_rate: float = 0.1,
     stochastic: bool = False,
     calibrate_tangential: bool = False,
@@ -29,12 +35,16 @@ def run_NEB(
 
     Args:
         init_chain: Initial chain that is optimized with the algorithm.
-        loss_function: Loss function that is used to optimize the chain.
+        loss_function: Function that is used to optimize the chain. It must
+            receive only a numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         full_gradient_function: Function to calculate the gradient w.r.t.
             the loss function for all parameters. Defaults to None.
         n_iters: Number of optimization iterations. Defaults to 10.
         eps: Stencil for finite difference gradient if full_gradient_function
-            is not provided. Defaults to 0.1.
+            is not provided. For noisy loss functions,
+            we recommend increasing this value. Defaults to 1e-3.
         learning_rate: Learning rate/ step size for the gradient descent optimization.
             Defaults to 0.1.
         stochastic: Flag to indicate whether to perform stochastic gradient descent
@@ -86,8 +96,8 @@ def run_NEB(
 
 def _get_gradients_on_pivots(
     chain: Chain,
-    loss_function: Callable[[ParameterVector], float],
-    full_gradient_function: Callable[[ParameterVector], np.ndarray],
+    loss_function: LossFunction,
+    full_gradient_function: FullGradientFunction,
     calibrate_tangential: bool = False,
 ) -> np.ndarray:
     """Calculates gradient for every pivot on the chain w.r.t. the loss function
@@ -95,7 +105,10 @@ def _get_gradients_on_pivots(
 
     Args:
         chain: Chain to calculate the gradients on.
-        loss_function: Loss function for which to calculate the gradient.
+        loss_function: Function that is used to optimize the chain. It must receive
+            only a numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         full_gradient_function: Function to calculate the gradient w.r.t.
             the loss function for all parameters.
         calibrate_tangential: Flag to indicate whether next neighbor for finding
@@ -105,7 +118,7 @@ def _get_gradients_on_pivots(
 
     # We initialize with zeros, as we always want first and last gradient
     # to be equal to 0.
-    gradients_on_pivots = np.zeros(shape=(chain.n_pivots, chain.n_params))
+    gradients_on_pivots = np.zeros(shape=(chain.n_pivots, *chain.param_shape))
 
     for ii in range(1, chain.n_pivots - 1):
         before = chain.pivots[ii - 1]
@@ -118,7 +131,10 @@ def _get_gradients_on_pivots(
         if calibrate_tangential and loss_function(after) > loss_function(before):
             tan = after - this
         tan /= np.linalg.norm(tan)
-        tangential_grad = np.dot(full_grad, tan) * tan
+        ax_indices = tuple(range(len(full_grad.shape)))
+        tangential_grad = (
+            np.tensordot(full_grad, tan, axes=(ax_indices, ax_indices)) * tan
+        )
         # save update
         gradients_on_pivots[ii] = full_grad - tangential_grad
 

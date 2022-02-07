@@ -2,14 +2,14 @@ from typing import Callable, List, Tuple, Union
 
 import numpy as np
 
-from ..aliases import ParameterVector
+from ..aliases import LossFunction, ParameterVector
 from ..scans import Scan2DResult, perform_2D_scan
 from .data_structures import PCAobject
 
 
 def perform_2D_pca_scan(
     pca_object: PCAobject,
-    loss_function: Callable[[ParameterVector], float],
+    loss_function: LossFunction,
     n_steps_x: int = 20,
     n_steps_y: int = None,
     offset: Union[Tuple[float, float], float] = (-1.0, 1.0),
@@ -21,7 +21,10 @@ def perform_2D_pca_scan(
     Args:
         all_points: Points on which PCA was fitted and around which the scan
             is performed.
-        loss_function: Loss function which is scanned.
+        loss_function: Function to perform the scan on. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         pca: PCA object that was fitted on all_points.
             Its components are used to decide scan directions.
         components_ids: Which components of the PCA object are used as scan directions.
@@ -47,7 +50,7 @@ def perform_2D_pca_scan(
         pca_params = np.zeros(pca_object.pca.n_components)
         pca_params[pca_object.components_ids[0]] = xy_params[0]
         pca_params[pca_object.components_ids[1]] = xy_params[1]
-        probe_parameters = pca_object.pca.inverse_transform(pca_params)
+        probe_parameters = pca_object.get_inverse_transformed_point(pca_params)
         return loss_function(probe_parameters)
 
     return perform_2D_scan(

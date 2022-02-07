@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from typing import Callable, NamedTuple
+from typing import Callable, NamedTuple, Tuple
 
 import numpy as np
 from scipy.interpolate import interp1d
 
-from ..aliases import ArrayOfParameterVectors, Weights
+from ..aliases import ArrayOfParameterVectors, LossFunction, ParameterVector, Weights
+from ..geometric import _norm_of_arrayofparametervectors
 from ..scans import eval_points_on_path
 
 
@@ -21,14 +22,14 @@ class Chain(NamedTuple):
     pivots: ArrayOfParameterVectors
 
     def get_weights(self) -> Weights:
-        chain_weights = np.linalg.norm(np.diff(self.pivots, axis=0), axis=1)
+        chain_weights = _norm_of_arrayofparametervectors(np.diff(self.pivots, axis=0))
         chain_weights /= np.sum(chain_weights)
         cum_weights = np.cumsum(chain_weights)
         matching_cum_weights = np.insert(cum_weights, 0, 0)
         matching_cum_weights[-1] = 1
         return matching_cum_weights
 
-    def evaluate_on_pivots(self, loss_function: Callable) -> np.ndarray:
+    def evaluate_on_pivots(self, loss_function: LossFunction) -> np.ndarray:
         return eval_points_on_path(self.pivots, loss_function)
 
     @property
@@ -37,7 +38,11 @@ class Chain(NamedTuple):
 
     @property
     def n_params(self) -> int:
-        return len(self.pivots[0])
+        return int(np.prod(self.param_shape))
+
+    @property
+    def param_shape(self) -> Tuple[int, ...]:
+        return np.atleast_1d(self.pivots[0]).shape
 
 
 class ChainPath(NamedTuple):
@@ -65,7 +70,7 @@ class ChainPath(NamedTuple):
         return self._get_chain_from_weights(weights)
 
     def evaluate_points_on_path(
-        self, n_points: int, loss_function: Callable, weighted: bool = False
+        self, n_points: int, loss_function: LossFunction, weighted: bool = False
     ) -> np.ndarray:
         if weighted:
             chain = self.generate_chain(n_points)
@@ -74,8 +79,10 @@ class ChainPath(NamedTuple):
         return chain.evaluate_on_pivots(loss_function)
 
     def _get_chain_from_weights(self, weights: Weights) -> Chain:
+        distance_between_pivots = np.diff(self.primary_chain.pivots, axis=0)
+
         chain_diff = np.cumsum(
-            np.linalg.norm(np.diff(self.primary_chain.pivots, axis=0), axis=1)
+            _norm_of_arrayofparametervectors(distance_between_pivots)
         )
         chain_diff /= max(chain_diff)
         chain_diff = np.insert(chain_diff, 0, 0)

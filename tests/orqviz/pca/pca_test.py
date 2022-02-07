@@ -7,12 +7,14 @@ from orqviz.scans.data_structures import Scan2DResult
 
 
 def COST_FUNCTION(params):
-    return np.sum(np.sin(params)) + np.sum(params ** 2) + 3 * params[1] - 10 * params[2]
+    return np.sum(np.sin(params)) + np.sum(params ** 2)
 
 
-@pytest.mark.parametrize("components_ids", [(0, 1), (1, 5)])
-def test_pca(components_ids):
-    all_points = np.random.rand(98, 9)
+@pytest.mark.parametrize(
+    "all_points,components_ids",
+    [[np.random.rand(98, 9), (0, 1)], [np.random.rand(27, 10, 4), (1, 5)]],
+)
+def test_pca(all_points, components_ids):
     pca = get_pca(all_points, components_ids=components_ids)
 
     n_steps_x = 100

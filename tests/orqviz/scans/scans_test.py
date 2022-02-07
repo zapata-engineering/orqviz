@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
+from orqviz.geometric import get_random_normal_vector, get_random_orthonormal_vector
 from orqviz.io import load_viz_object, save_viz_object
 from orqviz.scans import (
     perform_1D_interpolation,
@@ -183,6 +184,44 @@ def test_perform_2D_scan_in_5D_space():
         np.testing.assert_equal(scan_results.direction_x, direction_x)
         np.testing.assert_equal(scan_results.direction_y, direction_y)
         assert scan_results.params_grid.shape == (n_steps_y, n_steps_x, 5)
+
+        for i, j in [(0, 0), (0, 1), (1, 0), (0, 1)]:
+            np.testing.assert_equal(
+                scan_results.params_grid[-i][-j],
+                origin + end_points_x[j] * direction_x + end_points_y[i] * direction_y,
+            )
+
+
+def test_perform_2D_scan_with_ND_array():
+    param_shape = (9, 4)
+    origin = np.zeros(param_shape)
+    direction_x = get_random_normal_vector(param_shape)
+    direction_y = get_random_orthonormal_vector(direction_x)
+    end_points_x = (-np.pi, np.pi)
+    end_points_y = (-np.pi / 2, np.pi / 2)
+    n_steps_x = 100
+    n_steps_y = 10
+
+    scan_2d = perform_2D_scan(
+        origin=origin,
+        loss_function=SUM_OF_SINES,
+        direction_x=direction_x,
+        direction_y=direction_y,
+        n_steps_x=n_steps_x,
+        n_steps_y=n_steps_y,
+        end_points_x=end_points_x,
+        end_points_y=end_points_y,
+    )
+    save_viz_object(scan_2d, "test")
+    loaded_scan2d = load_viz_object("test")
+    os.remove("test")
+
+    for scan_results in [scan_2d, loaded_scan2d]:
+        assert isinstance(scan_results, Scan2DResult)
+        assert scan_results.values.shape == (n_steps_y, n_steps_x)
+        np.testing.assert_equal(scan_results.direction_x, direction_x)
+        np.testing.assert_equal(scan_results.direction_y, direction_y)
+        assert scan_results.params_grid.shape == (n_steps_y, n_steps_x, *param_shape)
 
         for i, j in [(0, 0), (0, 1), (1, 0), (0, 1)]:
             np.testing.assert_equal(
