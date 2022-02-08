@@ -2,6 +2,7 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pytest
 
 from orqviz.hessians import (
     get_Hessian,
@@ -9,16 +10,18 @@ from orqviz.hessians import (
     perform_1D_hessian_eigenvector_scan,
     plot_1D_hessian_eigenvector_scan_result,
 )
-from orqviz.utils import load_viz_object, save_viz_object
+from orqviz.io import load_viz_object, save_viz_object
 
 
 def COST_FUNCTION(params):
-    return np.sum(np.sin(params)) + np.sum(params ** 2) + 3 * params[1] - 10 * params[2]
+    return np.sum(np.sin(params)) + np.sum(params ** 2)
 
 
-def test_get_hessian():
-    params = np.random.rand(8)
-
+@pytest.mark.parametrize(
+    "params",
+    [np.random.rand(8)],
+)
+def test_get_hessian(params):
     hessian = get_Hessian(params, COST_FUNCTION, gradient_function=None, eps=1e-3)
 
     assert hasattr(hessian, "eigenvectors")

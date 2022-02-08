@@ -15,6 +15,8 @@ In [this notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/exam
 We recently published a paper on arXiv where we review the tools available with `orqviz`:\
 [ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms](https://arxiv.org/abs/2111.04695)
 
+Find a brief overview of the visualization techniques on [YouTube](https://www.youtube.com/watch?v=_3x4NI6PcH4)!
+
 ## Installation
 
 You can install our package using the following command:
@@ -57,6 +59,17 @@ This code results in the following plot:
 
 ![Image](docs/example_plot.png)
 
+## FAQ
+
+**What are the expected type and shape for the parameters?**\
+Parameters should be of type `numpy.ndarray` filled with real numbers. In recent releases, the shape of the parameters can be arbitrary, as long as `numpy` allows it, i.e., you cannot have inconsistent sizes per dimension. Until version `0.1.1`, the parameter array needed to be one-dimensional.
+
+**What is the format of the `loss_function` that most `orqviz` methods expect?**\
+We define a `loss_function` as a function which receives only the parameters of the model and returns a floating point/ real number. That value could for example be the cost function of an optimization problem, the prediction of a classifier, or the fidelity with respect to a fixed quantum state. All the calculation that needs to be performed to get to these values needs to happen in your function. Check out the above code as a minimal example.
+
+**What can I do if my loss function requires additional arguments?**\
+In that case you need to wrap the function into another function such that it again receives only the parameters of the model. We built a wrapper class called `LossFunctionWrapper` that you can import from `orqviz.loss_function`. It is a thin wrapper with helpful perks such as measuring the average evaluation time of a single loss function call, and the total number of calls.
+
 ## Authors
 
 The leading developer of this package is Manuel Rudolph at Zapata Computing.\
@@ -71,9 +84,9 @@ You can also contact us or ask general questions using [GitHub Discussions](http
 
 For more specific code issues, bug fixes, etc. please open a [GitHub issue](https://github.com/zapatacomputing/orqviz/issues) in the `orqviz` repository.
 
-If you are doing research using `orqviz`, please cite our paper:
+If you are doing research using `orqviz`, please cite [our `orqviz` paper](https://arxiv.org/abs/2111.04695):
 
-[ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms](https://arxiv.org/abs/2111.04695)
+> Manuel S. Rudolph, Sukin Sim, Asad Raza, Michał Stęchły, Jarrod R. McClean, Eric R. Anschuetz, Luis Serrano, and Alejandro Perdomo-Ortiz. ORQVIZ: Visualizing High-Dimensional Landscapes in Variational Quantum Algorithms. 2021. arXiv:2111.04695
 
 ## How to contribute
 

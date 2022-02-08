@@ -2,7 +2,12 @@ from typing import Callable, Optional, Tuple
 
 import numpy as np
 
-from ..aliases import GridOfParameterVectors, ParameterVector
+from ..aliases import (
+    DirectionVector,
+    GridOfParameterVectors,
+    LossFunction,
+    ParameterVector,
+)
 from ..geometric import (
     get_random_normal_vector,
     get_random_orthonormal_vector,
@@ -15,8 +20,8 @@ from .evals import eval_points_on_grid
 def perform_2D_interpolation(
     point_1: ParameterVector,
     point_2: ParameterVector,
-    loss_function: Callable[[ParameterVector], float],
-    direction_y: Optional[np.ndarray] = None,
+    loss_function: LossFunction,
+    direction_y: Optional[DirectionVector] = None,
     n_steps_x: int = 20,
     n_steps_y: Optional[int] = None,
     end_points_x: Tuple[float, float] = (-0.5, 1.5),
@@ -29,7 +34,10 @@ def perform_2D_interpolation(
     Args:
         point_1: First point of the interpolation.
         point_2: Second point of the interpolation.
-        loss_function: Loss function to scan.
+        loss_function: Function to perform the scan on. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         direction_y: Second scan direction for the 2D scan where first direction
             is the interpolation vector of the points. If None, it's chosen at random.
         n_steps_x: Number of points evaluated along the x-direction. Defaults to 20.
@@ -39,8 +47,8 @@ def perform_2D_interpolation(
             of the interpolation vector. Defaults to (-0.5, 1.5).
         end_points_y: Range of scan along the y-direction in units
             of the interpolation vector. Defaults to (-0.5, 0.5).
-        parameter_period (Optional[float], optional): Optional period of
-        the parameters to scan the shortest interpolated path between the points.
+        parameter_period: Optional period of the parameters to scan the shortest
+            interpolated path between the points.
             If None, interpolation per parameter happens along the real number line.
             Defaults to None.
         verbose: Flag for printing progress. Defaults to False.
@@ -73,9 +81,9 @@ def perform_2D_interpolation(
 
 def perform_2D_scan(
     origin: ParameterVector,
-    loss_function: Callable[[ParameterVector], float],
-    direction_x: Optional[np.ndarray] = None,
-    direction_y: Optional[np.ndarray] = None,
+    loss_function: LossFunction,
+    direction_x: Optional[DirectionVector] = None,
+    direction_y: Optional[DirectionVector] = None,
     n_steps_x: int = 20,
     n_steps_y: Optional[int] = None,
     end_points_x: Tuple[float, float] = (-1, 1),
@@ -86,14 +94,17 @@ def perform_2D_scan(
 
     Args:
         origin: Origin point of the 2D scan.
-        loss_function: Loss function to be scanned.
+        loss_function: Function to perform the scan on. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
         direction_x: x-direction vector for scan. Has same shape as origin.
             If None, a random unit vector is sampled. Defaults to None.
         direction_y: y-direction vector for scan. Has same shape as origin.
             If None, a random unit vector is sampled. Defaults to None.
         n_steps_x: Number of points evaluated along the x-direction. Defaults to 20.
         n_steps_y: Number of points evaluated along the y-direction.
-            If None, set value to n_steps_y. Defaults to None.
+            If None, set value to n_steps_x. Defaults to None.
         end_points_x: Range of scan along the x-direction in units of direction_x.
             Defaults to (-1, 1).
         end_points_y: Range of scan along the x-direction in units of direction_x.
@@ -101,7 +112,7 @@ def perform_2D_scan(
         verbose: Flag for printing progress. Defaults to False.
     """
     if direction_x is None:
-        direction_x = get_random_normal_vector(len(origin))
+        direction_x = get_random_normal_vector(np.shape(origin))
     if direction_y is None:
         direction_y = get_random_orthonormal_vector(direction_x) * np.linalg.norm(
             direction_x
@@ -124,8 +135,8 @@ def perform_2D_scan(
     # but it does the job, so we decided to leave it here.
     params_grid: GridOfParameterVectors = (
         origin
-        + np.dot(x_values[:, :, None], direction_x[None, :])
-        + np.dot(y_values[:, :, None], direction_y[None, :])
+        + np.tensordot(x_values, direction_x, axes=-1)
+        + np.tensordot(y_values, direction_y, axes=-1)
     )
 
     loss_grid = eval_points_on_grid(

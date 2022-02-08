@@ -4,9 +4,9 @@ from . import (
     geometric,
     gradients,
     hessians,
+    io,
     pca,
     plot_utils,
     plots,
     scans,
-    utils,
 )
