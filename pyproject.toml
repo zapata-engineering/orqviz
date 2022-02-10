@@ -1,3 +1,13 @@
 [build-system]
 requires = ["setuptools >= 40.9.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+
+[[tool.mypy.overrides]]
+module = [
+    'scipy.*',
+    'matplotlib.*',
+    'sklearn.*',
+    'mpl_toolkits.*',
+]
+ignore_missing_imports = true
