@@ -10,6 +10,7 @@ from .aliases import (
     ParameterVector,
 )
 from .scans.data_structures import Scan2DResult
+import warnings
 
 
 def scan_2D_dct(
@@ -24,7 +25,14 @@ def scan_2D_dct(
     dct_resolution_x: int = None,
     dct_resolution_y: int = None,
 ):
-    # should x and y even be diff arguments? like should we support dct on non-squares?
+    if n_steps_y is None:
+        n_steps_y = n_steps_x
+    if dct_resolution_x is None:
+        dct_resolution_x = n_steps_x
+    if dct_resolution_y is None:
+        dct_resolution_y = dct_resolution_x
+    if end_points_y is None:
+        end_points_y = end_points_x
     scan2D_result = perform_2D_scan(
         origin,
         loss_function,
@@ -35,37 +43,49 @@ def scan_2D_dct(
         end_points_x=end_points_x,
         end_points_y=end_points_y,
     )
-    result = dct_2d(scan2D_result.values)
-    if n_steps_y is None:
-        n_steps_y = n_steps_x
-    if dct_resolution_x is None:
+    result = dct_2D(scan2D_result.values)
+
+    frequency_normalization_factor_x = (end_points_x[1] - end_points_x[0]) / np.pi
+    frequency_normalization_factor_y = (end_points_y[1] - end_points_y[0]) / np.pi
+    normalized_x_res = dct_resolution_x * int(frequency_normalization_factor_x)
+    normalized_y_res = dct_resolution_y * int(frequency_normalization_factor_y)
+    if normalized_x_res > n_steps_x:
+        warnings.warn(
+            "DCT resolution X is too low for the number of steps so the default resolution will be used."
+        )
         dct_resolution_x = n_steps_x
-    if dct_resolution_y is None:
-        dct_resolution_y = dct_resolution_x
-    frequency_normalization_factor = (end_points_x[1] - end_points_x[0]) / np.pi
-    normalized_x_res = dct_resolution_x * int(frequency_normalization_factor)
-    normalized_y_res = dct_resolution_y * int(frequency_normalization_factor)
+
+    if normalized_y_res > n_steps_y:
+        warnings.warn(
+            "DCT resolution Y is too low for the number of steps so the default resolution will be used."
+        )
+        dct_resolution_y = n_steps_y
+
     grid = np.array(
         [
             [
-                [x / frequency_normalization_factor, y / frequency_normalization_factor]
+                [
+                    x / frequency_normalization_factor_x,
+                    y / frequency_normalization_factor_y,
+                ]
                 for x in range(normalized_x_res)
             ]
             for y in range(normalized_y_res)
         ]
     )
     # Truncate result according with resolution.
-    result = result[0:normalized_x_res, 0:normalized_y_res]
-    return Scan2DResult(grid, direction_x, direction_y, result)
+    result = result[0:normalized_y_res, 0:normalized_x_res]
+    dir1 = np.array([1.0, 0.0])
+    dir2 = np.array([0.0, 1.0])
+    return Scan2DResult(grid, dir1, dir2, result)
 
 
-def dct_2d(x: np.ndarray) -> np.ndarray:
+def dct_2D(x: np.ndarray) -> np.ndarray:
     assert len(x.shape) == 2
     intermediate = []
     for row in x:
         intermediate.append(dct(row))
-    intermediate = np.array(intermediate)
-    intermediate = intermediate.T
+    intermediate = np.array(intermediate).T
     result = []
     for row in intermediate:
         result.append(dct(row))
