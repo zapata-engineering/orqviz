@@ -24,9 +24,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python3 -m pip install --upgrade pip
-          ls -lh .
+          python3 -m pip install --upgrade pip          
           python3 -m pip install '.[dev]'
+          ls -alh .
+          head -n 25 src/orqviz/hessians/hessians.py | tail -n 5
 
       - name: Python Code Quality and Lint
         # You may pin to the exact commit or the version.
