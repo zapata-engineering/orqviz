@@ -27,6 +27,7 @@ jobs:
           python3 -m pip install --upgrade pip          
           python3 -m pip install '.[dev]'
           ls -alh .
+          tree
           head -n 25 src/orqviz/hessians/hessians.py | tail -n 5
 
       - name: Python Code Quality and Lint
