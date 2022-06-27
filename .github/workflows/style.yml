@@ -26,16 +26,18 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install '.[dev]'
+          find . -regex '^.*\(__pycache__\|\.py[co]\)$$' -delete;
+          find . -type d -name __pycache__ -exec rm -r {} \+
+          find . -type d -name '*.egg-info' -exec rm -rf {} +
+          find . -type d -name .mypy_cache -exec rm -r {} \+
+          rm -rf .pytest_cache;
+          rm -rf tests/.pytest_cache;
+          rm -rf dist build
+          rm -f .coverage*
+
       - name: Cleanup Pythonic Cruft
         run: |
-            find . -regex '^.*\(__pycache__\|\.py[co]\)$$' -delete;
-            find . -type d -name __pycache__ -exec rm -r {} \+
-            find . -type d -name '*.egg-info' -exec rm -rf {} +
-            find . -type d -name .mypy_cache -exec rm -r {} \+
-            rm -rf .pytest_cache;
-            rm -rf tests/.pytest_cache;
-            rm -rf dist build
-            rm -f .coverage*
+
       - name: Python Code Quality and Lint
         # You may pin to the exact commit or the version.
         # uses: ricardochaves/python-lint@32032eca67291cd71f88d79e61bc4b904ee03265
