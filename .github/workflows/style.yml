@@ -26,7 +26,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install '.[dev]'	      
-          find . -type d -name .mypy_cache -exec rm -r {}
+          rm -rf .mypy_cache
 
       - name: Python Code Quality and Lint
         # You may pin to the exact commit or the version.
