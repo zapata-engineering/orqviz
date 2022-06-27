@@ -27,7 +27,7 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install '.[dev]'	      
           rm -rf .mypy_cache
-
+          rm -Rf build dist
       - name: Python Code Quality and Lint
         # You may pin to the exact commit or the version.
         # uses: ricardochaves/python-lint@32032eca67291cd71f88d79e61bc4b904ee03265
