@@ -28,9 +28,9 @@ jobs:
           python3 -m pip install '.[dev]'
           find . -regex '^.*\(__pycache__\|\.py[co]\)$$' -delete
 	      find . -type d -name __pycache__ -exec rm -r {}	      
-          find . -type d -name .mypy_cache -exec rm -r {} \+
-	      rm -rf .pytest_cache;
-	      rm -rf tests/.pytest_cache;
+          find . -type d -name .mypy_cache -exec rm -r {}
+	      rm -rf .pytest_cache
+	      rm -rf tests/.pytest_cache
 	      rm -rf dist build
 	      rm -f .coverage*
 	      echo Finished cleaning out pythonic cruft...
