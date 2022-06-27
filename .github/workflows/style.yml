@@ -25,6 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
+          ls -lh .
           python3 -m pip install '.[dev]'
 
       - name: Python Code Quality and Lint
