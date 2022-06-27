@@ -16,7 +16,7 @@ GridOfParameterVectors = np.ndarray  # Grid of ND arrays
 Weights = np.ndarray  # 1D vector of floats from 0-1
 DirectionVector = np.ndarray  # ND array with same shape as ParameterVector
 LossFunction = Callable[
-    [ParameterVector], float
+    [ParametersVector], float
 ]  # Function that can be scanned with orqviz
 GradientFunction = Callable[
     [ParameterVector, DirectionVector], float
