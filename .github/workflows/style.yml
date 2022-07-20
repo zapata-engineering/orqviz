@@ -26,6 +26,11 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install '.[dev]'
+          ls -alh .
+          tree
+          rm -rf .mypy_cache
+          rm -Rf build dist
+          mypy --ignore-missing-imports --namespace-packages src/orqviz tests/orqviz
 
       - name: Python Code Quality and Lint
         # You may pin to the exact commit or the version.
