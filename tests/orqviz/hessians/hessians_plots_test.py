@@ -12,7 +12,7 @@ from orqviz.io import load_viz_object, save_viz_object
 
 
 def COST_FUNCTION(params):
-    return np.sum(np.sin(params)) + np.sum(params ** 2) + 3 * params[1] - 10 * params[2]
+    return np.sum(np.sin(params)) + np.sum(params**2) + 3 * params[1] - 10 * params[2]
 
 
 def test_plot_1D_hessian_eigenvector_scan_result():
