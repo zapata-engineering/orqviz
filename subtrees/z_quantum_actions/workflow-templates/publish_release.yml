@@ -1,0 +1,24 @@
+# This workflow can be trigerred manually.
+
+# Don't extend this workflow. If any more steps are needed please extend the
+# "publish-release" action in "z_quantum_actions". Allows reusing between repos.
+name: publish-release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-action:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Needed to get access to publish-release action definition
+      - name: Check out the released repo
+        uses: actions/checkout@v2
+        with:
+          # Fetch whole repo to get access to tags to read current package
+          # version.
+          fetch-depth: 0
+
+      - name: Run publish release action
+        uses: ./subtrees/z_quantum_actions/actions/publish-release

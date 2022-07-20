@@ -1,0 +1,19 @@
+inputs:
+  ssh_key:
+    description: |
+      Copy of secrets.SSH_PRIVATE_KEY from calling environment.
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Setup SSH Keys and known_hosts
+      shell: bash
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+        ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+        ssh-add - <<< "${{ inputs.ssh_key }}"
