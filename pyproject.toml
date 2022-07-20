@@ -1,3 +1,58 @@
 [build-system]
-requires = ["setuptools >= 40.9.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["setuptools", "wheel",  "setuptools_scm>=6.0"]
+
+# Including this section is same as 'use_scm_version=True' in setup.py
+# See https://github.com/pypa/setuptools_scm for guidance
+[tool.setuptools_scm]
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+# Without this we would have to add an empty __init__.py file for every package.
+namespace_packages = true
+# Without this mypy complains about the same module being imported under different
+# names. Note that this also requires setting `mypy_path`.
+explicit_package_bases = true
+# We usually keep our source code under `src/<namespace>/<library>/...`.
+# This option tells mypy to look under that directory path. 
+# If your repo has a different layout you can add the appropriate paths
+# by setting MYPYPATH env variable.
+mypy_path = "src"
+exclude = [
+    "^src/orquestra/quantum/openfermion/$",
+    "^tests/orquestra/quantum/openfermion_tests/$"
+]
+
+[[tool.mypy.overrides]]
+module = [
+    'scipy.*',
+    'matplotlib.*',
+    'sklearn.*',
+    'mpl_toolkits.*',
+]
+ignore_missing_imports = true
+
+[tool.coverage.run]
+omit = ["*/__init__.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "def __repr__",
+  "def __str__",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
+]
+
+[tool.pytest.ini_options]
+log_level="INFO"
+
+[tool.black]
+exclude = '(src/orquestra/quantum/openfermion|tests/orquestra/quantum/openfermion_tests)'
+
+[tool.flake8]
+ignore = ['E203', 'E266', 'F401', 'W605']
+max-line-length = 88
+exclude = ['src/orquestra/quantum/openfermion/', 'tests/orquestra/quantum/openfermion_tests/']

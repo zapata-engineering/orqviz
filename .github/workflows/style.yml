@@ -1,67 +1,42 @@
+# This workflow runs automatic code style checks.
+
+# We need a workflow name to be able to schedule it from Github UI
 name: style
 
-# Controls when the action will run.
 on:
+  # Triggers the workflow on push to main
   push:
-    branches: [main, dev]
+    branches:
+      - main
+  # Triggers the workflow on any PR
   pull_request:
-    branches: [main, dev]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  # The job ID has to match repo settings for PR required checks
+  style:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    # Run jobs for a couple of Python versions.
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10"]
+
+    name: Style - Python ${{ matrix.python }}
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install '.[dev]'
-          ls -alh .
-          tree
-          rm -rf .mypy_cache
-          rm -Rf build dist
-          mypy --ignore-missing-imports --namespace-packages src/orqviz tests/orqviz
+      # ------------------------------------------------------------------------
+      # Loads private SSH key to the SSH agent. Allows to install dependencies
+      # from private git repos, but requires setting `secrets.SSH_PRIVATE_KEY`
+      # in repo settings.
+      # ------------------------------------------------------------------------
+      # - uses: ./subtrees/z_quantum_actions/actions/ssh_setup
+      #   with:
+      #     ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Python Code Quality and Lint
-        # You may pin to the exact commit or the version.
-        # uses: ricardochaves/python-lint@32032eca67291cd71f88d79e61bc4b904ee03265
-        uses: ricardochaves/python-lint@v1.4.0
-        with:
-          # A list of all paths to test
-          python-root-list: "src/orqviz tests/orqviz"
-
-          use-pylint: false
-          use-pycodestyle: false
-          use-flake8: true
-          use-mypy: true
-          use-black: true
-          use-isort: true
-
-          # Extra options: pylint $(extra-pylint-options) $(python-root-list)
-          # extra-pylint-options: # optional, default is
-
-          # Extra options: pycodestyle $(extra-pycodestyle-options) $(python-root-list)
-          # extra-pycodestyle-options: # optional, default is
-
-          # Extra options: flake8 $(extra-flake8-options) $(python-root-list)
-          # Black's output doesn't pass all flake8 checks. We need to disable some of them.
-          extra-flake8-options: --ignore=E203,E266,F401,W503 --max-line-length=88
-
-          # Extra options: black --check $(extra-black-options) $(python-root-list)
-          extra-black-options: --check
-
-          # Extra options: mypy $(extra-mypy-options) $(python-root-list)
-          extra-mypy-options: --ignore-missing-imports --namespace-packages
-
-          # Extra options: isort -rc $(extra-isort-options) $(python-root-list) -c --diff
-          extra-isort-options: --check-only --filter-files --profile black
+      # Installs project, checks codestyle
+      - uses: ./subtrees/z_quantum_actions/actions/style
