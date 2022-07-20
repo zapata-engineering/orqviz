@@ -1,0 +1,21 @@
+runs:
+  using: "composite"
+  steps:
+
+    # Load a specific version of Python
+    - name: Setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+        architecture: x64
+
+    - name: Install deps
+      shell: bash
+      run: make github_actions
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+    # Leverages Makefile to check all style linters
+    - name: Check style
+      shell: bash
+      run: make style

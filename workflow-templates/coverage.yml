@@ -1,0 +1,41 @@
+# This workflow runs tests and reports code coverage.
+
+# We need a workflow name to be able to schedule it from Github UI
+name: TestCoverage
+
+on:
+  # Triggers the workflow on push to main
+  push:
+    branches:
+      - main
+  # Triggers the workflow on any PR
+  pull_request:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  # The job ID has to match repo settings for PR required checks
+  TestCoverage:
+    runs-on: ubuntu-latest
+
+    # Run jobs for a couple of Python versions.
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10"]
+
+    name: TestCoverage - Python ${{ matrix.python }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # ------------------------------------------------------------------------
+      # Loads private SSH key to the SSH agent. Allows to install dependencies
+      # from private git repos, but requires setting `secrets.SSH_PRIVATE_KEY`
+      # in repo settings.
+      # ------------------------------------------------------------------------
+      # - uses: ./subtrees/z_quantum_actions/actions/ssh_setup
+      #   with:
+      #     ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - uses: ./subtrees/z_quantum_actions/actions/coverage
