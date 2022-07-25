@@ -18,6 +18,7 @@ dir1 = np.array([1.0, 0.0])
 dir2 = np.array([0.0, 1.0])
 end_points = (0, 2 * np.pi)
 
+
 # Make sure it works for even and odd resolutions
 @pytest.mark.parametrize("res", [5, 6])
 def test_fourier(res: int):
