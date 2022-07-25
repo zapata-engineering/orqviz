@@ -19,8 +19,9 @@ class FourierResult(NamedTuple):
     """Datatype for 2D Fourier scans to combine the scan result and scan instruction.
 
     values: Output from np.fft.rfft2 with the format of numpy's output, which is the
-    coefficient for 0, then postive coefficients, then negative coefficients in
-    decreasing order.
+    coefficient for 0, then the coefficients of positive frequencies in increasing
+    order by frequency, then the coefficients of negative frequences in increasing
+    order.
     """
 
     values: np.ndarray
@@ -163,14 +164,17 @@ def _truncate_result_according_to_resolution(
     result: np.ndarray, res_x: int, res_y: int
 ):
     """Helper function to truncate a Fourier result to a given resolution of the plot.
-    
-    Note: Resolution arguments are not actual resolution but the number of pixels on
-    each side of the center. The returned reesult is of size 2 * res + 1 in the
-    y-direction and res + 1 in the x-direction.
+
+    Note: Resolution arguments are not actual resolution but the number of pixels kept
+    to each side of the point with frequency 0. This can be thought of as the maximum
+    absolute value of the "normalized frequencies" kept.
+
+    The returned array is of size 2 * res + 1 in the y-direction and res + 1 in the
+    x-direction.
     """
     cy = (result.shape[0] - 1) // 2  # center
     return result[cy - res_y : cy + res_y + 1, 0 : res_x + 1]
-    # Note this always makes result.shape[0] odd
+    # Note this always makes result.shape[0] (y resolution) odd
 
 
 def _swap(result: np.ndarray) -> np.ndarray:
