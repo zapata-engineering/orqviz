@@ -16,9 +16,11 @@ from .plot_utils import _check_and_create_fig_ax
 
 
 class FourierResult(NamedTuple):
-    """Datatype for 2D scans to combine the scan result and scan instruction.
+    """Datatype for 2D Fourier scans to combine the scan result and scan instruction.
 
-    values: Output from np.fft.rfft2 with the specific format numpy has which is the coefficient for 0, then postive coefficients, then negative coefficients in decreasing order.
+    values: Output from np.fft.rfft2 with the format of numpy's output, which is the
+    coefficient for 0, then postive coefficients, then negative coefficients in
+    decreasing order.
     """
 
     values: np.ndarray
@@ -37,7 +39,24 @@ def scan_2D_fourier(
     end_points_y: Optional[Tuple[float, float]] = None,
 ) -> FourierResult:
     """Performs a discrete real fourier transform on the 2D scan of a loss function.
-    Constrained to loss functions with real output.
+
+    Args:
+        origin: Origin point of the 2D scan.
+        loss_function: Function to perform the scan on. It must receive only a
+            numpy.ndarray of parameters, and return a real number.
+            If your function requires more arguments, consider using the
+            'LossFunctionWrapper' class from 'orqviz.loss_function'.
+        direction_x: x-direction vector for scan. Has same shape as origin.
+            If None, a random unit vector is sampled. Defaults to None.
+        direction_y: y-direction vector for scan. Has same shape as origin.
+            If None, a random unit vector is sampled. Defaults to None.
+        n_steps_x: Number of points evaluated along the x-direction. Defaults to 20.
+        n_steps_y: Number of points evaluated along the y-direction.
+            If None, set value to n_steps_x. Defaults to None.
+        end_points_x: Range of scan along the x-direction in units of direction_x.
+            Defaults to (0, 2pi).
+        end_points_y: Range of scan along the x-direction in units of direction_x.
+            Defaults to (0, 2pi).
     """
     if n_steps_y is None:
         n_steps_y = n_steps_x
@@ -77,9 +96,10 @@ def plot_2D_fourier_result(
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.pcolormesh
             (plt.pcolormesh)
 
-    Note: due to inability to plot complex numbers, the magnitude of complex coefficients are plotted. This means that phase has no influence on plotted results.
+    Note: Fourier coefficients are complex numbers. However, due to the inability to
+    plot complex numbers on real axes, the magnitudes of the coefficients are plotted.
+    This means that phase has no influence on the visual output of the plot.
     """
-    # Do a swappy thingy st frequencies are lined up in order from least to greatest
     plottable_result = np.abs(result.values)
     Nx = result.values.shape[1]
     Ny = result.values.shape[0]
@@ -118,7 +138,7 @@ def plot_2D_fourier_result(
                 max_freq_y * int(norm_y) + 1,
             )
             / norm_y
-        )  # this shit only works for odd truncated_result.shape[0]
+        )
     else:
         truncated_result = plottable_result[
             : int(max_freq_y * norm_y) + 1, : int(max_freq_x * norm_x) + 1
@@ -142,18 +162,28 @@ def plot_2D_fourier_result(
 def _truncate_result_according_to_resolution(
     result: np.ndarray, res_x: int, res_y: int
 ):
-    """resolution args are uh not actual resolution but resolution on 1 side of the center. the returned reesult is of size 2 * res + 1 in y dir and res+1 on x dir."""
+    """Helper function to truncate a Fourier result to a given resolution of the plot.
+    
+    Note: Resolution arguments are not actual resolution but the number of pixels on
+    each side of the center. The returned reesult is of size 2 * res + 1 in the
+    y-direction and res + 1 in the x-direction.
+    """
     cy = (result.shape[0] - 1) // 2  # center
     return result[cy - res_y : cy + res_y + 1, 0 : res_x + 1]
     # Note this always makes result.shape[0] odd
 
 
 def _swap(result: np.ndarray) -> np.ndarray:
+    """Swaps the result format from the format of the output of np.fft.rfft2 to the
+    format of the array used for plotting (where frequencies are lined up from least
+    to greatest going left to right).
+    """
     Ny = result.shape[0]
     return np.append(result[Ny // 2 + 1 :], result[0 : Ny // 2 + 1], axis=0)
 
 
 def _iswap(result: np.ndarray) -> np.ndarray:
+    """The inverse of _swap."""
     Ny = result.shape[0]
     return np.append(result[(Ny - 1) // 2 :], result[0 : (Ny - 1) // 2], axis=0)
 
