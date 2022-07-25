@@ -14,7 +14,7 @@ from orqviz.scans.data_structures import Scan2DResult
 
 
 def COST_FUNCTION(params):
-    return np.sum(np.sin(params)) + np.sum(params ** 2) + 3 * params[1] - 10 * params[2]
+    return np.sum(np.sin(params)) + np.sum(params**2) + 3 * params[1] - 10 * params[2]
 
 
 @pytest.fixture
