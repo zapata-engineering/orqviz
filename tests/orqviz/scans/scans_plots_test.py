@@ -1,13 +1,8 @@
-import os
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 from orqviz.scans import perform_1D_scan, perform_2D_interpolation
-from orqviz.scans.plots import (
-    plot_1D_scan_result,
-    plot_2D_interpolation_result,
-)
+from orqviz.scans.plots import plot_1D_scan_result, plot_2D_interpolation_result
 
 
 def SUM_OF_SINES(params):
