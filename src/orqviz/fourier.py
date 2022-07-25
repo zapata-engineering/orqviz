@@ -1,18 +1,12 @@
-from .scans.scans_2D import perform_2D_scan
-import numpy as np
-from typing import Optional, Tuple
-
-import numpy as np
-
-from .aliases import (
-    DirectionVector,
-    LossFunction,
-    ParameterVector,
-)
 import warnings
+from typing import NamedTuple, Optional, Tuple
+
 import matplotlib
-from typing import NamedTuple
+import numpy as np
+
+from .aliases import DirectionVector, LossFunction, ParameterVector
 from .plot_utils import _check_and_create_fig_ax
+from .scans.scans_2D import perform_2D_scan
 
 
 class FourierResult(NamedTuple):
@@ -115,13 +109,15 @@ def plot_2D_fourier_result(
     norm_y = (result.end_points_y[1] - result.end_points_y[0]) / (2 * np.pi)
     if max_freq_x > (Nx - 1) / norm_x:
         warnings.warn(
-            "Max x frequency is too high for the number of steps so the default will be used."
+            "Max x frequency is too high for the number of steps so the default will be"
+            " used."
         )
         max_freq_x = (Nx - 1) / norm_x
 
     if max_freq_y > Ny // 2 / norm_y:
         warnings.warn(
-            "Max y frequency is too high for the number of steps so the default will be used."
+            "Max y frequency is too high for the number of steps so the default will be"
+            " used."
         )
         max_freq_y = Ny // 2 / norm_y
 

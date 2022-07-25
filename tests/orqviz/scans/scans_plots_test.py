@@ -3,13 +3,10 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-from orqviz.io import load_viz_object, save_viz_object
 from orqviz.scans import perform_1D_scan, perform_2D_interpolation
-from orqviz.scans.data_structures import Scan1DResult, Scan2DResult
 from orqviz.scans.plots import (
     plot_1D_scan_result,
     plot_2D_interpolation_result,
-    plot_2D_scan_result,
 )
 
 

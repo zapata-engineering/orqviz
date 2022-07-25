@@ -1,8 +1,8 @@
-import orqviz
 import numpy as np
-from orqviz.fourier import _iswap, _swap, _truncate_result_according_to_resolution
 import pytest
 
+import orqviz
+from orqviz.fourier import _iswap, _swap, _truncate_result_according_to_resolution
 
 np.random.seed(2)
 
