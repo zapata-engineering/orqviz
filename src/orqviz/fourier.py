@@ -76,8 +76,8 @@ def scan_2D_fourier(
 
 def plot_2D_fourier_result(
     result: FourierResult,
-    max_freq_x: int = None,
-    max_freq_y: int = None,
+    max_freq_x: float = None,
+    max_freq_y: float = None,
     show_negative_frequencies: bool = False,
     fig: Optional[matplotlib.figure.Figure] = None,
     ax: Optional[matplotlib.axes.Axes] = None,
@@ -86,6 +86,10 @@ def plot_2D_fourier_result(
     """Plots a 2D fourier result.
     Args:
         result: Fourier result to be plotted.
+        max_freq_x: Maximum frequency to be plotted along the x-direction.
+            If None, all the output frequencies in the result are plotted.
+        max_freq_y: Maximum frequency to be plotted along the y-direction.
+            If None, all the output frequencies in the result are plotted.
         show_negative_frequencies: only plot positive frequencies if False
         fig: Matplotlib figure to perfom a plot on. If None, a new figure
             and axis are created from the current figure. Defaults to None.
@@ -135,7 +139,7 @@ def plot_2D_fourier_result(
                     if truncated_result.shape[0] % 2 == 1
                     else -max_freq_y + 1
                 ),
-                max_freq_y * int(norm_y) + 1,
+                int(max_freq_y * norm_y) + 1,
             )
             / norm_y
         )
@@ -143,9 +147,9 @@ def plot_2D_fourier_result(
         truncated_result = plottable_result[
             : int(max_freq_y * norm_y) + 1, : int(max_freq_x * norm_x) + 1
         ]
-        y_axis = np.arange(0, max_freq_y * int(norm_y) + 1) / norm_y
+        y_axis = np.arange(0, int(max_freq_y * norm_y) + 1) / norm_y
 
-    x_axis = np.arange(0, max_freq_x * int(norm_x) + 1) / norm_x
+    x_axis = np.arange(0, int(max_freq_x * norm_x) + 1) / norm_x
     # you want the extra for the positive side
     XX, YY = np.meshgrid(x_axis, y_axis)
 
