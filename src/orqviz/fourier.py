@@ -10,13 +10,7 @@ from .scans.scans_2D import perform_2D_scan
 
 
 class FourierResult(NamedTuple):
-    """Datatype for 2D Fourier scans to combine the scan result and scan instruction.
-
-    values: Output from np.fft.rfft2 with the format of numpy's output, which is the
-    coefficient for 0, then the coefficients of positive frequencies in increasing
-    order by frequency, then the coefficients of negative frequences in increasing
-    order.
-    """
+    """Datatype for 2D Fourier scans to combine the scan result and scan instruction."""
 
     values: np.ndarray
     end_points_x: Tuple[float, float]
@@ -52,6 +46,15 @@ def scan_2D_fourier(
             Defaults to (0, 2pi).
         end_points_y: Range of scan along the x-direction in units of direction_x.
             Defaults to (0, 2pi).
+
+    Returns:
+        FourierResult with the following attributes:
+            values: Output from np.fft.rfft2 with the format of numpy's output, which is
+                the coefficient for 0, then the coefficients of positive frequencies in
+                increasing order by frequency, then the coefficients of negative
+                frequences in increasing order.
+            end_points_x: End points of the scan along the x-direction.
+            end_points_y: End points of the scan along the y-direction.
     """
     if n_steps_y is None:
         n_steps_y = n_steps_x
@@ -188,10 +191,20 @@ def _iswap(result: np.ndarray) -> np.ndarray:
     return np.append(result[(Ny - 1) // 2 :], result[0 : (Ny - 1) // 2], axis=0)
 
 
+def inverse_fourier(result: FourierResult) -> FourierResult:
+    """Inverts a Fourier result.
+    Args:
+        result: Fourier result to be inverted.
+    Returns:
+        Inverted result.
+    """
+    return FourierResult(
+        np.fft.irfft2(result.values), result.end_points_x, result.end_points_y
+    )
+
+
 def plot_inverse_fourier_result(
-    result: np.ndarray,
-    end_points_x,
-    end_points_y=None,
+    result: FourierResult,
     fig=None,
     ax=None,
     **plot_kwargs,
@@ -200,12 +213,16 @@ def plot_inverse_fourier_result(
     Args:
         result: output of np.fft.irfft2
     """
-    if end_points_y is None:
-        end_points_y = end_points_x
-    Nx = result.shape[1]
-    Ny = result.shape[0]
-    x_axis = np.arange(Nx) / Nx * (end_points_x[1] - end_points_x[0]) + end_points_x[0]
-    y_axis = np.arange(Ny) / Ny * (end_points_y[1] - end_points_y[0]) + end_points_y[0]
+    Nx = result.values.shape[1]
+    Ny = result.values.shape[0]
+    x_axis = (
+        np.arange(Nx) / Nx * (result.end_points_x[1] - result.end_points_x[0])
+        + result.end_points_x[0]
+    )
+    y_axis = (
+        np.arange(Ny) / Ny * (result.end_points_y[1] - result.end_points_y[0])
+        + result.end_points_y[0]
+    )
     XX, YY = np.meshgrid(x_axis, y_axis)
 
     default_plot_kwargs = {"shading": "auto"}
@@ -213,7 +230,7 @@ def plot_inverse_fourier_result(
 
     fig, ax = _check_and_create_fig_ax(fig=fig, ax=ax)
     # if it was rfft then only the real components matter.
-    plottable_result = np.real(result)
+    plottable_result = np.real(result.values)
     mesh_plot = ax.pcolormesh(XX, YY, plottable_result, **plot_kwargs, rasterized=True)
     fig.colorbar(mesh_plot, ax=ax)
     ax.set_xlabel("Scan Direction x")

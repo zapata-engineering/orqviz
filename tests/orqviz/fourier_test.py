@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+from matplotlib import pyplot as plt
 
 import orqviz
 from orqviz.fourier import _iswap, _swap, _truncate_result_according_to_resolution
@@ -60,3 +61,34 @@ def test_swap_and_iswap_are_inverses():
     for dim in range(1, 6):
         arbitrary_arr = np.random.rand(dim, np.random.randint(1, 5))
         np.testing.assert_allclose(_iswap(_swap(arbitrary_arr)), arbitrary_arr)
+
+
+def test_plots():
+    res = 5
+    fourier_result = orqviz.fourier.scan_2D_fourier(
+        params,
+        loss_function,
+        direction_x=dir1,
+        direction_y=dir2,
+        n_steps_x=res,
+        end_points_x=end_points,
+    )
+    orqviz.fourier.plot_2D_fourier_result(fourier_result)
+    fig, ax = plt.subplots()
+    orqviz.fourier.plot_2D_fourier_result(fourier_result, fig=fig, ax=ax)
+
+
+def test_inverse_plots():
+    res = 5
+    fourier_result = orqviz.fourier.scan_2D_fourier(
+        params,
+        loss_function,
+        direction_x=dir1,
+        direction_y=dir2,
+        n_steps_x=res,
+        end_points_x=end_points,
+    )
+    inverse_result = orqviz.fourier.inverse_fourier(fourier_result)
+    orqviz.fourier.plot_inverse_fourier_result(inverse_result)
+    fig, ax = plt.subplots()
+    orqviz.fourier.plot_inverse_fourier_result(fourier_result, fig, ax)
