@@ -203,7 +203,9 @@ def inverse_fourier(result: FourierResult) -> FourierResult:
         Inverted result.
     """
     return FourierResult(
-        np.fft.irfft2(result.values), result.end_points_x, result.end_points_y
+        np.fft.irfft2(result.values, norm="forward"),
+        result.end_points_x,
+        result.end_points_y,
     )
 
 
