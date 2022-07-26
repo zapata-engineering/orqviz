@@ -4,8 +4,8 @@ from matplotlib import pyplot as plt
 
 import orqviz
 from orqviz.fourier import (
-    _move_negative_frequencies_next_to_positive_frequencies,
     _move_negative_frequencies_next_to_origin,
+    _move_negative_frequencies_next_to_positive_frequencies,
     _truncate_result_according_to_resolution,
 )
 
