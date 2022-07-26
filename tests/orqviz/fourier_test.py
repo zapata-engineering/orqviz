@@ -103,6 +103,9 @@ def test_plots():
         end_points_x=end_points,
     )
     orqviz.fourier.plot_2D_fourier_result(fourier_result)
+    orqviz.fourier.plot_2D_fourier_result(
+        fourier_result, show_negative_frequencies=True
+    )
     fig, ax = plt.subplots()
     orqviz.fourier.plot_2D_fourier_result(fourier_result, fig=fig, ax=ax)
 
