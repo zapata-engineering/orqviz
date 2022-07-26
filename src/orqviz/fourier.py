@@ -103,34 +103,36 @@ def plot_2D_fourier_result(
     This means that phase has no influence on the visual output of the plot.
     """
     plottable_result = np.abs(result.values)
-    Nx = result.values.shape[1]
-    Ny = result.values.shape[0]
+    n_x = result.values.shape[1]
+    n_y = result.values.shape[0]
     if max_freq_y is None:
-        max_freq_y = min(Ny // 2, max_freq_x or np.inf)
+        max_freq_y = min(n_y // 2, max_freq_x or np.inf)
     if max_freq_x is None:
-        max_freq_x = Nx - 1
+        max_freq_x = n_x - 1
 
     # normalize frequencies for range bigger than 1 period of 2pi
     # (note that this is different from normalizing the coefficient magnitudes)
     norm_x = (result.end_points_x[1] - result.end_points_x[0]) / (2 * np.pi)
     norm_y = (result.end_points_y[1] - result.end_points_y[0]) / (2 * np.pi)
-    if max_freq_x > (Nx - 1) / norm_x:
+    if max_freq_x > (n_x - 1) / norm_x:
         warnings.warn(
             "Max x frequency is too high for the number of steps so the default will be"
             " used."
         )
-        max_freq_x = (Nx - 1) / norm_x
+        max_freq_x = (n_x - 1) / norm_x
 
-    if max_freq_y > Ny // 2 / norm_y:
+    if max_freq_y > n_y // 2 / norm_y:
         warnings.warn(
             "Max y frequency is too high for the number of steps so the default will be"
             " used."
         )
-        max_freq_y = Ny // 2 / norm_y
+        max_freq_y = n_y // 2 / norm_y
 
     if show_negative_frequencies:
         truncated_result = _truncate_result_according_to_resolution(
-            _swap(plottable_result), int(max_freq_x * norm_x), int(max_freq_y * norm_y)
+            _move_negative_frequencies_next_to_origin(plottable_result),
+            int(max_freq_x * norm_x),
+            int(max_freq_y * norm_y),
         )
         y_axis = (
             np.arange(
@@ -175,24 +177,26 @@ def _truncate_result_according_to_resolution(
     The returned array is of size 2 * res + 1 in the y-direction and res + 1 in the
     x-direction.
     """
-    cy = (result.shape[0] - 1) // 2  # center
-    return result[cy - res_y : cy + res_y + 1, 0 : res_x + 1]
+    c_y = (result.shape[0] - 1) // 2  # center
+    return result[c_y - res_y : c_y + res_y + 1, 0 : res_x + 1]
     # Note this always makes result.shape[0] (y resolution) odd
 
 
-def _swap(result: np.ndarray) -> np.ndarray:
-    """Swaps the result format from the format of the output of np.fft.rfft2 to the
+def _move_negative_frequencies_next_to_origin(result: np.ndarray) -> np.ndarray:
+    """Swaps the result from the format of the output of np.fft.rfft2 to the
     format of the array used for plotting (where frequencies are lined up from least
     to greatest going left to right).
     """
-    Ny = result.shape[0]
-    return np.append(result[Ny // 2 + 1 :], result[0 : Ny // 2 + 1], axis=0)
+    n_y = result.shape[0]
+    return np.append(result[n_y // 2 + 1 :], result[0 : n_y // 2 + 1], axis=0)
 
 
-def _iswap(result: np.ndarray) -> np.ndarray:
-    """The inverse of _swap."""
-    Ny = result.shape[0]
-    return np.append(result[(Ny - 1) // 2 :], result[0 : (Ny - 1) // 2], axis=0)
+def _move_negative_frequencies_next_to_positive_frequencies(
+    result: np.ndarray,
+) -> np.ndarray:
+    """The inverse of _move_negative_frequencies_next_to_origin."""
+    n_y = result.shape[0]
+    return np.append(result[(n_y - 1) // 2 :], result[0 : (n_y - 1) // 2], axis=0)
 
 
 def inverse_fourier(result: FourierResult) -> FourierResult:

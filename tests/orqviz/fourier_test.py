@@ -3,7 +3,11 @@ import pytest
 from matplotlib import pyplot as plt
 
 import orqviz
-from orqviz.fourier import _iswap, _swap, _truncate_result_according_to_resolution
+from orqviz.fourier import (
+    _move_negative_frequencies_next_to_positive_frequencies,
+    _move_negative_frequencies_next_to_origin,
+    _truncate_result_according_to_resolution,
+)
 
 np.random.seed(2)
 
@@ -61,7 +65,12 @@ def test_truncate(input_res: int):
 def test_swap_and_iswap_are_inverses():
     for dim in range(1, 6):
         arbitrary_arr = np.random.rand(dim, np.random.randint(1, 5))
-        np.testing.assert_allclose(_iswap(_swap(arbitrary_arr)), arbitrary_arr)
+        np.testing.assert_allclose(
+            _move_negative_frequencies_next_to_positive_frequencies(
+                _move_negative_frequencies_next_to_origin(arbitrary_arr)
+            ),
+            arbitrary_arr,
+        )
 
 
 def test_plots():
