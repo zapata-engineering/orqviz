@@ -42,7 +42,7 @@ def test_fourier(res: int):
 
 @pytest.mark.parametrize("res", [5, 6])
 def test_inverse(res: int):
-    scan_2D_result = orqviz.scans.scans_2D.perform_2D_scan(
+    scan_2D_result = orqviz.scans.perform_2D_scan(
         params,
         loss_function,
         direction_x=dir1,
@@ -105,6 +105,33 @@ def test_plots():
     orqviz.fourier.plot_2D_fourier_result(fourier_result)
     fig, ax = plt.subplots()
     orqviz.fourier.plot_2D_fourier_result(fourier_result, fig=fig, ax=ax)
+
+
+@pytest.mark.parametrize(
+    # If resolution is 5, the frequencies of -2, -1, 0, 1, and 2 will be included
+    # (before normalization). So setting max_freq to 3 when end points are 0-2pi should
+    # cause a warning.
+    # When end points are 0-4pi, a resolution of 5 means that the frequencies of -1,
+    # -0.5, 0, 0.5, and 1 are included. So setting max_freq to 2 should cause a warning.
+    "max_freq,end_points",
+    [(3, (0, 2 * np.pi)), (2, (0, 4 * np.pi))],
+)
+def test_plotting_raises_warning_if_max_freq_exceeds_normalized_resolution(
+    max_freq, end_points
+):
+    res = 5
+    fourier_result = orqviz.fourier.scan_2D_fourier(
+        params,
+        loss_function,
+        direction_x=dir1,
+        direction_y=dir2,
+        n_steps_x=res,
+        end_points_x=end_points,
+    )
+    with pytest.warns(UserWarning):
+        orqviz.fourier.plot_2D_fourier_result(
+            fourier_result, max_freq_x=max_freq, max_freq_y=max_freq
+        )
 
 
 def test_inverse_plots():

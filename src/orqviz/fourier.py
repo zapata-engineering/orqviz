@@ -82,8 +82,7 @@ def perform_2D_fourier_transform(
     loss function.
 
     Args:
-        scan2D_result: Result of a 2D scan. Output of
-            orqviz.scans.scans_2D.perform_2D_scan.
+        scan2D_result: Result of a 2D scan. Output of orqviz.scans.perform_2D_scan.
         end_points_x: Range used for the scan along the x-direction.
         end_points_y: Range used for the scan along they-direction.
     """
@@ -238,7 +237,7 @@ def plot_inverse_fourier_result(
 ):
     """Plots inverse fourier result according to end points.
     Args:
-        result: output of np.fft.irfft2
+        result: output of `orqviz.fourier.inverse_fourier`
     """
     Nx = result.values.shape[1]
     Ny = result.values.shape[0]
