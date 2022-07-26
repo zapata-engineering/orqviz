@@ -4,6 +4,8 @@ from typing import NamedTuple, Optional, Tuple
 import matplotlib
 import numpy as np
 
+from orqviz.scans.data_structures import Scan2DResult
+
 from .aliases import DirectionVector, LossFunction, ParameterVector
 from .plot_utils import _check_and_create_fig_ax
 from .scans.scans_2D import perform_2D_scan
@@ -44,7 +46,7 @@ def scan_2D_fourier(
             If None, set value to n_steps_x. Defaults to None.
         end_points_x: Range of scan along the x-direction in units of direction_x.
             Defaults to (0, 2pi).
-        end_points_y: Range of scan along the x-direction in units of direction_x.
+        end_points_y: Range of scan along the y-direction in units of direction_y.
             Defaults to (0, 2pi).
 
     Returns:
@@ -56,8 +58,6 @@ def scan_2D_fourier(
             end_points_x: End points of the scan along the x-direction.
             end_points_y: End points of the scan along the y-direction.
     """
-    if n_steps_y is None:
-        n_steps_y = n_steps_x
     if end_points_y is None:
         end_points_y = end_points_x
     scan2D_result = perform_2D_scan(
@@ -70,6 +70,23 @@ def scan_2D_fourier(
         end_points_x=end_points_x,
         end_points_y=end_points_y,
     )
+    return perform_2D_fourier_transform(scan2D_result, end_points_x, end_points_y)
+
+
+def perform_2D_fourier_transform(
+    scan2D_result: Scan2DResult,
+    end_points_x: Tuple[float, float],
+    end_points_y: Tuple[float, float],
+):
+    """Performs a discrete real fourier transform on an already completed scan of a
+    loss function.
+
+    Args:
+        scan2D_result: Result of a 2D scan. Output of
+            orqviz.scans.scans_2D.perform_2D_scan.
+        end_points_x: Range used for the scan along the x-direction.
+        end_points_y: Range used for the scan along they-direction.
+    """
     fourier_result = np.fft.rfft2(scan2D_result.values, norm="forward")
     return FourierResult(fourier_result, end_points_x, end_points_y)
 

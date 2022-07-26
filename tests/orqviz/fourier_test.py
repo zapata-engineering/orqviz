@@ -40,6 +40,25 @@ def test_fourier(res: int):
     assert fourier_result.end_points_x == fourier_result.end_points_y == end_points
 
 
+@pytest.mark.parametrize("res", [5, 6])
+def test_inverse(res: int):
+    scan_2D_result = orqviz.scans.scans_2D.perform_2D_scan(
+        params,
+        loss_function,
+        direction_x=dir1,
+        direction_y=dir2,
+        n_steps_x=6,  # the inverse of rfft always has an even resolution in the x dir
+        n_steps_y=res,
+        end_points_x=end_points,
+    )
+    transformed = orqviz.fourier.perform_2D_fourier_transform(
+        scan_2D_result, end_points, end_points
+    )
+    inversed = orqviz.fourier.inverse_fourier(transformed)
+
+    np.testing.assert_array_almost_equal(scan_2D_result.values, inversed.values)
+
+
 @pytest.mark.parametrize("input_res", [6, 7])
 def test_truncate(input_res: int):
     max_freq = 2
@@ -62,7 +81,7 @@ def test_truncate(input_res: int):
     assert truncated_result.shape == (expected_y_res, expected_x_res)
 
 
-def test_swap_and_iswap_are_inverses():
+def test_helper_swap_functions_are_inverses():
     for dim in range(1, 6):
         arbitrary_arr = np.random.rand(dim, np.random.randint(1, 5))
         np.testing.assert_allclose(
