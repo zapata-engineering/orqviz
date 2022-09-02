@@ -123,6 +123,34 @@ def set_ticks_to_multiples_of_pi(
     ax.yaxis.set_major_locator(tck.MultipleLocator(base=base))
 
 
+def set_ticks_to_multiples_of_tau(
+    ax: Optional[plt.Axes] = None,
+    base: float = np.pi,
+):
+    """Helper function to set the ticks of matplotlib axes
+    to multiples of tau with tau symbols."""
+    _, ax = _check_and_create_fig_ax(ax=ax)
+
+    tau = 2 * np.pi
+    ax.xaxis.set_major_formatter(
+        tck.FuncFormatter(
+            lambda val, pos: "{:.2f}$\\tau$".format(val / tau)  # noqa: W605
+            if val != 0
+            else "0"
+        )
+    )
+    ax.xaxis.set_major_locator(tck.MultipleLocator(base=base))
+
+    ax.yaxis.set_major_formatter(
+        tck.FuncFormatter(
+            lambda val, pos: "{:.2f}$\\tau$".format(val / tau)  # noqa: W605
+            if val != 0
+            else "0"
+        )
+    )
+    ax.yaxis.set_major_locator(tck.MultipleLocator(base=base))
+
+
 def _check_and_create_fig_ax(
     fig: Optional[plt.Figure] = None,
     ax: Optional[plt.Axes] = None,
