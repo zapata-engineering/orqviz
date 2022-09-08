@@ -37,15 +37,6 @@ jobs:
           python-version: ${{ matrix.python }}
           architecture: x64
 
-      # ------------------------------------------------------------------------
-      # Loads private SSH key to the SSH agent. Allows to install dependencies
-      # from private git repos, but requires setting `secrets.SSH_PRIVATE_KEY`
-      # in repo settings.
-      # ------------------------------------------------------------------------
-      - uses: ./subtrees/z_quantum_actions/actions/ssh_setup
-        with:
-          ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: Install deps
         shell: bash
         run: make github_actions
