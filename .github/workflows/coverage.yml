@@ -17,25 +17,36 @@ on:
 jobs:
   # The job ID has to match repo settings for PR required checks
   TestCoverage:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
-    # Run jobs for a couple of Python versions.
+    # Run jobs for a couple of Python versions and OSes.
     strategy:
       matrix:
+        os: ["ubuntu-latest"]
         python: ["3.8", "3.9", "3.10"]
 
-    name: TestCoverage - Python ${{ matrix.python }}
+    name: Coverage - Python ${{ matrix.python }} - ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v2
 
-      # ------------------------------------------------------------------------
-      # Loads private SSH key to the SSH agent. Allows to install dependencies
-      # from private git repos, but requires setting `secrets.SSH_PRIVATE_KEY`
-      # in repo settings.
-      # ------------------------------------------------------------------------
-      # - uses: ./subtrees/z_quantum_actions/actions/ssh_setup
-      #   with:
-      #     ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # Load a specific version of Python
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: x64
 
-      - uses: ./subtrees/z_quantum_actions/actions/coverage
+      - name: Install deps
+        shell: bash
+        run: make github_actions
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+      - name: Run tests and gather coverage stats
+        shell: bash
+        run: make coverage
+
+      - name: Print code coverage report
+        shell: bash
+        run: make show-coverage-text-report
