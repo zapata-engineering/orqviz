@@ -1,3 +1,4 @@
+import math
 import warnings
 from typing import NamedTuple, Optional, Tuple
 
@@ -147,8 +148,8 @@ def plot_2D_fourier_result(
     if show_negative_frequencies:
         truncated_result = _truncate_result_according_to_resolution(
             _move_negative_frequencies_next_to_origin(plottable_result),
-            int(max_freq_x * norm_x),
-            int(max_freq_y * norm_y),
+            math.ceil(max_freq_x * norm_x),
+            math.ceil(max_freq_y * norm_y),
         )
         y_axis = (
             np.arange(
@@ -157,17 +158,17 @@ def plot_2D_fourier_result(
                     if truncated_result.shape[0] % 2 == 1
                     else -max_freq_y + 1
                 ),
-                int(max_freq_y * norm_y) + 1,
+                math.ceil(max_freq_y * norm_y) + 1,
             )
             / norm_y
         )
     else:
         truncated_result = plottable_result[
-            : int(max_freq_y * norm_y) + 1, : int(max_freq_x * norm_x) + 1
+            : math.ceil(max_freq_y * norm_y) + 1, : math.ceil(max_freq_x * norm_x) + 1
         ]
-        y_axis = np.arange(0, int(max_freq_y * norm_y) + 1) / norm_y
+        y_axis = np.arange(0, math.ceil(max_freq_y * norm_y) + 1) / norm_y
 
-    x_axis = np.arange(0, int(max_freq_x * norm_x) + 1) / norm_x
+    x_axis = np.arange(0, math.ceil(max_freq_x * norm_x) + 1) / norm_x
     # you want the extra for the positive side
     XX, YY = np.meshgrid(x_axis, y_axis)
 
