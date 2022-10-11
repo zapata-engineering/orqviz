@@ -85,9 +85,11 @@ class ChainPath(NamedTuple):
             _norm_of_arrayofparametervectors(distance_between_pivots)
         )
         chain_diff /= max(chain_diff)
+        chain_diff[-1] = 1
         chain_diff = np.insert(chain_diff, 0, 0)
 
         interpolator = interp1d(
             chain_diff, self.primary_chain.pivots, kind="linear", axis=0
         )
+
         return Chain(interpolator(weights))
