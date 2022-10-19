@@ -1,4 +1,4 @@
-from typing import Callable, Optional, Tuple
+from typing import Optional, Tuple
 
 import numpy as np
 
@@ -107,7 +107,7 @@ def perform_2D_scan(
             If None, set value to n_steps_x. Defaults to None.
         end_points_x: Range of scan along the x-direction in units of direction_x.
             Defaults to (-1, 1).
-        end_points_y: Range of scan along the x-direction in units of direction_x.
+        end_points_y: Range of scan along the y-direction in units of direction_y.
             Defaults to (-1, 1).
         verbose: Flag for printing progress. Defaults to False.
     """

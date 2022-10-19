@@ -1,6 +1,7 @@
 from . import (
     aliases,
     elastic_band,
+    fourier,
     geometric,
     gradients,
     hessians,

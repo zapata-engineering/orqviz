@@ -1,0 +1,82 @@
+name: publish-release
+
+description: Infers current project version, pushes a tag with a new version, and creates an entry on GitHub Releases
+
+# Note: this action assumes that the repo was already cloned and contains version tags.
+# This can be set using `fetch-depth: 0` option in the actions/checkout.
+
+outputs:
+  release-version:
+    description: Version that the release ended up running for.
+    value: ${{steps.get-next-version.outputs.next_version}}
+
+runs:
+  using: composite
+  steps:
+    # We need this to be able to run `python setup.py --version`
+    - name: Install build system deps
+      shell: bash
+      run: make build-system-deps
+
+    - name: Get next version
+      id: get-next-version
+      shell: bash
+      # Note: We assume library name is the same as repository name
+      # Outputs: `next_version` - a bumped semver string of form "major.minor.patch"
+      run: make get-next-version PACKAGE_NAME="${{ github.event.repository.name }}"
+      # This is needed if we work on the private repositories, doesn't bother us otherwise though
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+    - name: Push new version tag
+      id: push-new-version-tag
+      shell: bash
+      run: |
+        TAG="v${{steps.get-next-version.outputs.next_version}}"
+        git tag "$TAG"
+        git push --tags
+        echo "::set-output name=tag::$TAG"
+
+    # Use pip to build a PEP 517 wheel
+    - name: Build wheel
+      id: build-wheel
+      shell: bash
+      run: python3 -m pip wheel --isolated --no-deps -w dist .
+
+    # Upload all artifacts in dist
+    - name: Store wheel artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Python Wheels
+        path: dist
+
+    - name: Create entry on GH Releases
+      id: make-release
+      shell: bash
+      run: |
+        # When we make a release, we should check the response for the "upload_url"
+        API_RESPONSE=$(curl \
+          -X POST \
+          -H "Authorization: token ${{ github.token }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/releases \
+          -d '{"tag_name":"${{ steps.push-new-version-tag.outputs.tag }}"}')
+        # The URL from github has some extras in curly brackets that we do not want:
+        # The URL always ends in assets, so we can use that to help check for the end
+        UPLOAD_URL=$(echo ${API_RESPONSE} | jq .upload_url | sed "s/\(.*assets\){.*}/\1/")
+        echo "::set-output name=upload_url::${UPLOAD_URL}"
+
+    - name: Upload wheel to release page
+      shell: bash
+      run: |
+        # We don't know the wheel name, so we can check for everything in the dist dir
+        # We may build multiple wheels from a single repo, so this works for that too.
+        for wheel in dist/*; do
+          curl \
+            -X POST \
+            -H "Authorization: token ${{ github.token }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Content-Type: $(file -b --mime-type $wheel)" \
+            -T "$wheel" \
+            "${{ steps.make-release.outputs.upload_url }}?name=$(basename $wheel)"
+        done

@@ -14,7 +14,7 @@ from orqviz.io import load_viz_object, save_viz_object
 
 
 def COST_FUNCTION(params):
-    return np.sum(np.sin(params)) + np.sum(params ** 2)
+    return np.sum(np.sin(params)) + np.sum(params**2)
 
 
 @pytest.mark.parametrize(
