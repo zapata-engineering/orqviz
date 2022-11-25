@@ -16,7 +16,7 @@ from .data_structures import Chain, ChainPath
 def run_NEB(
     init_chain: Chain,
     loss_function: LossFunction,
-    full_gradient_function: FullGradientFunction = None,
+    full_gradient_function: Optional[FullGradientFunction] = None,
     n_iters: int = 10,
     eps: float = 1e-3,
     learning_rate: float = 0.1,

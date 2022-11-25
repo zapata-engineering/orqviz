@@ -12,7 +12,7 @@ from .neb import run_NEB
 def run_AutoNEB(
     init_chain: Chain,
     loss_function: LossFunction,
-    full_gradient_function: FullGradientFunction = None,
+    full_gradient_function: Optional[FullGradientFunction] = None,
     n_cycles: int = 4,
     n_iters_per_cycle: int = 10,
     max_new_pivots: int = 1,
