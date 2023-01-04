@@ -8,7 +8,7 @@ from .aliases import DirectionVector, GradientFunction, LossFunction, ParameterV
 def calculate_full_gradient(
     params: ParameterVector,
     loss_function: LossFunction,
-    gradient_function: GradientFunction = None,
+    gradient_function: Optional[GradientFunction] = None,
     stochastic: bool = False,
     eps: float = 1e-3,
 ) -> ParameterVector:

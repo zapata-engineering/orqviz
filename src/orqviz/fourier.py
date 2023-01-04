@@ -93,8 +93,8 @@ def perform_2D_fourier_transform(
 
 def plot_2D_fourier_result(
     result: FourierResult,
-    max_freq_x: float = None,
-    max_freq_y: float = None,
+    max_freq_x: Optional[float] = None,
+    max_freq_y: Optional[float] = None,
     show_negative_frequencies: bool = False,
     fig: Optional[matplotlib.figure.Figure] = None,
     ax: Optional[matplotlib.axes.Axes] = None,
