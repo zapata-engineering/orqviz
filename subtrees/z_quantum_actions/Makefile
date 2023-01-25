@@ -64,12 +64,12 @@ dev-default: clean
 
 # Why we want to use `python3` and not `$(PYTHON)` here.
 # In order to enable running make commands both from CICD and locally
-# we need to use virtualenv when running on GitHub Actions, as otherwise 
+# we need to use virtualenv when running on GitHub Actions, as otherwise
 # we might get into rare and hard to debug edge cases (as we did in the past).
 # After this action is executed $(PYTHON) will get resolved to the Python version
 # from virtual environment.
-# This make task is used to create new virtual environment so we want to use 
-# `python3` here as it's more explicit, because $(PYTHON) would evaluate to 
+# This make task is used to create new virtual environment so we want to use
+# `python3` here as it's more explicit, because $(PYTHON) would evaluate to
 # something else after executing this task, which might be confusing.
 github_actions-default:
 	${PYTHON_EXE} -m venv ${VENV_NAME}
@@ -122,8 +122,11 @@ muster-default: style coverage
 build-system-deps-default:
 	:
 
+# Gets the next version of an installed package
+# Note: on CI we only run this step, this means we use the github_actions target as a dependency.
+# Because of this, we don't update the $(PYTHON) variable and have to manually build the path to our venv Python.
 get-next-version-default: github_actions
-	$(PYTHON) subtrees/z_quantum_actions/bin/get_next_version.py $(PACKAGE_NAME)
+	"${VENV_NAME}/${VENV_BINDIR}/${PYTHON_EXE}" subtrees/z_quantum_actions/bin/get_next_version.py $(PACKAGE_NAME)
 
 # This is what converts the -default targets into base target names.
 # Do not remove!!!

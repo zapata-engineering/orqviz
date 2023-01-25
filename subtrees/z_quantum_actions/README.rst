@@ -33,14 +33,14 @@ Files for Github Actions:
    * workflow-templates/submit-dev-main-pr.yml
    * actions/: All actions folders for *uses:* includes for
      workflow-templates should not be modified normally.
-   * actions/coverage/action.yml 
+   * actions/coverage/action.yml
    * actions/publish-release/action.yml
    * actions/ssh_setup/action.yml
    * actions/style/action.yml
 
 Actions Subtree Setup
 ==========================
-This repo is designed to be subtree added to your git repo. 
+This repo is designed to be subtree added to your git repo.
 
 .. Note:: We use underscores in the subtree folder name so that python imports
    to *subtrees.z_quantum_actions/* work properly.
@@ -159,7 +159,7 @@ You can also soft-link the file to your top level folder if desired::
 
 If you have other requirements, those must be included as needed.
 
-Pytest Configuraiton
+Pytest Configuration
 =========================
 The included Makefile allows us to simply do a *make test* and *make coverage*.
 Because ``pytest.ini`` is fully supported (as compared with ``pyproject.toml``)
