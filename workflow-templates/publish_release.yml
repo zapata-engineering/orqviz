@@ -1,4 +1,4 @@
-# This workflow can be trigerred manually.
+# This workflow can be triggered manually.
 
 # Don't extend this workflow. If any more steps are needed please extend the
 # "publish-release" action in "z_quantum_actions". Allows reusing between repos.

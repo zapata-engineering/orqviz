@@ -7,8 +7,8 @@
 # Reads current project version, bumps "minor", and sets the "next_version" output
 # variable using Github's special stdout syntax.
 
-import sys
 import re
+import sys
 import typing as t
 from importlib.metadata import version
 
