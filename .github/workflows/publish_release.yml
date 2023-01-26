@@ -6,19 +6,76 @@ name: publish-release
 
 on:
   workflow_dispatch:
+    inputs:
+      version_override:
+        description: |
+          Release version to assign and publish in the semver form (M.m.p). If not passed, the next minor semver bump will be used.
+        required: false
+        type: string
 
 jobs:
-  run-action:
+  release-project:
     runs-on: ubuntu-latest
 
     steps:
       # Needed to get access to publish-release action definition
       - name: Check out the released repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           # Fetch whole repo to get access to tags to read current package
           # version.
           fetch-depth: 0
 
-      - name: Run publish release action
-        uses: ./subtrees/z_quantum_actions/actions/publish-release
+      - name: Get next version
+        id: get-next-version
+        # Note: We assume library name is the same as repository name
+        # Outputs: `next_version` - a bumped semver string of form "major.minor.patch"
+        run: make get-next-version PACKAGE_NAME="${{ github.event.repository.name }}"
+        # This is needed if we work on the private repositories, doesn't bother us otherwise though
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+      - name: Get release version
+        id: get-release-version
+        # Outputs: 'RELEASE_VERSION'
+        run: |
+          MANUAL_VER="${{ inputs.version_override }}"
+          NEXT_VER="${{ steps.get-next-version.outputs.next_version }}"
+          if [[ ! -z "$MANUAL_VER" ]]; then
+            RELEASE_VER="$MANUAL_VER"
+          else
+            RELEASE_VER="$NEXT_VER"
+          fi
+          echo "RELEASE_VERSION=${RELEASE_VER}" >> $GITHUB_OUTPUT
+      - name: Push release tag
+        id: push-release-tag
+        # Input: inferred release version, semver string.
+        # Output: release version tag.
+        run: |
+          TAG="v${{ steps.get-release-version.outputs.RELEASE_VERSION }}"
+          git tag "$TAG"
+          git push --tags
+          echo "RELEASE_TAG=$TAG" >> $GITHUB_OUTPUT
+      - name: Trigger building+publishing wheels
+        run: |
+          CICD_ACTIONS_REF="main"
+          curl \
+            -X POST \
+            "https://api.github.com/repos/zapatacomputing/cicd-actions/actions/workflows/py-wheel-build-and-push.yml/dispatches" \
+            -H "Authorization: token $GH_ACTIONS_TOKEN" \
+            -H 'Accept: application/vnd.github.everest-preview+json' \
+            --data-raw '
+            {
+              "ref": "'$CICD_ACTIONS_REF'",
+              "inputs":
+                  {
+                    "repository": "'"$repository"'",
+                    "ref": "'"$ref"'"
+                  }
+              }
+            '
+          echo ${{github.repository}}
+        env:
+          GH_ACTIONS_TOKEN: ${{ secrets.GH_ACTIONS_TOKEN }}
+          repository: ${{github.repository}}
+          ref: refs/tags/${{ steps.push-release-tag.outputs.RELEASE_TAG }}

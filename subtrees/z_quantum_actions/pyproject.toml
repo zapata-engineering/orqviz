@@ -1,5 +1,13 @@
 [build-system]
-requires = ["setuptools", "wheel",  "setuptools_scm>=6.0", "pygit2"]
+requires = [
+    # The pin is a workaround for editable installs breaking IDEs.
+    # See this mypy issue: https://github.com/python/mypy/issues/13392#issuecomment-1213527559
+    # and our note: https://zapatacomputing.atlassian.net/wiki/spaces/ORQSRUN/pages/519012482/Editable+installs
+    "setuptools<=63",
+    "wheel",
+    "setuptools_scm>=6.0",
+    "pygit2"
+]
 
 # Including this section is same as 'use_scm_version=True' in setup.py
 # See https://github.com/pypa/setuptools_scm for guidance
