@@ -1,4 +1,4 @@
-![Image](docs/orqviz_logo.png)
+![Image](images/orqviz_logo.png)
 
 # orqviz
 
@@ -8,7 +8,7 @@ A Python package for easily **visualizing the loss landscape** of Variational Qu
 
 ## Getting started
 
-In [doc/examples/](https://github.com/zapatacomputing/orqviz/tree/main/docs/examples) we provide a range of `Jupyter notebook` examples for `orqviz`. We have four Jupyter notebooks with tutorials for how to get started with any quantum circuit simulation framework you might use. You will find examples with `qiskit`, `cirq`, `pennylane` and Zapata's `Orquestra` library. The tutorials are not exhaustive, but they do provide a full story that you can follow along.
+In [the orquestra docs](https://github.com/zapatacomputing/orqviz/tree/main/docs/examples) we provide a range of examples and tutorials for `orqviz`. We have four Jupyter notebooks with tutorials for how to get started with any quantum circuit simulation framework you might use. You will find examples with `qiskit`, `cirq`, `pennylane` and Zapata's `Orquestra` library. The tutorials are not exhaustive, but they do provide a full story that you can follow along.
 
 In [this notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/sombrero.ipynb) we have the _Sombrero_ example that we showcase in our paper. We also have an [advanced example notebook](https://github.com/zapatacomputing/orqviz/blob/main/docs/examples/advanced_example_notebook.ipynb) which provides a thorough demonstration of the flexibility of the `orqviz` package.
 
@@ -57,7 +57,7 @@ orqviz.scans.plot_2D_scan_result(scan2D_result)
 
 This code results in the following plot:
 
-![Image](docs/example_plot.png)
+![Image](images/example_plot.png)
 
 ## FAQ
 
@@ -90,4 +90,4 @@ If you are doing research using `orqviz`, please cite [our `orqviz` paper](https
 
 ## How to contribute
 
-Please see our [Contribution Guidelines](docs/CONTRIBUTING.md).
+Please see our [Contribution Guidelines](https://github.com/zapatacomputing/orquestra-core/blob/main/CONTRIBUTING.md).
