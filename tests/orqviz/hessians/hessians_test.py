@@ -44,9 +44,11 @@ def test_get_hessian(params):
     )
 
 
-def test_get_hessian_SPSA_approx():
-    params = np.random.rand(8)
-
+@pytest.mark.parametrize(
+    "params",
+    [np.random.rand(8)],
+)
+def test_get_hessian_SPSA_approx(params):
     hessian = get_Hessian_SPSA_approx(
         params, COST_FUNCTION, gradient_function=None, eps=1e-3, n_reps=20
     )
@@ -59,7 +61,6 @@ def test_get_hessian_SPSA_approx():
         == len(hessian.eigenvectors.T)
         == len(params)
     )
-
     save_viz_object(hessian, "test")
     loaded_hessian = load_viz_object("test")
     os.remove("test")
@@ -69,3 +70,23 @@ def test_get_hessian_SPSA_approx():
     np.testing.assert_array_almost_equal(
         loaded_hessian.eigenvectors, hessian.eigenvectors
     )
+
+
+def test_get_hessian_gives_correct_values():
+    params = np.zeros(4)
+    eps = 1e-5
+    target_matrix = 2*np.eye(4)
+    target_eigenvalues = 2*np.ones(4)
+
+    hessian_exact = get_Hessian(params, COST_FUNCTION, gradient_function=None, eps=eps)
+    hessian_approx = get_Hessian_SPSA_approx(
+        params, COST_FUNCTION, gradient_function=None, eps=eps, n_reps=10000
+    )
+    precision = int(np.abs(np.log10(eps)))
+    
+    np.testing.assert_array_almost_equal(hessian_exact.hessian_matrix, target_matrix, precision)
+    np.testing.assert_array_almost_equal(hessian_exact.eigenvalues, target_eigenvalues, precision)
+
+    np.testing.assert_array_almost_equal(hessian_approx.hessian_matrix, target_matrix, approx_precision)
+    np.testing.assert_array_almost_equal(hessian_approx.eigenvalues, target_eigenvalues, approx_precision)
+
