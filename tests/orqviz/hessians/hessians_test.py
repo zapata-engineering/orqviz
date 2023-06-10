@@ -75,18 +75,26 @@ def test_get_hessian_SPSA_approx(params):
 def test_get_hessian_gives_correct_values():
     params = np.zeros(4)
     eps = 1e-5
-    target_matrix = 2*np.eye(4)
-    target_eigenvalues = 2*np.ones(4)
+    target_matrix = 2 * np.eye(4)
+    target_eigenvalues = 2 * np.ones(4)
 
     hessian_exact = get_Hessian(params, COST_FUNCTION, gradient_function=None, eps=eps)
     hessian_approx = get_Hessian_SPSA_approx(
         params, COST_FUNCTION, gradient_function=None, eps=eps, n_reps=10000
     )
     precision = int(np.abs(np.log10(eps)))
-    
-    np.testing.assert_array_almost_equal(hessian_exact.hessian_matrix, target_matrix, precision)
-    np.testing.assert_array_almost_equal(hessian_exact.eigenvalues, target_eigenvalues, precision)
 
-    np.testing.assert_array_almost_equal(hessian_approx.hessian_matrix, target_matrix, approx_precision)
-    np.testing.assert_array_almost_equal(hessian_approx.eigenvalues, target_eigenvalues, approx_precision)
+    np.testing.assert_array_almost_equal(
+        hessian_exact.hessian_matrix, target_matrix, precision
+    )
+    np.testing.assert_array_almost_equal(
+        hessian_exact.eigenvalues, target_eigenvalues, precision
+    )
 
+    approx_precision = 1
+    np.testing.assert_array_almost_equal(
+        hessian_approx.hessian_matrix, target_matrix, approx_precision
+    )
+    np.testing.assert_array_almost_equal(
+        hessian_approx.eigenvalues, target_eigenvalues, approx_precision
+    )
