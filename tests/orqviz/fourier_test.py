@@ -3,11 +3,6 @@ import pytest
 from matplotlib import pyplot as plt
 
 import orqviz
-from orqviz.fourier import (
-    _move_negative_frequencies_next_to_origin,
-    _move_negative_frequencies_next_to_positive_frequencies,
-    _truncate_result_according_to_resolution,
-)
 
 np.random.seed(2)
 
@@ -34,9 +29,8 @@ def test_fourier(res: int):
         n_steps_x=res,
         end_points_x=end_points,
     )
-    expected_y_res = res
-    expected_x_res = res // 2 + 1  # Because rfft is symmetric
-    assert fourier_result.values.shape == (expected_y_res, expected_x_res)
+
+    assert fourier_result.values.shape == (res, res)
     assert fourier_result.end_points_x == fourier_result.end_points_y == end_points
 
 
@@ -59,41 +53,8 @@ def test_inverse(res: int):
     np.testing.assert_array_almost_equal(scan_2D_result.values, inversed.values)
 
 
-@pytest.mark.parametrize("input_res", [6, 7])
-def test_truncate(input_res: int):
-    max_freq = 2
-    fourier_result = orqviz.fourier.scan_2D_fourier(
-        params,
-        loss_function,
-        direction_x=dir1,
-        direction_y=dir2,
-        n_steps_x=input_res,
-        end_points_x=end_points,
-    )
-
-    truncated_result = _truncate_result_according_to_resolution(
-        fourier_result.values, max_freq, max_freq
-    )
-
-    # Make sure output resolution is correct
-    expected_y_res = max_freq * 2 + 1
-    expected_x_res = max_freq + 1
-    assert truncated_result.shape == (expected_y_res, expected_x_res)
-
-
-def test_helper_swap_functions_are_inverses():
-    for dim in range(1, 6):
-        arbitrary_arr = np.random.rand(dim, np.random.randint(1, 5))
-        np.testing.assert_allclose(
-            _move_negative_frequencies_next_to_positive_frequencies(
-                _move_negative_frequencies_next_to_origin(arbitrary_arr)
-            ),
-            arbitrary_arr,
-        )
-
-
-def test_plots():
-    res = 5
+def test_plots_dont_fail():
+    res = 10
     fourier_result = orqviz.fourier.scan_2D_fourier(
         params,
         loss_function,
@@ -102,42 +63,15 @@ def test_plots():
         n_steps_x=res,
         end_points_x=end_points,
     )
-    orqviz.fourier.plot_2D_fourier_result(fourier_result)
+    orqviz.fourier.plot_2D_fourier_result(fourier_result, max_freq_x=3,max_freq_y=3)
     orqviz.fourier.plot_2D_fourier_result(
-        fourier_result, show_negative_frequencies=True
+        fourier_result, max_freq_x=3,max_freq_y=3,show_full_spectrum=True
     )
     fig, ax = plt.subplots()
-    orqviz.fourier.plot_2D_fourier_result(fourier_result, fig=fig, ax=ax)
+    orqviz.fourier.plot_2D_fourier_result(fourier_result, max_freq_x=3,max_freq_y=3,fig=fig, ax=ax)
 
 
-@pytest.mark.parametrize(
-    # If resolution is 5, the frequencies of -2, -1, 0, 1, and 2 will be included
-    # (before normalization). So setting max_freq to 3 when end points are 0-2pi should
-    # cause a warning.
-    # When end points are 0-4pi, a resolution of 5 means that the frequencies of -1,
-    # -0.5, 0, 0.5, and 1 are included. So setting max_freq to 2 should cause a warning.
-    "max_freq,end_points",
-    [(3, (0, 2 * np.pi)), (2, (0, 4 * np.pi))],
-)
-def test_plotting_raises_warning_if_max_freq_exceeds_normalized_resolution(
-    max_freq, end_points
-):
-    res = 5
-    fourier_result = orqviz.fourier.scan_2D_fourier(
-        params,
-        loss_function,
-        direction_x=dir1,
-        direction_y=dir2,
-        n_steps_x=res,
-        end_points_x=end_points,
-    )
-    with pytest.warns(UserWarning):
-        orqviz.fourier.plot_2D_fourier_result(
-            fourier_result, max_freq_x=max_freq, max_freq_y=max_freq
-        )
-
-
-def test_inverse_plots():
+def test_inverse_plots_dont_fail():
     res = 5
     fourier_result = orqviz.fourier.scan_2D_fourier(
         params,

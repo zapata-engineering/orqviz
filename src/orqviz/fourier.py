@@ -3,6 +3,7 @@ import warnings
 from typing import NamedTuple, Optional, Tuple
 
 import matplotlib
+from matplotlib.ticker import MaxNLocator
 import numpy as np
 
 from orqviz.scans.data_structures import Scan2DResult
@@ -87,133 +88,85 @@ def perform_2D_fourier_transform(
         end_points_x: Range used for the scan along the x-direction.
         end_points_y: Range used for the scan along they-direction.
     """
-    fourier_result = np.fft.rfft2(scan2D_result.values, norm="forward")
+    fourier_result = np.fft.fftshift(np.fft.fftn(scan2D_result.values, norm="forward"))
     return FourierResult(fourier_result, end_points_x, end_points_y)
 
 
 def plot_2D_fourier_result(
-    result: FourierResult,
-    max_freq_x: Optional[float] = None,
-    max_freq_y: Optional[float] = None,
-    show_negative_frequencies: bool = False,
+    fourier_result: FourierResult, 
+    max_freq_x: int, 
+    max_freq_y: int,
+    show_full_spectrum: bool=False,
+    remove_constant_term: bool=True,
     fig: Optional[matplotlib.figure.Figure] = None,
     ax: Optional[matplotlib.axes.Axes] = None,
     **plot_kwargs,
 ):
     """Plots a 2D fourier result.
+    Note: Fourier coefficients are complex numbers. However, due to the inability to
+    plot complex numbers on real axes, the magnitudes of the coefficients are plotted.
+    This means that phase has no influence on the visual output of the plot.
+
+    Note: If the plot appears distorted, most often the reason for that is the choice
+    of max_freq_x or max_freq_y.
+
     Args:
-        result: Fourier result to be plotted.
+        fourier_result: Fourier result to be plotted.
         max_freq_x: Maximum frequency to be plotted along the x-direction.
-            If None, all the output frequencies in the result are plotted.
         max_freq_y: Maximum frequency to be plotted along the y-direction.
-            If None, all the output frequencies in the result are plotted.
-        show_negative_frequencies: only plot positive frequencies if False
+        show_full_spectrum: If true plots the whole spectrum (including the 
+            redundant part). Defaults to False.
+        remove_constant_term: If true sets the value of (0, 0) frequency (the constant
+            term) to 0. Defaults to True.
         fig: Matplotlib figure to perfom a plot on. If None, a new figure
             and axis are created from the current figure. Defaults to None.
         ax: Matplotlib axis to perform plot on. If None, a new axis is created.
             Defaults to None.
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.pcolormesh
             (plt.pcolormesh)
-
-    Note: Fourier coefficients are complex numbers. However, due to the inability to
-    plot complex numbers on real axes, the magnitudes of the coefficients are plotted.
-    This means that phase has no influence on the visual output of the plot.
     """
-    plottable_result = np.abs(result.values)
-    n_x = result.values.shape[1]
-    n_y = result.values.shape[0]
-    if max_freq_y is None:
-        max_freq_y = min(n_y // 2, max_freq_x or np.inf)
-    if max_freq_x is None:
-        max_freq_x = n_x - 1
+    raw_values = fourier_result.values    
+    size = raw_values.shape[0]
 
-    # normalize frequencies for range bigger than 1 period of 2pi
-    # (note that this is different from normalizing the coefficient magnitudes)
-    norm_x = (result.end_points_x[1] - result.end_points_x[0]) / (2 * np.pi)
-    norm_y = (result.end_points_y[1] - result.end_points_y[0]) / (2 * np.pi)
-    if max_freq_x > (n_x - 1) / norm_x:
-        warnings.warn(
-            "Max x frequency is too high for the number of steps so the default will be"
-            " used."
-        )
-        max_freq_x = (n_x - 1) / norm_x
-
-    if max_freq_y > n_y // 2 / norm_y:
-        warnings.warn(
-            "Max y frequency is too high for the number of steps so the default will be"
-            " used."
-        )
-        max_freq_y = n_y // 2 / norm_y
-
-    if show_negative_frequencies:
-        truncated_result = _truncate_result_according_to_resolution(
-            _move_negative_frequencies_next_to_origin(plottable_result),
-            math.ceil(max_freq_x * norm_x),
-            math.ceil(max_freq_y * norm_y),
-        )
-        y_axis = (
-            np.arange(
-                (
-                    -max_freq_y
-                    if truncated_result.shape[0] % 2 == 1
-                    else -max_freq_y + 1
-                ),
-                math.ceil(max_freq_y * norm_y) + 1,
-            )
-            / norm_y
-        )
+    half = int(size / 2)
+    if show_full_spectrum:
+        min_x = int(half - max_freq_x)
     else:
-        truncated_result = plottable_result[
-            : math.ceil(max_freq_y * norm_y) + 1, : math.ceil(max_freq_x * norm_x) + 1
-        ]
-        y_axis = np.arange(0, math.ceil(max_freq_y * norm_y) + 1) / norm_y
+        min_x = half
+    max_x = int(half + max_freq_x)
+    min_y = int(half - max_freq_y) - 1
+    max_y = int(half + max_freq_y) + 1
+    result = fourier_result
+    plottable_result = np.abs(result.values)
 
-    x_axis = np.arange(0, math.ceil(max_freq_x * norm_x) + 1) / norm_x
-    # you want the extra for the positive side
+    if remove_constant_term:
+        plottable_result[half][half] = 0
+    truncated_result = plottable_result[min_y:max_y, min_x:max_x]
+
+    n_x = truncated_result.shape[1]
+    n_y = truncated_result.shape[0]
+
+    if show_full_spectrum:
+        x_axis = np.arange(-n_x/2, n_x/2)
+    else:
+        x_axis = np.arange(0, n_x)
+    y_axis = np.arange(-n_y / 2, n_y / 2)
+
     XX, YY = np.meshgrid(x_axis, y_axis)
 
     default_plot_kwargs = {"shading": "auto"}
     plot_kwargs = {**default_plot_kwargs, **plot_kwargs}
-
     fig, ax = _check_and_create_fig_ax(fig=fig, ax=ax)
-    mesh_plot = ax.pcolormesh(XX, YY, truncated_result, **plot_kwargs, rasterized=True)
+    mesh_plot = ax.pcolormesh(
+        XX, YY, truncated_result, **plot_kwargs, rasterized=True
+    )
+
     fig.colorbar(mesh_plot, ax=ax)
-    ax.set_xlabel("Scan Direction x")
-    ax.set_ylabel("Scan Direction y")
-
-
-def _truncate_result_according_to_resolution(
-    result: np.ndarray, res_x: int, res_y: int
-):
-    """Helper function to truncate a Fourier result to a given resolution of the plot.
-
-    Note: Resolution arguments are not actual resolution but the number of pixels kept
-    to each side of the point with frequency 0. This can be thought of as the maximum
-    absolute value of the "normalized frequencies" kept.
-
-    The returned array is of size 2 * res + 1 in the y-direction and res + 1 in the
-    x-direction.
-    """
-    c_y = (result.shape[0] - 1) // 2  # center
-    return result[c_y - res_y : c_y + res_y + 1, 0 : res_x + 1]
-    # Note this always makes result.shape[0] (y resolution) odd
-
-
-def _move_negative_frequencies_next_to_origin(result: np.ndarray) -> np.ndarray:
-    """Swaps the result from the format of the output of np.fft.rfft2 to the
-    format of the array used for plotting (where frequencies are lined up from least
-    to greatest going left to right).
-    """
-    n_y = result.shape[0]
-    return np.append(result[n_y // 2 + 1 :], result[0 : n_y // 2 + 1], axis=0)
-
-
-def _move_negative_frequencies_next_to_positive_frequencies(
-    result: np.ndarray,
-) -> np.ndarray:
-    """The inverse of _move_negative_frequencies_next_to_origin."""
-    n_y = result.shape[0]
-    return np.append(result[(n_y - 1) // 2 :], result[0 : (n_y - 1) // 2], axis=0)
+    ax.set_xlabel("Frequencies x")
+    ax.set_ylabel("Frequencies y")
+    ax.set_ylim(-max_freq_y, max_freq_y)
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
 
 
 def inverse_fourier(result: FourierResult) -> FourierResult:
@@ -224,7 +177,7 @@ def inverse_fourier(result: FourierResult) -> FourierResult:
         Inverted result.
     """
     return FourierResult(
-        np.fft.irfft2(result.values, norm="forward"),
+        np.fft.ifftn(np.fft.ifftshift(result.values), norm="forward"),
         result.end_points_x,
         result.end_points_y,
     )
