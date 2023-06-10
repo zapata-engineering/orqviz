@@ -63,12 +63,14 @@ def test_plots_dont_fail():
         n_steps_x=res,
         end_points_x=end_points,
     )
-    orqviz.fourier.plot_2D_fourier_result(fourier_result, max_freq_x=3,max_freq_y=3)
+    orqviz.fourier.plot_2D_fourier_result(fourier_result, max_freq_x=3, max_freq_y=3)
     orqviz.fourier.plot_2D_fourier_result(
-        fourier_result, max_freq_x=3,max_freq_y=3,show_full_spectrum=True
+        fourier_result, max_freq_x=3, max_freq_y=3, show_full_spectrum=True
     )
     fig, ax = plt.subplots()
-    orqviz.fourier.plot_2D_fourier_result(fourier_result, max_freq_x=3,max_freq_y=3,fig=fig, ax=ax)
+    orqviz.fourier.plot_2D_fourier_result(
+        fourier_result, max_freq_x=3, max_freq_y=3, fig=fig, ax=ax
+    )
 
 
 def test_inverse_plots_dont_fail():

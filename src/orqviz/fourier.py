@@ -3,8 +3,8 @@ import warnings
 from typing import NamedTuple, Optional, Tuple
 
 import matplotlib
-from matplotlib.ticker import MaxNLocator
 import numpy as np
+from matplotlib.ticker import MaxNLocator
 
 from orqviz.scans.data_structures import Scan2DResult
 
@@ -93,11 +93,11 @@ def perform_2D_fourier_transform(
 
 
 def plot_2D_fourier_result(
-    fourier_result: FourierResult, 
-    max_freq_x: int, 
+    fourier_result: FourierResult,
+    max_freq_x: int,
     max_freq_y: int,
-    show_full_spectrum: bool=False,
-    remove_constant_term: bool=True,
+    show_full_spectrum: bool = False,
+    remove_constant_term: bool = True,
     fig: Optional[matplotlib.figure.Figure] = None,
     ax: Optional[matplotlib.axes.Axes] = None,
     **plot_kwargs,
@@ -114,7 +114,7 @@ def plot_2D_fourier_result(
         fourier_result: Fourier result to be plotted.
         max_freq_x: Maximum frequency to be plotted along the x-direction.
         max_freq_y: Maximum frequency to be plotted along the y-direction.
-        show_full_spectrum: If true plots the whole spectrum (including the 
+        show_full_spectrum: If true plots the whole spectrum (including the
             redundant part). Defaults to False.
         remove_constant_term: If true sets the value of (0, 0) frequency (the constant
             term) to 0. Defaults to True.
@@ -125,7 +125,7 @@ def plot_2D_fourier_result(
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.pcolormesh
             (plt.pcolormesh)
     """
-    raw_values = fourier_result.values    
+    raw_values = fourier_result.values
     size = raw_values.shape[0]
 
     half = int(size / 2)
@@ -147,7 +147,7 @@ def plot_2D_fourier_result(
     n_y = truncated_result.shape[0]
 
     if show_full_spectrum:
-        x_axis = np.arange(-n_x/2, n_x/2)
+        x_axis = np.arange(-n_x / 2, n_x / 2)
     else:
         x_axis = np.arange(0, n_x)
     y_axis = np.arange(-n_y / 2, n_y / 2)
@@ -157,9 +157,7 @@ def plot_2D_fourier_result(
     default_plot_kwargs = {"shading": "auto"}
     plot_kwargs = {**default_plot_kwargs, **plot_kwargs}
     fig, ax = _check_and_create_fig_ax(fig=fig, ax=ax)
-    mesh_plot = ax.pcolormesh(
-        XX, YY, truncated_result, **plot_kwargs, rasterized=True
-    )
+    mesh_plot = ax.pcolormesh(XX, YY, truncated_result, **plot_kwargs, rasterized=True)
 
     fig.colorbar(mesh_plot, ax=ax)
     ax.set_xlabel("Frequencies x")
