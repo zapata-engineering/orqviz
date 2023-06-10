@@ -17,11 +17,15 @@ def COST_FUNCTION(params):
     return np.sum(np.sin(params)) + np.sum(params**2)
 
 
+def ANALYTICAL_HESSIAN(params):
+    return np.diag(2 - np.sin(params))
+
+
 @pytest.mark.parametrize(
     "params",
     [np.random.rand(8)],
 )
-def test_get_hessian(params):
+def test_get_hessian_io(params):
     hessian = get_Hessian(params, COST_FUNCTION, gradient_function=None, eps=1e-3)
 
     assert hasattr(hessian, "eigenvectors")
@@ -48,7 +52,7 @@ def test_get_hessian(params):
     "params",
     [np.random.rand(8)],
 )
-def test_get_hessian_SPSA_approx(params):
+def test_get_hessian_SPSA_approx_io(params):
     hessian = get_Hessian_SPSA_approx(
         params, COST_FUNCTION, gradient_function=None, eps=1e-3, n_reps=20
     )
@@ -72,17 +76,20 @@ def test_get_hessian_SPSA_approx(params):
     )
 
 
-def test_get_hessian_gives_correct_values():
-    params = np.zeros(4)
+@pytest.mark.parametrize(
+    "params",
+    [np.zeros(4), np.ones(5), np.arange(4, dtype=float), np.pi / 4 * np.arange(8)],
+)
+def test_get_hessian_gives_correct_values(params):
     eps = 1e-5
-    target_matrix = 2 * np.eye(4)
-    target_eigenvalues = 2 * np.ones(4)
+    target_matrix = ANALYTICAL_HESSIAN(params)
+    target_eigenvalues = np.sort(target_matrix.diagonal())
 
     hessian_exact = get_Hessian(params, COST_FUNCTION, gradient_function=None, eps=eps)
     hessian_approx = get_Hessian_SPSA_approx(
         params, COST_FUNCTION, gradient_function=None, eps=eps, n_reps=10000
     )
-    precision = int(np.abs(np.log10(eps)))
+    precision = int(np.abs(np.log10(eps))) - 1
 
     np.testing.assert_array_almost_equal(
         hessian_exact.hessian_matrix, target_matrix, precision
