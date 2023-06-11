@@ -14,15 +14,17 @@ from orqviz.io import load_viz_object, save_viz_object
 
 
 def COST_FUNCTION(params):
-    return np.sum(np.sin(params)) + np.sum(params**2) + params[0]**2 * params[1]**2
+    return (
+        np.sum(np.sin(params)) + np.sum(params**2) + params[0] ** 2 * params[1] ** 2
+    )
 
 
 def ANALYTICAL_HESSIAN(params):
     hessian = np.diag(2 - np.sin(params))
-    hessian[0][0] += 2 * params[1]**2
-    hessian[1][1] += 2 * params[0]**2
-    hessian[0][1] = 4*params[0]*params[1]
-    hessian[1][0] = 4*params[0]*params[1]
+    hessian[0][0] += 2 * params[1] ** 2
+    hessian[1][1] += 2 * params[0] ** 2
+    hessian[0][1] = 4 * params[0] * params[1]
+    hessian[1][0] = 4 * params[0] * params[1]
     return hessian
 
 
@@ -80,9 +82,16 @@ def test_get_hessian_SPSA_approx_io(params):
         loaded_hessian.eigenvectors, hessian.eigenvectors
     )
 
-HESSIAN_TEST_PARAMS = [np.zeros(4), np.ones(5), np.arange(4, dtype=float), np.pi / 4 * np.arange(8)]
 
-@pytest.mark.parametrize("params",HESSIAN_TEST_PARAMS)
+HESSIAN_TEST_PARAMS = [
+    np.zeros(4),
+    np.ones(5),
+    np.arange(4, dtype=float),
+    np.pi / 4 * np.arange(8),
+]
+
+
+@pytest.mark.parametrize("params", HESSIAN_TEST_PARAMS)
 def test_get_hessian_gives_correct_values(params):
     eps = 1e-5
     target_matrix = ANALYTICAL_HESSIAN(params)
@@ -98,7 +107,8 @@ def test_get_hessian_gives_correct_values(params):
         hessian.eigenvalues, target_eigenvalues, precision
     )
 
-@pytest.mark.parametrize("params",HESSIAN_TEST_PARAMS)
+
+@pytest.mark.parametrize("params", HESSIAN_TEST_PARAMS)
 def test_get_hessian_spsa_gives_correct_values(params):
     eps = 1e-5
     target_matrix = ANALYTICAL_HESSIAN(params)
@@ -114,4 +124,3 @@ def test_get_hessian_spsa_gives_correct_values(params):
     np.testing.assert_array_almost_equal(
         hessian.eigenvalues, target_eigenvalues, precision
     )
-
