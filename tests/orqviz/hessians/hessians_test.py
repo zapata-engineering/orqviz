@@ -14,11 +14,16 @@ from orqviz.io import load_viz_object, save_viz_object
 
 
 def COST_FUNCTION(params):
-    return np.sum(np.sin(params)) + np.sum(params**2)
+    return np.sum(np.sin(params)) + np.sum(params**2) + params[0]**2 * params[1]**2
 
 
 def ANALYTICAL_HESSIAN(params):
-    return np.diag(2 - np.sin(params))
+    hessian = np.diag(2 - np.sin(params))
+    hessian[0][0] += 2 * params[1]**2
+    hessian[1][1] += 2 * params[0]**2
+    hessian[0][1] = 4*params[0]*params[1]
+    hessian[1][0] = 4*params[0]*params[1]
+    return hessian
 
 
 @pytest.mark.parametrize(
@@ -75,33 +80,38 @@ def test_get_hessian_SPSA_approx_io(params):
         loaded_hessian.eigenvectors, hessian.eigenvectors
     )
 
+HESSIAN_TEST_PARAMS = [np.zeros(4), np.ones(5), np.arange(4, dtype=float), np.pi / 4 * np.arange(8)]
 
-@pytest.mark.parametrize(
-    "params",
-    [np.zeros(4), np.ones(5), np.arange(4, dtype=float), np.pi / 4 * np.arange(8)],
-)
+@pytest.mark.parametrize("params",HESSIAN_TEST_PARAMS)
 def test_get_hessian_gives_correct_values(params):
     eps = 1e-5
     target_matrix = ANALYTICAL_HESSIAN(params)
-    target_eigenvalues = np.sort(target_matrix.diagonal())
+    target_eigenvalues = np.sort(np.linalg.eig(target_matrix)[0])
 
-    hessian_exact = get_Hessian(params, COST_FUNCTION, gradient_function=None, eps=eps)
-    hessian_approx = get_Hessian_SPSA_approx(
-        params, COST_FUNCTION, gradient_function=None, eps=eps, n_reps=10000
-    )
+    hessian = get_Hessian(params, COST_FUNCTION, gradient_function=None, eps=eps)
     precision = int(np.abs(np.log10(eps))) - 1
 
     np.testing.assert_array_almost_equal(
-        hessian_exact.hessian_matrix, target_matrix, precision
+        hessian.hessian_matrix, target_matrix, precision
     )
     np.testing.assert_array_almost_equal(
-        hessian_exact.eigenvalues, target_eigenvalues, precision
+        hessian.eigenvalues, target_eigenvalues, precision
     )
 
-    approx_precision = 1
+@pytest.mark.parametrize("params",HESSIAN_TEST_PARAMS)
+def test_get_hessian_spsa_gives_correct_values(params):
+    eps = 1e-5
+    target_matrix = ANALYTICAL_HESSIAN(params)
+    target_eigenvalues = np.sort(np.linalg.eig(target_matrix)[0])
+
+    hessian = get_Hessian_SPSA_approx(
+        params, COST_FUNCTION, gradient_function=None, eps=eps, n_reps=20000
+    )
+    precision = 1
     np.testing.assert_array_almost_equal(
-        hessian_approx.hessian_matrix, target_matrix, approx_precision
+        hessian.hessian_matrix, target_matrix, precision
     )
     np.testing.assert_array_almost_equal(
-        hessian_approx.eigenvalues, target_eigenvalues, approx_precision
+        hessian.eigenvalues, target_eigenvalues, precision
     )
+
