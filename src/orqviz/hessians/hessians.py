@@ -95,6 +95,8 @@ def get_Hessian(
 
                 op = np.outer(dir1.flatten(), dir2.flatten())
                 outer_prod_matrix = op + op.T
+                # half diagonal entries
+                outer_prod_matrix[(np.arange(n_params), np.arange(n_params))] /= 2
 
                 hessian_result = (dir2_gradient - dir1_gradient) / eps
                 Hessian_Matr += hessian_result * outer_prod_matrix
@@ -153,8 +155,6 @@ def get_Hessian_SPSA_approx(
 
         op = np.outer(dir1.flatten(), dir2.flatten())
         outer_prod_matrix = (op + op.T) / 2
-        # mutliply diagonal by two
-        outer_prod_matrix += np.diag(np.diag(outer_prod_matrix))
 
         hessian_result = (dir2_gradient - dir1_gradient) / eps
         Hessian_Matr += hessian_result * outer_prod_matrix
