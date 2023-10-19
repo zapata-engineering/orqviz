@@ -3,9 +3,6 @@ from typing import Optional
 import matplotlib
 import numpy as np
 
-# this import is unused but solves issues with older matplotlib versions and 3d plots
-from mpl_toolkits.mplot3d import Axes3D
-
 from ..plot_utils import _check_and_create_3D_ax, _check_and_create_fig_ax
 from .data_structures import Scan1DResult, Scan2DResult
 
@@ -161,7 +158,9 @@ def plot_2D_scan_result_as_3D(
         plot_kwargs: kwargs for plotting with matplotlib.pyplot.plot_surface
             (plt.plot_surface)
     """
-    ax = _check_and_create_3D_ax(ax=ax)
+    ax3D = _check_and_create_3D_ax(ax=ax)
+
+    assert ax3D is not None
 
     x, y = scan2D_result._get_coordinates_on_directions(
         in_units_of_direction=in_units_of_direction
@@ -171,10 +170,10 @@ def plot_2D_scan_result_as_3D(
     plot_kwargs_defaults = {"cmap": "viridis", "alpha": 0.8}
     plot_kwargs = {**plot_kwargs_defaults, **plot_kwargs}
 
-    ax.plot_surface(XX, YY, scan2D_result.values, **plot_kwargs)
+    ax3D.plot_surface(XX, YY, scan2D_result.values, **plot_kwargs)
 
-    ax.view_init(elev=35, azim=-70)
+    ax3D.view_init(elev=35, azim=-70)
 
-    ax.set_xlabel("Scan Direction x")
-    ax.set_ylabel("Scan Direction y")
-    ax.set_zlabel("Loss Value")
+    ax3D.set_xlabel("Scan Direction x")
+    ax3D.set_ylabel("Scan Direction y")
+    ax3D.set_zlabel("Loss Value")
