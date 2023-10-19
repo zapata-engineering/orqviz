@@ -3,9 +3,9 @@ from typing import Optional, Tuple
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tck
+import mpl_toolkits
 import numpy as np
 from matplotlib.cm import ScalarMappable
-import mpl_toolkits
 
 
 def normalize_color_and_colorbar(
