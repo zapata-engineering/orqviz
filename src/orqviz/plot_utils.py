@@ -4,6 +4,7 @@ from typing import Optional, Tuple
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tck
 import numpy as np
+from matplotlib.cm import ScalarMappable
 
 
 def normalize_color_and_colorbar(
@@ -40,9 +41,11 @@ def normalize_color_and_colorbar(
                 "Provided ax does not contain an image in ax.images or ax.collections"
             ) from e
 
-    image.colorbar.remove()
-    image.set_clim(vmin=min_val, vmax=max_val)
-    image.set_cmap(cmap)
+    assert isinstance(image, ScalarMappable)
+    if image.colorbar is not None:
+        image.colorbar.remove()
+    image.set_clim(vmin=min_val, vmax=max_val)  # type: ignore
+    image.set_cmap(cmap)  # type: ignore
     fig.colorbar(image, ax=ax)
 
 

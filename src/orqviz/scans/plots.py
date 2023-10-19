@@ -163,6 +163,8 @@ def plot_2D_scan_result_as_3D(
     """
     ax = _check_and_create_3D_ax(ax=ax)
 
+    assert ax is not None
+
     x, y = scan2D_result._get_coordinates_on_directions(
         in_units_of_direction=in_units_of_direction
     )
