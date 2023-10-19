@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as tck
 import numpy as np
 from matplotlib.cm import ScalarMappable
+import mpl_toolkits
 
 
 def normalize_color_and_colorbar(
@@ -65,7 +66,6 @@ def get_colorbar_from_ax(
     _, ax = _check_and_create_fig_ax(ax=ax)
 
     if image_index is None:
-
         len_collections = len(ax.collections)
         len_images = len(ax.images)
 
@@ -158,7 +158,6 @@ def _check_and_create_fig_ax(
     fig: Optional[plt.Figure] = None,
     ax: Optional[plt.Axes] = None,
 ) -> Tuple[plt.Figure, plt.Axes]:
-
     if fig is None:
         fig = plt.gcf()
 
@@ -170,7 +169,7 @@ def _check_and_create_fig_ax(
 
 def _check_and_create_3D_ax(
     ax: Optional[plt.Axes] = None,
-) -> plt.Axes:
+) -> mpl_toolkits.mplot3d.Axes3D:
     if ax is None:
         fig = plt.figure()
         ax = fig.add_subplot(projection="3d")
